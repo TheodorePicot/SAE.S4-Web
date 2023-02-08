@@ -1,2 +1,7 @@
-# SAE.S4-Web
-Ce projet veille à développer une application web qui calcule l’itinéraire le plus court entre 2 communes.
+---
+lang: fr
+---
+
+# Plus court chemin - code de base
+
+Plus d'informations sur la page http://romainlebreton.github.io/R.4.01-DeveloppementWeb-JavaScript/
