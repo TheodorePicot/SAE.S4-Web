@@ -10,14 +10,18 @@ class ConfigurationBDDPostgreSQL implements ConfigurationBDDInterface
     private string $nomBDD = "iut";
     private string $hostname = "162.38.222.142";
 
+    private string $login = "picott";
+
+    private string $mdp = "100630880CE";
+
     public function getLogin(): string
     {
-        throw new Exception("Login BDD non renseigné !");
+        return $this->login;
     }
 
     public function getMotDePasse(): string
     {
-        throw new Exception("Mot de passe BDD non renseigné !");
+        return $this->mdp;
     }
 
     public function getDSN() : string{
