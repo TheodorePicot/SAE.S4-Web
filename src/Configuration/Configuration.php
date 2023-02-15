@@ -12,6 +12,8 @@ class Configuration
 
     public ConfigurationBDDInterface $configurationBDD;
 
+
+
     public function __construct(ConfigurationBDDInterface $configurationBDD)
     {
         $this->configurationBDD= $configurationBDD;
@@ -35,7 +37,8 @@ class Configuration
 
     public static function getAbsoluteURL() : string
     {
-        throw new Exception("URL absolue non renseignée !");
+        return 'https://webinfo.iutmontp.univ-montp2.fr/~picott/sae.s4-web/web/controleurFrontal.php';
+        //throw new Exception("URL absolue non renseignée !");
     }
 
 }
