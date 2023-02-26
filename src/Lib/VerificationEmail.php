@@ -17,13 +17,13 @@ class VerificationEmail
         $corpsEmail = "<a href=\"$lienValidationEmail\">Validation</a>";
 
         // Temporairement avant d'envoyer un vrai mail
-        MessageFlash::ajouter("success", $corpsEmail);
+//        MessageFlash::ajouter("success", $corpsEmail);
 
-        // mail(
-        //     $utilisateur->getEmailAValider(),
-        //     "Validation de votre adresse mail",
-        //     "<a href=\"$lienValidationEmail\">Validation</a>"
-        // );
+         mail(
+             $utilisateur->getEmailAValider(),
+             "Validation de votre adresse mail",
+             "<a href=\"$lienValidationEmail\">Validation</a>"
+         );
     }
 
     public static function traiterEmailValidation($login, $nonce): bool
