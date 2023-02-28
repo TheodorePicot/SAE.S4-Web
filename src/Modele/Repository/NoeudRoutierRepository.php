@@ -61,6 +61,9 @@ class NoeudRoutierRepository extends AbstractRepository
      **/
     public function getVoisins(int $noeudRoutierGid): array
     {
+        // TODO Vue materialisée pour stocker les voisins
+        // TODO index sur l'id du noeud du quel on veut trouver les voisins
+        // TODO
         $requeteSQL = <<<SQL
             (select  nr2.gid as noeud_routier_gid, tr.gid as troncon_gid, tr.longueur
             from noeud_routier nr, troncon_route tr, noeud_routier nr2
