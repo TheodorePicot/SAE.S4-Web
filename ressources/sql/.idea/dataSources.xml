@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:postgresql://162.38.222.142:5432/iut</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="postgres@themis-db-instance.cnowxclkulrh.eu-west-3.rds.amazonaws.com" uuid="d08a16e8-5826-4e5d-ac0b-951cfecd0039">
+    <data-source source="LOCAL" name="sae-s4@themis-db-instance.cnowxclkulrh.eu-west-3.rds.amazonaws.com" uuid="d08a16e8-5826-4e5d-ac0b-951cfecd0039">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://themis-db-instance.cnowxclkulrh.eu-west-3.rds.amazonaws.com:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://themis-db-instance.cnowxclkulrh.eu-west-3.rds.amazonaws.com:5432/sae-s4</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

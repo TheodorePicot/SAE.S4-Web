@@ -54,6 +54,19 @@ select  nr2.gid as noeud_routier_gid, tr.gid as troncon_gid, tr.longueur
                 and nr.geom <-> tr.geom < 1
                 and  nr.gid = :gidTag);
 
+select  nr2.gid as noeud_routier_gid, tr.gid as troncon_gid, tr.longueur
+            from view_gid_geom_routier nr, view_gid_geom_troncon tr, view_gid_geom_routier nr2
+            where (st_dwithin(nr.geom, st_startpoint(tr.geom), 0.001)
+                and st_dwithin(nr2.geom, st_endpoint(tr.geom), 0.001)
+                and  nr.gid = :gidTag)
+            union
+select  nr2.gid as noeud_routier_gid, tr.gid as troncon_gid, tr.longueur
+            from view_gid_geom_routier nr, view_gid_geom_troncon tr, view_gid_geom_routier nr2
+            where (st_dwithin(nr2.geom, st_startpoint(tr.geom), 0.001)
+                and st_dwithin(nr.geom, st_endpoint(tr.geom), 0.001)
+                and  nr.gid = :gidTag);
+
+
 -- Index sur l'attribut geom de noeud Routier
 
 CREATE INDEX idx_gid_geom_noeud_routier
