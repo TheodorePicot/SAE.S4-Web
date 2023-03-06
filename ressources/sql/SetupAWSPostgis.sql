@@ -18,4 +18,4 @@ CREATE EXTENSION postgis_topology;
 
 CREATE EXTENSION address_standardizer_data_us;
 
-SET search_path TO public, "sae-s4", tiger, tiger_data, topology;
+
