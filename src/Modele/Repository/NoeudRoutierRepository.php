@@ -62,19 +62,7 @@ class NoeudRoutierRepository extends AbstractRepository
     public function getVoisins(int $noeudRoutierGid): array
     {
         $requeteSQL = <<<SQL
-            (select  nr2.gid as noeud_routier_gid, tr.gid as troncon_gid, tr.longueur
-            from noeud_routier nr, troncon_route tr, noeud_routier nr2
-            where (st_distancesphere(nr.geom, st_startpoint(tr.geom)) < 1
-                and st_distancesphere(nr2.geom, st_endpoint(tr.geom)) < 1
-                and  nr.gid = :gidTag)
-            )
-            union
-            (select  nr2.gid as noeud_routier_gid, tr.gid as troncon_gid, tr.longueur
-            from noeud_routier nr, troncon_route tr, noeud_routier nr2
-            where (st_distancesphere(nr2.geom, st_startpoint(tr.geom)) < 1
-                and st_distancesphere(nr.geom, st_endpoint(tr.geom)) < 1
-                and  nr.gid = :gidTag)
-            );
+            select noeud_routier_gid, troncon_gid, longueur from voisins where noeud_routier_base = :gidTag;
         SQL;
         $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
         $pdoStatement->execute(array(
