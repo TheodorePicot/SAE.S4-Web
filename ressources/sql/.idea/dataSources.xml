@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="postgres@themis-db-instance.cnowxclkulrh.eu-west-3.rds.amazonaws.com" uuid="462958fb-c1ef-4791-85e5-41995037575f">
+    <data-source source="LOCAL" name="iut@162.38.222.142" uuid="cd6a106e-db13-49b0-8878-0c217e569785">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://themis-db-instance.cnowxclkulrh.eu-west-3.rds.amazonaws.com:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://162.38.222.142:5432/iut</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="sae-s4@themis-db-instance.cnowxclkulrh.eu-west-3.rds.amazonaws.com" uuid="d08a16e8-5826-4e5d-ac0b-951cfecd0039">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://themis-db-instance.cnowxclkulrh.eu-west-3.rds.amazonaws.com:5432/sae-s4</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
