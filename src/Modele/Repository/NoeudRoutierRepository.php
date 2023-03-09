@@ -73,4 +73,19 @@ class NoeudRoutierRepository extends AbstractRepository
         ));
         return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getLongitudeLatitude(int $noeudRoutierGid): array
+    {
+        $requeteSQL = <<<SQL
+            (select st_x(geom), st_y(geom)
+                from view_gid_geom_routier
+                where gid = :gidTag
+            );
+        SQL;
+        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $pdoStatement->execute(array(
+            "gidTag" => $noeudRoutierGid
+        ));
+        return $pdoStatement->fetch(PDO::FETCH_ASSOC);
+    }
 }
