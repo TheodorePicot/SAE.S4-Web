@@ -2,6 +2,33 @@ nav a{
     color: blue;
 }
 
+body{
+    background: #0b0e34;
+    font-family: 'Raleway', sans-serif;
+
+}
+
+div{
+    color:white;
+}
+
+p{
+    color: white;
+}
+
+a{
+    color: #bfd1ec;
+}
+
+ul {
+    list-style-type: none;
+}
+
+#map{
+    height: 400px;
+    width: 100%;
+}
+
 /*BURGER MENU*/
 
 .navbar-toggler {
@@ -76,4 +103,8 @@ nav a{
 .navbar-toggler.collapsed .bottom-bar {
     margin-top: 20px;
     transform: rotate(0deg);
+}
+
+img{
+    width: 25px;
 }

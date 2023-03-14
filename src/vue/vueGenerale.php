@@ -12,27 +12,31 @@ $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()); ?
     <meta charset="UTF-8">
     <title><?= $pagetitle ?></title>
 
-    <!--    <link rel="stylesheet" href="../ressources/css/navstyle.css">-->
-
 
     <!-- css -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
+
+    <!-- Optional JavaScript -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Raleway:wght@100;200&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- Optional JavaScript -->
-<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
 <header>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mx-4 fs-5 ">
-        <a href="#" class="navbar-brand">Navbar</a>
+
+    <nav class="navbar navbar-expand-lg navbar-dark  mx-4 fs-5">
+        <a></a>
         <button class="navbar-toggler collapsed d-flex d-lg-none flex-column justify-content-around" type="button"
                 data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="toggler-icon top-bar"></span>
             <span class="toggler-icon middle-bar"></span>
             <span class="toggler-icon bottom-bar"></span>
@@ -46,27 +50,29 @@ $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()); ?
                 <li class="nav-item">
                     <a class="nav-link" href="controleurFrontal.php?action=afficherListe&controleur=noeudCommune">Communes</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="?action=plusCourtChemin&controleur=noeudCommune">Chemin</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
                 <?php if (!ConnexionUtilisateur::estConnecte()) : ?>
                     <li class="nav-item">
                         <a class="nav-link"
                            href="controleurFrontal.php?action=afficherFormulaireConnexion&controleur=utilisateur">
-                            <img alt="login" src="../ressources/img/enter.png" width="18">
+                            Se connecter
                         </a>
                     </li>
                 <?php else : ?>
                     <li class="nav-item">
                         <a class="nav-link"
                            href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL">
-                            <img alt="user" src="../ressources/img/user.png" width="18">
+                            <img alt="user" src="../ressources/img/user.png">
                             <?php $loginHTML ?>
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="controleurFrontal.php?action=deconnecter&controleur=utilisateur">
-                            <img alt="logout" src="../ressources/img/logout.png" width="18">
-                        </a>
-                    </li>
+
                 <?php endif ?>
             </ul>
 
@@ -94,7 +100,7 @@ $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()); ?
 </main>
 <footer>
     <p>
-        Copyleft Romain Lebreton
+        <!--        Copyleft Romain Lebreton-->
     </p>
 </footer>
 </body>

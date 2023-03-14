@@ -1,5 +1,5 @@
 <?php
-echo "<h3>Liste des utilisateurs :</h3>\n";
+echo "<div><h3>Liste des utilisateurs :</h3>\n";
 echo "<ul>\n";
 /** @var \App\PlusCourtChemin\Modele\DataObject\Utilisateur[] $utilisateurs */
 foreach ($utilisateurs as $utilisateur) {
@@ -13,4 +13,4 @@ foreach ($utilisateurs as $utilisateur) {
     HTML;
 }
 echo "</ul>\n";
-echo "<a href='controleurFrontal.php?action=afficherFormulaireCreation&controleur=utilisateur'>Créer un utilisateur</a>\n";
+echo "<a href='controleurFrontal.php?action=afficherFormulaireCreation&controleur=utilisateur'>Créer un utilisateur</a>\n</div>";
