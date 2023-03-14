@@ -9,7 +9,6 @@ class PlusCourtChemin
 {
     private array $distances;
     private array $noeudsALaFrontiere;
-
     public function __construct(
         private int $noeudRoutierDepartGid,
         private int $noeudRoutierArriveeGid
@@ -38,7 +37,7 @@ class PlusCourtChemin
 
             /** @var NoeudRoutier $noeudRoutierCourant */
             $noeudRoutierCourant = $noeudRoutierRepository->recupererParClePrimaire($noeudRoutierGidCourant);
-            $voisins = $noeudRoutierCourant->getVoisins();
+            $voisins = (new NoeudRoutierRepository)->getVoisins($noeudRoutierCourant->getGid());
 
             foreach ($voisins as $voisin) {
                 $noeudVoisinGid = $voisin["noeud_routier_gid"];
@@ -55,14 +54,14 @@ class PlusCourtChemin
 
     private function noeudALaFrontiereDeDistanceMinimale()
     {
-        $noeudRoutierDistanceMinimaleGid = -1;
-        $distanceMinimale = PHP_INT_MAX;
-        foreach ($this->noeudsALaFrontiere as $noeudRoutierGid => $valeur) {
-            if ($this->distances[$noeudRoutierGid] < $distanceMinimale) {
-                $noeudRoutierDistanceMinimaleGid = $noeudRoutierGid;
-                $distanceMinimale = $this->distances[$noeudRoutierGid];
-            }
-        }
-        return $noeudRoutierDistanceMinimaleGid;
+//        $noeudRoutierDistanceMinimaleGid = -1;
+//        $distanceMinimale = PHP_INT_MAX;
+//        foreach ($this->noeudsALaFrontiere as $noeudRoutierGid => $valeur) {
+//            if ($this->distances[$noeudRoutierGid] < $distanceMinimale) {
+//                $noeudRoutierDistanceMinimaleGid = $noeudRoutierGid;
+//                $distanceMinimale = $this->distances[$noeudRoutierGid];
+//            }
+//        }
+        return min($this->distances);
     }
 }

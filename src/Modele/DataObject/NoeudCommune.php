@@ -34,7 +34,7 @@ class NoeudCommune extends AbstractDataObject
 
     public function exporterEnFormatRequetePreparee(): array
     {
-        // Inutile car on ne fait pas d'ajout ni de mise-à-jour
+        // Inutile, car on ne fait pas d'ajout ni de mise-à-jour
         return [];
     }
 }
