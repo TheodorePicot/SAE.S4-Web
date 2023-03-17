@@ -55,7 +55,6 @@ CREATE MATERIALIZED VIEW view_gid_geom_troncon AS
 SELECT gid, geom, longueur
 FROM troncon_route;
 
-
 CREATE TABLE voisins AS
 select nr.gid as noeud_routier_base, nr2.gid as noeud_routier_gid, tr.gid as troncon_gid, tr.longueur
 from view_gid_geom_troncon tr
@@ -74,3 +73,26 @@ CREATE INDEX idx_gid_voisins
         USING hash (noeud_routier_base);
 
 DROP INDEX idx_gid_voisins;
+
+CREATE TABLE troncons_depart_arrivee AS
+select tr.gid as troncon, nr.gid as noeud_routier_depart, nr2.gid as noeud_routier_arrivee, tr.longueur
+from view_gid_geom_troncon tr
+         join lateral ( select nr.gid, nr.geom
+                        from view_gid_geom_routier nr) as nr
+              on st_dwithin(nr.geom, st_startpoint(tr.geom), 0.001)
+         join lateral (select nr2.gid, nr2.geom
+                       from view_gid_geom_routier nr2
+                       where nr2.gid != nr.gid) as nr2
+              on st_dwithin(nr2.geom, st_endpoint(tr.geom), 0.001);
+
+select tr.gid as troncon, nr.gid as noeud_routier_depart, nr2.gid as noeud_routier_arrivee, tr.longueur
+from view_gid_geom_troncon tr
+         join lateral ( select nr.gid, nr.geom
+                        from view_gid_geom_routier nr
+                        ) as nr
+              on st_dwithin(nr.geom, st_startpoint(tr.geom), 0.001)
+         join lateral (select nr2.gid, nr2.geom
+                       from view_gid_geom_routier nr2
+                       where nr2.gid !=nr.gid) as nr2
+              on st_dwithin(nr2.geom, st_endpoint(tr.geom), 0.001)
+where tr.gid =:gidTag;
