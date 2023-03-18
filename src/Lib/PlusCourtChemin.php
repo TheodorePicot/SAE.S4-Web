@@ -54,14 +54,14 @@ class PlusCourtChemin
 
     private function noeudALaFrontiereDeDistanceMinimale()
     {
-//        $noeudRoutierDistanceMinimaleGid = -1;
-//        $distanceMinimale = PHP_INT_MAX;
-//        foreach ($this->noeudsALaFrontiere as $noeudRoutierGid => $valeur) {
-//            if ($this->distances[$noeudRoutierGid] < $distanceMinimale) {
-//                $noeudRoutierDistanceMinimaleGid = $noeudRoutierGid;
-//                $distanceMinimale = $this->distances[$noeudRoutierGid];
-//            }
-//        }
-        return min($this->distances);
+        $noeudRoutierDistanceMinimaleGid = -1;
+        $distanceMinimale = PHP_INT_MAX;
+        foreach ($this->noeudsALaFrontiere as $noeudRoutierGid => $valeur) {
+            if ($this->distances[$noeudRoutierGid] < $distanceMinimale) {
+                $noeudRoutierDistanceMinimaleGid = $noeudRoutierGid;
+                $distanceMinimale = $this->distances[$noeudRoutierGid];
+            }
+        }
+        return $noeudRoutierDistanceMinimaleGid;
     }
 }

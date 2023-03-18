@@ -18,44 +18,43 @@ class PlusCourtChemin
 
         $tabArrive = $noeudRoutierRepository->getLongitudeLatitude($this->noeudRoutierArriveeGid);
         //Initialisation d’un tas minimum “noeudsALaFrontière” qui contient les noeuds frontières, qui doivent être évalués
-        $noeudsALaFrontiere = new MinHeapRoutier();
-
+        $this->noeudsALaFrontiere[$this->noeudRoutierDepartGid] = true;
         //Initialisation d’une liste “dejaVu” qui contient les noeuds qui ont déjà étaient évalués
         $dejaVu = [];
 
         $this->distances = [$this->noeudRoutierDepartGid => 0];
 
         //Ajout du noeud initiale (départ) dans le tas noeudsALaFrontiere
-        $noeudsALaFrontiere->insert(new NoeudRoutierWrapper($this->noeudRoutierDepartGid, 0));
-
-        while (count($noeudsALaFrontiere) !== 0) {
-
+        while (count($this->noeudsALaFrontiere) !== 0) {
             //Initialisation du noeudCourant et le supprime dans “noeudsALaFrontière”
-            $noeudRoutierGidCourant = $noeudsALaFrontiere->extract();
-
-            $dejaVu[] = $noeudRoutierGidCourant;
+            $noeudRoutierGidCourant = $this->noeudALaFrontiereDeDistanceMinimale();
 
             if ($noeudRoutierGidCourant === $this->noeudRoutierArriveeGid) {
                 return $this->distances[$noeudRoutierGidCourant];
             }
 
+            unset($this->noeudsALaFrontiere[$noeudRoutierGidCourant]);
+
+            $dejaVu[] = $noeudRoutierGidCourant;
+
             $noeudRoutierCourant = $noeudRoutierRepository->recupererParClePrimaire($noeudRoutierGidCourant);
             $voisins = $noeudRoutierCourant->getVoisins();
+
             foreach ($voisins as $voisin) {
                 if (in_array($voisin, $dejaVu)) continue;
-                else {
-                    $tab = $noeudRoutierRepository->getLongitudeLatitude($voisin["noeud_routier_gid"]);
-                    $distanceHeuristique = $this->calculDistanceHeuristque($tab[0], $tab[1], $tabArrive[0], $tabArrive[1]);
-                    $distanceTroncon = $voisin["longueur"];
-                    $distanceDepuisDebut = $this->distances[$noeudRoutierGidCourant] + $distanceTroncon;
+                $noeudVoisinGid = $voisin["noeud_routier_gid"];
+                $distanceTroncon = $voisin["longueur"];
+                $tab = $noeudRoutierRepository->getLongitudeLatitude($noeudVoisinGid);
+//                var_dump($tab);
 
-                    if (!in_array($voisin, $noeudsALaFrontiere) || $distanceProposee < $noeudsALaFrontiere[$noeudVoisinGid]) {
-                        //add
-                        //set totalCost
-                    }
+                $distanceHeuristique = $this->calculDistanceHeuristque($tab['st_x'], $tab['st_y'], $tabArrive['st_x'], $tabArrive['st_y']);
+                $distanceProposee= $this->distances[$noeudRoutierGidCourant] + $distanceTroncon + $distanceHeuristique;
+
+                if (!isset($this->distances[$noeudVoisinGid]) || $distanceProposee < $this->distances[$noeudVoisinGid]) {
+                    $this->distances[$noeudVoisinGid] = $distanceProposee;
+                    $this->noeudsALaFrontiere[$noeudVoisinGid] = true;
                 }
             }
-
         }
     }
 
