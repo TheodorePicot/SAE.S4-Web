@@ -9,7 +9,7 @@ $prenomHTML = htmlspecialchars($utilisateur->getPrenom());
 $nomHTML = htmlspecialchars($utilisateur->getNom());
 $loginURL = rawurlencode($login);
 ?>
-
+<div>
 <p>
     Utilisateur <?= "$prenomHTML $nomHTML" ?> de login <?= $loginHTML ?>
 
@@ -18,3 +18,4 @@ $loginURL = rawurlencode($login);
     <a href="controleurFrontal.php?action=supprimer&controleur=utilisateur&login=<?= $loginURL ?>">(supprimer)</a>
     <?php } ?>
 </p>
+</div>

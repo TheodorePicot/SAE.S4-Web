@@ -1,16 +1,28 @@
-<?php
+<div class="container-fluid">
 
-echo <<<HTML
-<a href="?action=plusCourtChemin&controleur=noeudCommune">Calculer un plus court chemin</a>
+    <div class="row">
 
-<h3>Liste des noeuds communes :</h3>
-<ul>
-HTML;
+        <div class="d-flex justify-content-center">
 
-foreach ($noeudsCommunes as $noeudCommune) {
-    echo '<li>';
-    require __DIR__ . "/detail.php";
-    echo " <a href=\"?action=afficherDetail&controleur=noeudCommune&gid={$noeudCommune->getGid()}\">(Détail)</a>";
-    echo '</li>';
-}
-echo "</ul>\n";
+        <a href="?action=plusCourtChemin&controleur=noeudCommune">Calculer un plus court chemin</a>
+        </div>
+
+        <div class="d-flex justify-content-center my-5">
+            <h3>Liste des noeuds communes :</h3>
+        </div>
+        <div class="d-flex justify-content-center">
+            <ul>
+                <?php foreach ($noeudsCommunes
+
+                               as $noeudCommune) :
+                    require __DIR__ . "/detail.php" ?>
+                    <li class="">
+                        <?php
+                        echo " <a href=\"?action=afficherDetail&controleur=noeudCommune&gid={$noeudCommune->getGid()}\">(Détail)</a>" ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+
+</div>
