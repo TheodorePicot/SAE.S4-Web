@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/sae-s4</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="postgres@localhost" uuid="ffc654b1-a3b4-485b-9f78-3a0125cc41e3">
+    <data-source source="LOCAL" name="iut@162.38.222.142" uuid="2a59dfe3-0ecb-4d74-af8c-a7ebadb021d7">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://162.38.222.142:5432/iut</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

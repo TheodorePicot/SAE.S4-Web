@@ -4,6 +4,8 @@ namespace App\PlusCourtChemin\Controleur;
 
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\PlusCourtChemin;
+use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
+
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
