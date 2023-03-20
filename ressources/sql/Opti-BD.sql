@@ -4,8 +4,8 @@
 select nr2.gid as noeud_routier_gid, tr.gid as troncon_gid, tr.longueur
 from view_gid_geom_troncon tr
          join lateral (select nr.gid, nr.geom
-                        from view_gid_geom_routier nr
-                        where nr.gid = :gidTag) as nr
+                       from view_gid_geom_routier nr
+                       where nr.gid = :gidTag) as nr
               on st_dwithin(nr.geom, st_startpoint(tr.geom), 0.001)
                   or st_dwithin(nr.geom, st_endpoint(tr.geom), 0.001)
          join lateral (select nr2.gid, nr2.geom
@@ -68,6 +68,19 @@ from view_gid_geom_troncon tr
               on st_dwithin(nr2.geom, st_endpoint(tr.geom), 0.001)
                   or st_dwithin(nr2.geom, st_startpoint(tr.geom), 0.001);
 
+CREATE TABLE voisinsv2 AS
+select nr.gid as noeud_routier_base, nr2.gid as noeud_routier_gid, nr2.geom as coordonnees_voisin, tr.gid as troncon_gid, tr.longueur
+from view_gid_geom_troncon tr
+         join lateral ( select nr.gid, nr.geom
+                        from view_gid_geom_routier nr) as nr
+              on st_dwithin(nr.geom, st_startpoint(tr.geom), 0.001)
+                  or st_dwithin(nr.geom, st_endpoint(tr.geom), 0.001)
+         join lateral (select nr2.gid, nr2.geom
+                       from view_gid_geom_routier nr2
+                       where nr2.gid != nr.gid) as nr2
+              on st_dwithin(nr2.geom, st_endpoint(tr.geom), 0.001)
+                  or st_dwithin(nr2.geom, st_startpoint(tr.geom), 0.001);
+
 CREATE INDEX idx_gid_voisins
     ON voisins
         USING hash (noeud_routier_base);
@@ -75,24 +88,33 @@ CREATE INDEX idx_gid_voisins
 DROP INDEX idx_gid_voisins;
 
 CREATE TABLE troncons_depart_arrivee AS
-select tr.gid as troncon, nr.gid as noeud_routier_depart, nr2.gid as noeud_routier_arrivee, tr.longueur
+select tr.gid as troncon, nr.gid as noeud_routier_depart,
+       st_x(nr.geom) longitude_depart, st_y(nr.geom) latitude_depart,
+       nr2.gid as noeud_routier_arrivee,
+       st_x(nr2.geom) longitude_arrivee, st_y(nr2.geom) latitude_arrivee,
+       tr.longueur
 from view_gid_geom_troncon tr
-         join lateral ( select nr.gid, nr.geom
-                        from view_gid_geom_routier nr) as nr
-              on st_dwithin(nr.geom, st_startpoint(tr.geom), 0.001)
+join lateral (select nr.gid, nr.geom
+                       from view_gid_geom_routier nr) as nr
+              on st_dwithin(nr.geom, st_startpoint(tr.geom), 0.00001)
          join lateral (select nr2.gid, nr2.geom
                        from view_gid_geom_routier nr2
                        where nr2.gid != nr.gid) as nr2
-              on st_dwithin(nr2.geom, st_endpoint(tr.geom), 0.001);
+              on st_dwithin(nr2.geom, st_endpoint(tr.geom), 0.00001);
 
 select tr.gid as troncon, nr.gid as noeud_routier_depart, nr2.gid as noeud_routier_arrivee, tr.longueur
 from view_gid_geom_troncon tr
-         join lateral ( select nr.gid, nr.geom
-                        from view_gid_geom_routier nr
-                        ) as nr
-              on st_dwithin(nr.geom, st_startpoint(tr.geom), 0.001)
+         join lateral (select nr.gid, nr.geom
+                       from view_gid_geom_routier nr) as nr
+              on st_dwithin(nr.geom, st_startpoint(tr.geom), 0.00001)
          join lateral (select nr2.gid, nr2.geom
                        from view_gid_geom_routier nr2
-                       where nr2.gid !=nr.gid) as nr2
-              on st_dwithin(nr2.geom, st_endpoint(tr.geom), 0.001)
-where tr.gid =:gidTag;
+                       where nr2.gid != nr.gid) as nr2
+              on st_dwithin(nr2.geom, st_endpoint(tr.geom), 0.00001)
+where tr.gid = :gidTag;
+
+select troncon, noeud_routier_depart, longitude_depart, latitude_depart,
+       noeud_routier_arrivee,  longitude_arrivee, latitude_arrivee, longueur
+from troncons_depart_arrivee;
+
+ALTER ROLE postgres SET search_path TO "sae-s4";
