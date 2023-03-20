@@ -2,8 +2,8 @@
 
 namespace App\PlusCourtChemin\Lib;
 
-use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use App\PlusCourtChemin\Modele\Repository\TronconRouteRepository;
 
 class PlusCourtCheminAStar
 {
@@ -16,7 +16,7 @@ class PlusCourtCheminAStar
 
     public function calculer(bool $affichageDebug = false): float
     {
-        $this->tousLesNoeudsRoutiers = (new NoeudRoutierRepository)->getTousLesVoisins();
+        $this->tousLesTroncons = (new TronconRouteRepository())->getTousLesTroncons();
         $this->priorityQueue = new PlusCourtCheminPriorityQueue();
         $this->distances = [$this->noeudRoutierDepartGid => 0];
         $noeudRoutierRepository = new NoeudRoutierRepository();

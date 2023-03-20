@@ -4,7 +4,6 @@ namespace App\PlusCourtChemin\Lib;
 
 use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
-use SplMinHeap;
 
 class PlusCourtChemin
 {
@@ -21,41 +20,15 @@ class PlusCourtChemin
     public function calculer(bool $affichageDebug = false): float
     {
         $this->tousLesNoeudsRoutiers = (new NoeudRoutierRepository)->getTousLesVoisins();
-        $this->minHeap = new MinHeap();
+        $this->priorityQueue = new PlusCourtCheminPriorityQueue();
 
-        $noeudRoutierRepository = new NoeudRoutierRepository();
-
-        // Distance en km, table indexé par NoeudRoutier::gid
         $this->distances = [$this->noeudRoutierDepartGid => 0];
-        $this->minHeap->insert([0, $this->noeudRoutierDepartGid]);
-
-        var_dump($this->noeudRoutierArriveeGid);
-
-        $heap = new SplMinHeap();
-        $heap->insert([0.31,333]);
-        $heap->insert([0.2,33]);
-        $heap->insert([0.6,3]);
-        $heap->insert([0.8,3]);
-        $heap->insert([0.1,3]);
-        $heap->insert([0.81,3]);
-        $heap->insert([0.31,3]);
-
-        var_dump($heap);
+        $this->priorityQueue->insert($this->noeudRoutierDepartGid, 0);
 
         $this->noeudsALaFrontiere[$this->noeudRoutierDepartGid] = true;
-        $i = 0;
 
         while (count($this->noeudsALaFrontiere) !== 0) {
-            var_dump($this->minHeap);
-//            var_dump($this->minHeap->top());
-            $thisyyy = $this->minHeap->extract();
-            var_dump($thisyyy);
-            $noeudRoutierGidCourant = $thisyyy[1];
-            if ($i === 100) {
-                break;
-            }
-            $i++;
-            // Fini
+            $noeudRoutierGidCourant = $this->priorityQueue->extract();
             if ($noeudRoutierGidCourant === $this->noeudRoutierArriveeGid) {
                 var_dump($i);
                 return $this->distances[$noeudRoutierGidCourant];
@@ -72,7 +45,7 @@ class PlusCourtChemin
                 $distanceProposee = $this->distances[$noeudRoutierGidCourant] + $distanceTroncon;
 
                 if (!isset($this->distances[$noeudVoisinGid]) || $distanceProposee < $this->distances[$noeudVoisinGid]) {
-                    $this->minHeap->insert([$distanceProposee, $voisin["noeud_routier_gid"]]);
+                    $this->priorityQueue->insert($voisin["noeud_routier_gid"], $distanceProposee);
                     $this->distances[$noeudVoisinGid] = $distanceProposee;
                     $this->noeudsALaFrontiere[$noeudVoisinGid] = true;
                 }
