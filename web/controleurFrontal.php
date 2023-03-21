@@ -28,4 +28,4 @@ require_once __DIR__ . '/../vendor/autoload.php';
 //} else {
 //    App\PlusCourtChemin\Controleur\ControleurGenerique::afficherErreur("Erreur de contrôleur");
 //}
-App\PlusCourtChemin\Controleur\RouteurQueryString::traiterRequete();
+App\PlusCourtChemin\Controleur\RouteurURL::traiterRequete();
