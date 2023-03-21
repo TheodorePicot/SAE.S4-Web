@@ -1,1 +1,3 @@
 /src/Configuration/ConfigurationBDDPostgreSQL.php
+/vendor/
+/composer.lock
