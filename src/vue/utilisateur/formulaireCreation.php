@@ -1,5 +1,12 @@
+<?php
+
+use TheFeed\Lib\Conteneur;
+
+$generateurUrl = Conteneur::recupererService("generateurUrl");
+$assistantUrl = Conteneur::recupererService("assistantUrl");
+?>
 <div>
-    <form method="<?= $method ?>" action="./inscription">
+    <form method="<?= $method ?>" action="<?=$generateurUrl->generate("creerDepuisFormulaire");?>">
         <fieldset>
             <legend>Mon formulaire :</legend>
             <p class="InputAddOn">

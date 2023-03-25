@@ -1,10 +1,16 @@
+<?php
+
+use TheFeed\Lib\Conteneur;
+
+$generateurUrl = Conteneur::recupererService("generateurUrl");
+$assistantUrl = Conteneur::recupererService("assistantUrl");?>
 <div class="container-fluid">
 
     <div class="row">
 
         <div class="d-flex justify-content-center">
 
-        <a href="./">Calculer un plus court chemin</a>
+        <a href="<?=$generateurUrl->generate("plusCourtChemin");?>">Calculer un plus court chemin</a>
         </div>
 
         <div class="d-flex justify-content-center my-5">
@@ -17,8 +23,7 @@
                                as $noeudCommune) :
                     require __DIR__ . "/detail.php" ?>
                     <li class="">
-                        <?php
-                        echo " <a href=\"?action=afficherDetail&controleur=noeudCommune&gid={$noeudCommune->getGid()}\">(Détail)</a>" ?>
+                        <a href="<?=$generateurUrl->generate("afficherDetailCommune", ["gid" => $noeudCommune->getGid()])?>">(Détail)</a>
                     </li>
                 <?php endforeach; ?>
             </ul>
