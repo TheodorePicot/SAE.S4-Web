@@ -1,5 +1,5 @@
 <div>
-    <form method="<?= $method ?>" action="controleurFrontal.php">
+    <form method="<?= $method ?>" action="./connexion">
         <fieldset>
             <legend>Connexion</legend>
             <p class="InputAddOn">

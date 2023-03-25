@@ -45,23 +45,20 @@ $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()); ?
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="controleurFrontal.php?action=afficherListe&controleur=utilisateur">Utilisateurs</a>
+                    <a class="nav-link" href="./afficherListeUtilisateur">Utilisateurs</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="controleurFrontal.php?action=afficherListe&controleur=noeudCommune">Communes</a>
+                    <a class="nav-link" href="./listeCommune">Communes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="?action=plusCourtChemin&controleur=noeudCommune">Chemin</a>
+                    <a class="nav-link" href="./">Chemin</a>
                 </li>
             </ul>
 
             <ul class="navbar-nav ms-auto">
                 <?php if (!ConnexionUtilisateur::estConnecte()) : ?>
                     <li class="nav-item">
-                        <a class="nav-link"
-                           href="controleurFrontal.php?action=afficherFormulaireConnexion&controleur=utilisateur">
-                            Se connecter
-                        </a>
+                        <a class="nav-link" href="./connexion">Se connecter</a>
                     </li>
                 <?php else : ?>
                     <li class="nav-item">

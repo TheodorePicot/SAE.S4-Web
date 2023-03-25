@@ -1,5 +1,5 @@
 <div>
-    <form method="<?= $method ?>" action="controleurFrontal.php">
+    <form method="<?= $method ?>" action="./miseAJour">
         <fieldset>
             <legend>Mon formulaire :</legend>
             <p class="InputAddOn">

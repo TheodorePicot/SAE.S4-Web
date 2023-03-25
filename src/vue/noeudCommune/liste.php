@@ -4,7 +4,7 @@
 
         <div class="d-flex justify-content-center">
 
-        <a href="?action=plusCourtChemin&controleur=noeudCommune">Calculer un plus court chemin</a>
+        <a href="./">Calculer un plus court chemin</a>
         </div>
 
         <div class="d-flex justify-content-center my-5">
