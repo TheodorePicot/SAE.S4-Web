@@ -1,45 +1,45 @@
 <div class=" container-fluid my-5">
-    <form action="" method="post">
-        <fieldset>
-            <legend>Plus court chemin</legend>
-            <p class="InputAddOn">
-                <label class="InputAddOn-item" for="nomCommuneDepart_id">Nom de la commune de départ</label>
-                <input class="InputAddOn-field" type="text" value="" placeholder="Ex : Menton" name="nomCommuneDepart"
-                       id="nomCommuneDepart_id" required>
-            </p>
-            <p class="InputAddOn">
-                <label class="InputAddOn-item" for="nomCommuneArrivee_id">Nom de la commune de départ</label>
-                <input class="InputAddOn-field" type="text" value="" placeholder="Ex : Menton" name="nomCommuneArrivee"
-                       id="nomCommuneArrivee_id" required>
-            </p>
-<!--            <input type="hidden" name="XDEBUG_TRIGGER" value="1">-->
-            <p>
-                <input class="InputAddOn-field" type="submit" value="Calculer"/>
-            </p>
-        </fieldset>
-    </form>
 
 
-    <script>
-        function initMap() {
-            // The location of Uluru
-            const uluru = {lat: -25.344, lng: 131.031};
-// The map, centered at Uluru
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 4,
-                center: uluru,
-            });
-        }
-    </script>
-    <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiW2J5xEe7wfr9_Q7Odlf-yGEi7S_6qfM&callback=initMap&v=weekly"
-            defer
-    ></script>
+    <div class="container-fluid d-flex justify-content-center">
+        <form action="" method="post">
+            <fieldset>
+                <div class="d-flex align-content-center justify-content-center">
+                    <h1> Calculer un plus court chemin</h1>
+                </div>
 
-    <div class="container-fluid my-5">
+                <div class="my-5">
 
 
-        <div id="map">map
+                    <div class="form-group row">
+                        <label for="nomCommuneDepart_id" class="col-sm-2 col-form-label">Départ</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="nomCommuneDepart_id" placeholder="Ex : Menton">
+                        </div>
+                    </div>
+
+                    <div class="form-group row my-4">
+                        <label for="nomCommuneArrivee_id" class="col-sm-2 col-form-label">Arrivée</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="nomCommuneArrivee_id" placeholder="Ex : Menton">
+                        </div>
+                    </div>
+
+
+
+                    <!--            <input type="hidden" name="XDEBUG_TRIGGER" value="1">-->
+                    <div class="d-flex justify-content-center my-4">
+                        <button type="submit" class="btn btn-light">Calculer</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <div class="container-fluid my-5 col-7">
+
+
+        <div id="map">
         </div>
 
 
