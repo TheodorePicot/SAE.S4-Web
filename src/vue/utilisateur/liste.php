@@ -13,4 +13,4 @@ foreach ($utilisateurs as $utilisateur) {
     HTML;
 }
 echo "</ul>\n";
-echo "<a href='controleurFrontal.php?action=afficherFormulaireCreation&controleur=utilisateur'>Créer un utilisateur</a>\n</div>";
+echo "<a href='./inscription'>Créer un utilisateur</a>\n</div>";

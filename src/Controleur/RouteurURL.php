@@ -28,7 +28,87 @@ class RouteurURL
         $route = new Route("/connexion", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireConnexion",
         ]);
+        $route->setMethods(["GET"]);
         $routes->add("afficherFormulaireConnexion", $route);
+
+        // Route connecter
+        $route = new Route("/connexion", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::connecter",
+        ]);
+        $route->setMethods(["POST"]);
+        $routes->add("connecter", $route);
+
+        // Route deconnecter
+        $route = new Route("/deconnexion", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::deconnecter",
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("deconnecter", $route);
+
+        // Route afficherFormulaireCreation
+        $route = new Route("/inscription", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireCreation",
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("afficherFormulaireCreation", $route);
+
+        // Route creerDepuisFormulaire
+        $route = new Route("/inscription", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::creerDepuisFormulaire",
+        ]);
+        $route->setMethods(["POST"]);
+        $routes->add("creerDepuisFormulaire", $route);
+
+        // Route afficherListeUtilisateur
+        $route = new Route("/listeUtilisateur", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherListe",
+        ]);
+        $routes->add("afficherListeUtilisateur", $route);
+
+        // Route afficherDetailUtilisateur
+        $route = new Route("/detailUtilisateur", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherDetail",
+        ]);
+        $routes->add("afficherDetailUtilisateur", $route);
+
+        // Route supprimer
+        $route = new Route("/supprimer", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::supprimer",
+        ]);
+        $routes->add("supprimer", $route);
+
+        // Route afficherFormulaireMiseAJour
+        $route = new Route("/miseAJour", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireMiseAJour",
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("afficherFormulaireMiseAJour", $route);
+
+        // Route mettreAJour
+        $route = new Route("/miseAJour", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::mettreAJour",
+        ]);
+        $route->setMethods(["POST"]);
+        $routes->add("mettreAJour", $route);
+
+        // Route validerEmail
+        $route = new Route("/validerEmail", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::validerEmail",
+        ]);
+        $routes->add("validerEmail", $route);
+
+        // Route afficherListeCommune
+        $route = new Route("/listeCommune", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::afficherListe",
+        ]);
+        $routes->add("afficherListeCommune", $route);
+
+        // Route afficherDetailCommune
+        $route = new Route("/detailCommune", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::afficherDetail",
+        ]);
+        $routes->add("afficherDetailCommune", $route);
+
 
         $contexteRequete = (new RequestContext())->fromRequest($requete);
 //        var_dump($contexteRequete);
