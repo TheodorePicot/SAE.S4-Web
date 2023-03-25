@@ -7,6 +7,8 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use App\PlusCourtChemin\Controleur\ControleurUtilisateur;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 
 
 class RouteurURL
@@ -119,10 +121,16 @@ class RouteurURL
         $donneesRoute = $associateurUrl->match($requete->getPathInfo());
 //        var_dump($donneesRoute);
 
+        $requete->attributes->add($donneesRoute);
+
+        $resolveurDeControleur = new ControllerResolver();
+        $controleur = $resolveurDeControleur->getController($requete);
+
+        $resolveurDArguments = new ArgumentResolver();
+        $arguments = $resolveurDArguments->getArguments($requete, $controleur);
 
 
-
-        call_user_func($donneesRoute["_controller"]);
+        call_user_func_array($controleur, $arguments);
 
 
 
