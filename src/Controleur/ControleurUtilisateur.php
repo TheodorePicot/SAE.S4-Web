@@ -29,10 +29,10 @@ class ControleurUtilisateur extends ControleurGenerique
         ]);
     }
 
-    public static function afficherDetail(): void
+    public static function afficherDetail($login): void
     {
-        if (isset($_REQUEST['login'])) {
-            $login = $_REQUEST['login'];
+//        if (isset($_REQUEST['login'])) {
+//            $login = $_REQUEST['login'];
             $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($login);
             if ($utilisateur === null) {
                 MessageFlash::ajouter("warning", "Login inconnu.");
@@ -44,10 +44,10 @@ class ControleurUtilisateur extends ControleurGenerique
                     "cheminVueBody" => "utilisateur/detail.php"
                 ]);
             }
-        } else {
-            MessageFlash::ajouter("danger", "Login manquant.");
-            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
-        }
+//        } else {
+//            MessageFlash::ajouter("danger", "Login manquant.");
+//            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
+//        }
     }
 
     public static function supprimer()

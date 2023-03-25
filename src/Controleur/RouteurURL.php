@@ -66,9 +66,10 @@ class RouteurURL
         $routes->add("afficherListeUtilisateur", $route);
 
         // Route afficherDetailUtilisateur
-        $route = new Route("/detailUtilisateur", [
+        $route = new Route("/detailUtilisateur/{login}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherDetail",
         ]);
+        $route->setMethods(["GET"]);
         $routes->add("afficherDetailUtilisateur", $route);
 
         // Route supprimer
@@ -104,9 +105,10 @@ class RouteurURL
         $routes->add("afficherListeCommune", $route);
 
         // Route afficherDetailCommune
-        $route = new Route("/detailCommune", [
+        $route = new Route("/detailCommune/{gid}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::afficherDetail",
         ]);
+        $route->setMethods(["GET"]);
         $routes->add("afficherDetailCommune", $route);
 
 
