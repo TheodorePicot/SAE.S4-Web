@@ -12,7 +12,7 @@
                 <input class="InputAddOn-field" type="text" value="" placeholder="Ex : Menton" name="nomCommuneArrivee"
                        id="nomCommuneArrivee_id" required>
             </p>
-            <input type="hidden" name="XDEBUG_TRIGGER" value="1">
+<!--            <input type="hidden" name="XDEBUG_TRIGGER" value="1">-->
             <p>
                 <input class="InputAddOn-field" type="submit" value="Calculer"/>
             </p>

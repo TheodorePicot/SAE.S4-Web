@@ -52,4 +52,40 @@ class TronconRouteRepository extends AbstractRepository
         return false;
     }
 
+    public function getTousLesTroncons(): array
+    {
+        // TODO Vue materialisée pour stocker les voisins
+        // TODO index sur l'id du noeud du quel on veut trouver les voisins
+        // TODO
+        $requeteSQL = <<<SQL
+            select troncon, noeud_routier_depart, longitude_depart, latitude_depart, 
+                   noeud_routier_arrivee,  longitude_arrivee, latitude_arrivee, longueur
+            from troncons_depart_arrivee;
+        SQL;
+        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->query($requeteSQL);
+
+        return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTroncon(int $noeudRoutierGid): array
+    {
+        // TODO Vue materialisée pour stocker les voisins
+        // TODO index sur l'id du noeud du quel on veut trouver les voisins
+        // TODO
+        $requeteSQL = <<<SQL
+            select troncon, noeud_routier_depart, longitude_depart, latitude_depart, 
+                   noeud_routier_arrivee,  longitude_arrivee, latitude_arrivee, longueur
+            from troncons_depart_arrivee
+            where noeud_routier_depart = :gidTag
+        SQL;
+
+        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $array = [
+            "gidTag" => $noeudRoutierGid
+        ];
+        $pdoStatement->execute($array);
+
+        return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

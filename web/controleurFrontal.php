@@ -1,14 +1,21 @@
 <?php
-use App\PlusCourtChemin\Lib\Psr4AutoloaderClass;
+//use App\PlusCourtChemin\Lib\Psr4AutoloaderClass;
 
-require_once __DIR__ . '/../src/Lib/Psr4AutoloaderClass.php';
+//require_once __DIR__ . '/../src/Lib/Psr4AutoloaderClass.php';
 
 // instantiate the loader
-$loader = new Psr4AutoloaderClass();
+//$loader = new Psr4AutoloaderClass();
 // register the base directories for the namespace prefix
-$loader->addNamespace('App\PlusCourtChemin', __DIR__ . '/../src');
+//$loader->addNamespace('App\PlusCourtChemin', __DIR__ . '/../src');
 // register the autoloader
-$loader->register();
+//$loader->register();
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use App\PlusCourtChemin\Controleur\ControleurGenerique;
+
+$c = new \App\PlusCourtChemin\Controleur\ControleurUtilisateur();
+var_dump($c::class);
+
 
 // Syntaxe alternative
 // The null coalescing operator returns its first operand if it exists and is not null
@@ -25,6 +32,6 @@ if (class_exists($controleurClassName)) {
         $controleurClassName::afficherErreur("Erreur d'action");
     }
 } else {
-    App\PlusCourtChemin\Controleur\ControleurGenerique::afficherErreur("Erreur de contrôleur");
+    ControleurGenerique::afficherErreur("Erreur de contrôleur");
 }
 

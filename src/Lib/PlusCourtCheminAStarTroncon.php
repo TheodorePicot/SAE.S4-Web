@@ -2,8 +2,8 @@
 
 namespace App\PlusCourtChemin\Lib;
 
-use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use App\PlusCourtChemin\Modele\Repository\TronconRouteRepository;
 
 class PlusCourtCheminAStar
 {
@@ -16,7 +16,7 @@ class PlusCourtCheminAStar
 
     public function calculer(bool $affichageDebug = false): float
     {
-        $this->tousLesNoeudsRoutiers = (new NoeudRoutierRepository)->getTousLesVoisins();
+        $this->tousLesTroncons = (new TronconRouteRepository())->getTousLesTroncons();
         $this->priorityQueue = new PlusCourtCheminPriorityQueue();
         $this->distances = [$this->noeudRoutierDepartGid => 0];
         $noeudRoutierRepository = new NoeudRoutierRepository();
@@ -25,7 +25,7 @@ class PlusCourtCheminAStar
         $tabArrive = $noeudRoutierRepository->getLongitudeLatitude($this->noeudRoutierArriveeGid);
         $tabDepart = $noeudRoutierRepository->getLongitudeLatitude($this->noeudRoutierDepartGid);
 
-        $this->priorityQueue->insert($this->noeudRoutierDepartGid, $this->calculDistanceHeuristque($tabDepart['st_x'], $tabDepart['st_y'], $tabArrive['st_x'], $tabArrive['st_y']) * 1000);
+        $this->priorityQueue->insert($this->noeudRoutierDepartGid, $this->calculDistanceHeuristque($tabDepart['st_x'], $tabDepart['st_y'], $tabArrive['st_x'], $tabArrive['st_y']));
         $this->noeudsALaFrontiere[$this->noeudRoutierDepartGid] = true;
         while (count($this->noeudsALaFrontiere) !== 0) {
             $noeudRoutierGidCourant = $this->priorityQueue->extract();
@@ -43,7 +43,7 @@ class PlusCourtCheminAStar
 
                 if (!isset($this->distances[$noeudVoisinGid]) || $distanceProposee < $this->distances[$noeudVoisinGid]) {
                     $this->distances[$noeudVoisinGid] = $distanceProposee;
-                    $distanceHeuristique = $distanceProposee + ($this->calculDistanceHeuristque($voisin['longitude'], $voisin['latitude'], $tabArrive['st_x'], $tabArrive['st_y']) * 1000);
+                    $distanceHeuristique = $distanceProposee + ($this->calculDistanceHeuristque($voisin['longitude'], $voisin['latitude'], $tabArrive['st_x'], $tabArrive['st_y']));
                     $this->priorityQueue->insert($noeudVoisinGid, $distanceHeuristique);
                     $this->noeudsALaFrontiere[$noeudVoisinGid] = true;
                 }
