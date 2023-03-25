@@ -50,10 +50,10 @@ class ControleurUtilisateur extends ControleurGenerique
 //        }
     }
 
-    public static function supprimer()
+    public static function supprimer($login)
     {
-        if (isset($_REQUEST['login'])) {
-            $login = $_REQUEST['login'];
+//        if (isset($_REQUEST['login'])) {
+//            $login = $_REQUEST['login'];
             $utilisateurRepository = new UtilisateurRepository();
             $deleteSuccessful = $utilisateurRepository->supprimer($login);
             $utilisateurs = $utilisateurRepository->recuperer();
@@ -64,10 +64,10 @@ class ControleurUtilisateur extends ControleurGenerique
                 MessageFlash::ajouter("warning", "Login inconnu.");
                 ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
             }
-        } else {
-            MessageFlash::ajouter("danger", "Login manquant.");
-            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
-        }
+//        } else {
+//            MessageFlash::ajouter("danger", "Login manquant.");
+//            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
+//        }
     }
 
     public static function afficherFormulaireCreation(): void
@@ -118,10 +118,10 @@ class ControleurUtilisateur extends ControleurGenerique
         }
     }
 
-    public static function afficherFormulaireMiseAJour(): void
+    public static function afficherFormulaireMiseAJour($login): void
     {
-        if (isset($_REQUEST['login'])) {
-            $login = $_REQUEST['login'];
+//        if (isset($_REQUEST['login'])) {
+//            $login = $_REQUEST['login'];
             /** @var Utilisateur $utilisateur */
             $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($login);
             if ($utilisateur === null) {
@@ -147,10 +147,10 @@ class ControleurUtilisateur extends ControleurGenerique
                 "estAdmin" => $utilisateur->getEstAdmin(),
                 "method" => Configuration::getDebug() ? "get" : "post",
             ]);
-        } else {
-            MessageFlash::ajouter("danger", "Login manquant.");
-            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
-        }
+//        } else {
+//            MessageFlash::ajouter("danger", "Login manquant.");
+//            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
+//        }
     }
 
     public static function mettreAJour(): void

@@ -1,9 +1,13 @@
 <?php
 
 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use TheFeed\Lib\Conteneur;
 
 $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-$loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()); ?>
+$loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
+
+$generateurUrl = Conteneur::recupererService("generateurUrl");
+$assistantUrl = Conteneur::recupererService("assistantUrl");?>
 
 
 <!DOCTYPE html>
@@ -14,8 +18,8 @@ $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()); ?
 
 
     <!-- css -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="<?=$assistantUrl->getAbsoluteUrl("assets/css/bootstrap.min.css");?>">
+    <link rel="stylesheet" href="<?=$assistantUrl->getAbsoluteUrl("assets/css/styles.css");?>">
 
 
     <!-- Optional JavaScript -->
@@ -45,26 +49,26 @@ $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte()); ?
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="./afficherListeUtilisateur">Utilisateurs</a>
+                    <a class="nav-link" href="<?=$generateurUrl->generate("afficherListeUtilisateur");?>">Utilisateurs</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./listeCommune">Communes</a>
+                    <a class="nav-link" href="<?=$generateurUrl->generate("afficherListeCommune");?>">Communes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./">Chemin</a>
+                    <a class="nav-link" href="<?=$generateurUrl->generate("plusCourtChemin");?>">Chemin</a>
                 </li>
             </ul>
 
             <ul class="navbar-nav ms-auto">
                 <?php if (!ConnexionUtilisateur::estConnecte()) : ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="./connexion">Se connecter</a>
+                        <a class="nav-link" href="<?=$generateurUrl->generate("afficherFormulaireConnexion");?>">Se connecter</a>
                     </li>
                 <?php else : ?>
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login=$loginURL">
-                            <img alt="user" src="../ressources/img/user.png">
+                           href="<?=$generateurUrl->generate("afficherDetailUtilisateur", ["login" => $loginURL])?>">
+                            <img alt="user" src="<?=$assistantUrl->getAbsoluteUrl("../ressources/img/user.png");?>">
                             <?php $loginHTML ?>
                         </a>
                     </li>

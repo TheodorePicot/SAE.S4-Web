@@ -1,5 +1,12 @@
+<?php
+
+use TheFeed\Lib\Conteneur;
+
+$generateurUrl = Conteneur::recupererService("generateurUrl");
+$assistantUrl = Conteneur::recupererService("assistantUrl");
+?>
 <div>
-    <form method="<?= $method ?>" action="./connexion">
+    <form method="<?= $method ?>" action="<?=$generateurUrl->generate("connecter");?>">
         <fieldset>
             <legend>Connexion</legend>
             <p class="InputAddOn">
