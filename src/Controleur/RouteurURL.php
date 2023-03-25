@@ -2,6 +2,9 @@
 namespace App\PlusCourtChemin\Controleur;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
@@ -9,6 +12,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use App\PlusCourtChemin\Controleur\ControleurUtilisateur;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use TheFeed\Lib\Conteneur;
 
 
 class RouteurURL
@@ -75,13 +79,13 @@ class RouteurURL
         $routes->add("afficherDetailUtilisateur", $route);
 
         // Route supprimer
-        $route = new Route("/supprimer", [
+        $route = new Route("/supprimer/{login}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::supprimer",
         ]);
         $routes->add("supprimer", $route);
 
         // Route afficherFormulaireMiseAJour
-        $route = new Route("/miseAJour", [
+        $route = new Route("/miseAJour/{login}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurUtilisateur::afficherFormulaireMiseAJour",
         ]);
         $route->setMethods(["GET"]);
@@ -128,6 +132,12 @@ class RouteurURL
 
         $resolveurDArguments = new ArgumentResolver();
         $arguments = $resolveurDArguments->getArguments($requete, $controleur);
+
+        $generateurUrl = new UrlGenerator($routes, $contexteRequete);
+        $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
+
+        Conteneur::ajouterService("generateurUrl", $generateurUrl);
+        Conteneur::ajouterService("assistantUrl", $assistantUrl);
 
 
         call_user_func_array($controleur, $arguments);
