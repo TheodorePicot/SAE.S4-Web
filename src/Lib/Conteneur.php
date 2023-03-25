@@ -1,7 +1,7 @@
 <?php
 
 
-namespace TheFeed\Lib;
+namespace PlusCourtChemin\Lib;
 
 class Conteneur
 {
