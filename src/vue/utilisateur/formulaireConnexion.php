@@ -1,5 +1,9 @@
+<?php
+use App\PlusCourtChemin\Lib\Conteneur;
+$generateurUrl = Conteneur::recupererService("generateurUrl");
+$assistantUrl = Conteneur::recupererService("assistantUrl");?>
 <div class="container-fluid d-flex justify-content-center my-5">
-    <form method="<?= $method ?>" action="./connexion">
+    <form method="<?= $method ?>" action="<?=$generateurUrl->generate("connecter");?>">
         <fieldset>
 
             <div class="d-flex align-content-center justify-content-center">
