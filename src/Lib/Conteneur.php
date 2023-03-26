@@ -1,7 +1,7 @@
 <?php
 
 
-namespace PlusCourtChemin\Lib;
+namespace App\PlusCourtChemin\Lib;
 
 class Conteneur
 {

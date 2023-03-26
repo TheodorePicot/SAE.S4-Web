@@ -1,13 +1,18 @@
 <?php
 
 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
-use TheFeed\Lib\Conteneur;
+use App\PlusCourtChemin\Lib\Conteneur;
 
 $loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
 $loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
 
 $generateurUrl = Conteneur::recupererService("generateurUrl");
-$assistantUrl = Conteneur::recupererService("assistantUrl");?>
+$assistantUrl = Conteneur::recupererService("assistantUrl");
+$urlCSS = $assistantUrl->getAbsoluteUrl("assets/css/style.css");
+
+?>
+
+
 
 
 <!DOCTYPE html>
@@ -19,15 +24,14 @@ $assistantUrl = Conteneur::recupererService("assistantUrl");?>
 
     <!-- css -->
     <link rel="stylesheet" href="<?=$assistantUrl->getAbsoluteUrl("assets/css/bootstrap.min.css");?>">
-    <link rel="stylesheet" href="<?=$assistantUrl->getAbsoluteUrl("assets/css/styles.css");?>">
-
+    <link rel="stylesheet" href="<?=$urlCSS?>">
 
     <!-- Optional JavaScript -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="assets/js/script.js" defer></script>
+    <script type="text/javascript" src="<?= $assistantUrl->getAbsoluteUrl("assets/js/script.js")?>" defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiW2J5xEe7wfr9_Q7Odlf-yGEi7S_6qfM&callback=initMap&v=weekly" defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
