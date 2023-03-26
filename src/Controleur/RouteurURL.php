@@ -121,7 +121,7 @@ class RouteurURL
 
         // Route d'autocomplétion des communes
         $route = new Route("/autocompletion/{nomCommune}", [
-            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::getVillesAutoCompletion",
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::autoCompletion",
         ]);
         $routes->add("afficherDetailCommune", $route);
 
