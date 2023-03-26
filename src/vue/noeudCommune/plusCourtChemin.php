@@ -15,6 +15,7 @@
                         <label for="nomCommuneDepart_id" class="col-sm-2 col-form-label">Départ</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="nomCommuneDepart_id" placeholder="Ex : Menton">
+                            <div id="autocompletionD"></div>
                         </div>
                     </div>
 
@@ -22,6 +23,7 @@
                         <label for="nomCommuneArrivee_id" class="col-sm-2 col-form-label">Arrivée</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="nomCommuneArrivee_id" placeholder="Ex : Menton">
+                            <div id="autocompletionA"></div>
                         </div>
                     </div>
 

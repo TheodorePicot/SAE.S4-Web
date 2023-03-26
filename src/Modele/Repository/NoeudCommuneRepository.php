@@ -51,7 +51,7 @@ class NoeudCommuneRepository extends AbstractRepository
         return false;
     }
 
-    public function getVillesAutoCompletion(string $nomCommune): string
+    public function getVillesAutoCompletion(string $nomCommune): array
     {
         $sql = "SELECT nom_comm FROM noeud_commune WHERE nom_comm LIKE :nomCommune";
         $pdoStatement = $this->pdo->prepare($sql);

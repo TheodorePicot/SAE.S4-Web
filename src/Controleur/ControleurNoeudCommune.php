@@ -88,10 +88,10 @@ class ControleurNoeudCommune extends ControleurGenerique
         return ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
     }
 
-    public static function autoCompletion($lettre): Response
+    public static function autoCompletion($lettre)
     {
         $noeudCommuneRepository = new NoeudCommuneRepository();
         $resultat = $noeudCommuneRepository->getVillesAutoCompletion($lettre);
-        return new Response(json_encode($resultat));
+        echo (json_encode($resultat));
     }
 }

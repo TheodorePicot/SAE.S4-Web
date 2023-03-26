@@ -10,6 +10,7 @@ $generateurUrl = Conteneur::recupererService("generateurUrl");
 $assistantUrl = Conteneur::recupererService("assistantUrl");
 $urlCSS = $assistantUrl->getAbsoluteUrl("assets/css/style.css");
 
+
 ?>
 
 
