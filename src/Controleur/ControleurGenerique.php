@@ -2,50 +2,40 @@
 
 namespace App\PlusCourtChemin\Controleur;
 
+use App\PlusCourtChemin\Lib\Conteneur;
 use App\PlusCourtChemin\Lib\MessageFlash;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ControleurGenerique {
 
-    protected static function afficherVue(string $cheminVue, array $parametres = []): void
+    protected static function afficherVue(string $cheminVue, array $parametres = []): Response
     {
         extract($parametres);
         $messagesFlash = MessageFlash::lireTousMessages();
+        ob_start();
         require __DIR__ . "/../vue/$cheminVue";
+        $corpsReponse = ob_get_clean();
+        return new Response($corpsReponse);
     }
 
-    // https://stackoverflow.com/questions/768431/how-do-i-make-a-redirect-in-php
-    protected static function rediriger(string $controleur = "", string $action = "", array $query = []) : void
+    protected static function rediriger(string $name, ?array $tab = []) : RedirectResponse
     {
-        $queryString = [];
-        if ($action != "") {
-            $queryString[] = "action=" . rawurlencode($action);
-        }
-        if ($controleur != "") {
-            $queryString[] = "controleur=" . rawurlencode($controleur);
-        }
-        foreach ($query as $name => $value) {
-            $name = rawurldecode($name);
-            $value = rawurldecode($value);
-            $queryString[] = "$name=$value";
-        }
-        $url = "Location: ./controleurFrontal.php?" . join("&", $queryString);
-        header($url);
-        exit();
+        $UrlGenerator = Conteneur::recupererService("generateurUrl");
+
+        return new RedirectResponse($UrlGenerator->generate($name, $tab));
     }
 
-    public static function afficherErreur($errorMessage = "", $controleur = ""): void
+    public static function afficherErreur($errorMessage = "", $statusCode = 400): Response
     {
-        $errorMessageView = "Problème";
-        if ($controleur !== "")
-            $errorMessageView .= " avec le contrôleur $controleur";
-        if ($errorMessage !== "")
-            $errorMessageView .= " : $errorMessage";
-
-        ControleurGenerique::afficherVue('vueGenerale.php', [
+        $reponse = ControleurGenerique::afficherVue('vueGenerale.php', [
             "pagetitle" => "Problème",
             "cheminVueBody" => "erreur.php",
-            "errorMessage" => $errorMessageView
+            "errorMessage" => $errorMessage
         ]);
+
+        $reponse->setStatusCode($statusCode);
+        return $reponse;
     }
 
 }

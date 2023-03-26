@@ -1,9 +1,12 @@
 <?php
 namespace App\PlusCourtChemin\Controleur;
 
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -120,17 +123,37 @@ class RouteurURL
         $contexteRequete = (new RequestContext())->fromRequest($requete);
 //        var_dump($contexteRequete);
 
-        $associateurUrl = new UrlMatcher($routes, $contexteRequete);
-        $donneesRoute = $associateurUrl->match($requete->getPathInfo());
-//        var_dump($donneesRoute);
+        try {
+            // 3 méthodes qui lèvent des exceptions
+            $associateurUrl = new UrlMatcher($routes, $contexteRequete);
+            $donneesRoute = $associateurUrl->match($requete->getPathInfo());
+//        @throws NoConfigurationException  If no routing configuration could be found
+//        @throws ResourceNotFoundException If the resource could not be found
+//        @throws MethodNotAllowedException If the resource was found but the request method is not allowed
 
-        $requete->attributes->add($donneesRoute);
+            $requete->attributes->add($donneesRoute);
 
-        $resolveurDeControleur = new ControllerResolver();
-        $controleur = $resolveurDeControleur->getController($requete);
+            $resolveurDeControleur = new ControllerResolver();
+            $controleur = $resolveurDeControleur->getController($requete);
+//        @throws \LogicException If a controller was found based on the request but it is not callable
 
-        $resolveurDArguments = new ArgumentResolver();
-        $arguments = $resolveurDArguments->getArguments($requete, $controleur);
+            $resolveurDArguments = new ArgumentResolver();
+            $arguments = $resolveurDArguments->getArguments($requete, $controleur);
+//        @throws \RuntimeException When no value could be provided for a required argument
+
+        } catch (ResourceNotFoundException $exception) {
+            echo "a";
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 404);
+            $reponse->send();
+        } catch (MethodNotAllowedException $exception) {
+            echo "b";
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 405);
+            $reponse->send();
+        } catch (Exception $exception) {
+            echo "c";
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage()) ;
+            $reponse->send();
+        }
 
         $generateurUrl = new UrlGenerator($routes, $contexteRequete);
         $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
@@ -139,7 +162,8 @@ class RouteurURL
         Conteneur::ajouterService("assistantUrl", $assistantUrl);
 
 
-        call_user_func_array($controleur, $arguments);
+        $reponse = call_user_func_array($controleur, $arguments);
+        $reponse->send();
 
 
 

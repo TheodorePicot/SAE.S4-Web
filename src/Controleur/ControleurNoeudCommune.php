@@ -9,26 +9,27 @@ use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class ControleurNoeudCommune extends ControleurGenerique
 {
 
-    public static function afficherErreur($errorMessage = "", $controleur = ""): void
+    public static function afficherErreur($errorMessage = "", $controleur = ""): Response
     {
         parent::afficherErreur($errorMessage, "noeudCommune");
     }
 
-    public static function afficherListe(): void
+    public static function afficherListe(): Response
     {
         $noeudsCommunes = (new NoeudCommuneRepository())->recuperer();     //appel au modèle pour gerer la BD
-        ControleurNoeudCommune::afficherVue('vueGenerale.php', [
+        return ControleurNoeudCommune::afficherVue('vueGenerale.php', [
             "noeudsCommunes" => $noeudsCommunes,
             "pagetitle" => "Liste des Noeuds Routiers",
             "cheminVueBody" => "noeudCommune/liste.php"
         ]);
     }
 
-    public static function afficherDetail($gid): void
+    public static function afficherDetail($gid): Response
     {
 //        if (!isset($_REQUEST['gid'])) {
 //            MessageFlash::ajouter("danger", "Immatriculation manquante.");
@@ -40,17 +41,17 @@ class ControleurNoeudCommune extends ControleurGenerique
 
         if ($noeudCommune === null) {
             MessageFlash::ajouter("warning", "gid inconnue.");
-            ControleurNoeudCommune::rediriger("noeudCommune", "afficherListe");
+            return ControleurNoeudCommune::rediriger("afficherListeCommune");
         }
 
-        ControleurNoeudCommune::afficherVue('vueGenerale.php', [
+        return ControleurNoeudCommune::afficherVue('vueGenerale.php', [
             "noeudCommune" => $noeudCommune,
             "pagetitle" => "Détail de la noeudCommune",
             "cheminVueBody" => "noeudCommune/detail.php"
         ]);
     }
 
-    public static function plusCourtChemin(): void
+    public static function plusCourtChemin(): Response
     {
         $parametres = [
             "pagetitle" => "Plus court chemin",
@@ -84,6 +85,6 @@ class ControleurNoeudCommune extends ControleurGenerique
             $parametres["distance"] = $distance;
         }
 
-        ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
+        return ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
     }
 }
