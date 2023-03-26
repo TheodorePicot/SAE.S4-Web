@@ -27,9 +27,13 @@ $assistantUrl = Conteneur::recupererService("assistantUrl");?>
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
+    <script type="text/javascript" src="assets/js/script.js" defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiW2J5xEe7wfr9_Q7Odlf-yGEi7S_6qfM&callback=initMap&v=weekly" defer></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Raleway:wght@100;200&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Raleway:wght@100;200&display=swap"
+          rel="stylesheet">
 </head>
 <body>
 

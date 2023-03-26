@@ -3,9 +3,9 @@ nav a{
 }
 
 body{
-    background: #0b0e34;
     font-family: 'Raleway', sans-serif;
-
+    background: rgb(32,37,96);
+    background: radial-gradient(circle, rgba(32,37,96,1) 0%, rgba(11,14,52,1) 100%);
 }
 
 div{
@@ -59,7 +59,7 @@ ul {
     position: absolute;
     height: 3px;
     width: 100%;
-    background: black;
+    background: #ffffff;
     border-radius: 1px;
     opacity: 1;
     left: 0;

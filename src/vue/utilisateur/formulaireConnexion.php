@@ -1,27 +1,36 @@
-<?php
-
-use TheFeed\Lib\Conteneur;
-
-$generateurUrl = Conteneur::recupererService("generateurUrl");
-$assistantUrl = Conteneur::recupererService("assistantUrl");
-?>
-<div>
-    <form method="<?= $method ?>" action="<?=$generateurUrl->generate("connecter");?>">
+<div class="container-fluid d-flex justify-content-center my-5">
+    <form method="<?= $method ?>" action="./connexion">
         <fieldset>
-            <legend>Connexion</legend>
-            <p class="InputAddOn">
-                <label class="InputAddOn-item" for="login_id">Login</label>
-                <input class="InputAddOn-field" type="text" value="" placeholder="Ex : rlebreton" name="login" id="login_id" required>
-            </p>
-            <p class="InputAddOn">
-                <label class="InputAddOn-item" for="mdp_id">Mot de passe</label>
-                <input class="InputAddOn-field" type="password" value="" placeholder="" name="mdp" id="mdp_id" required>
-            </p>
-            <input type='hidden' name='action' value='connecter'>
-            <input type='hidden' name='controleur' value='utilisateur'>
-            <p>
-                <input class="InputAddOn-field" type="submit" value="Envoyer"/>
-            </p>
+
+            <div class="d-flex align-content-center justify-content-center">
+                <h1>Connexion</h1>
+            </div>
+
+            <div class="my-4">
+                <div class="form-group row">
+                    <div class="my-2">
+                        <input type="text" class="form-control" id="login_id" placeholder="Login">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="my-2">
+                        <input type="password" class="form-control" value="" placeholder="Mot de passe" name="mdp"
+                               id="mdp_id" required>
+                    </div>
+                </div>
+
+
+                <input type='hidden' name='action' value='connecter'>
+                <input type='hidden' name='controleur' value='utilisateur'>
+                <div class="d-flex align-content-center justify-content-center">
+
+                    <button type="submit" class="btn btn-light my-4">Se connecter</button>
+                </div>
+            </div>
+
         </fieldset>
     </form>
 </div>
+
+
