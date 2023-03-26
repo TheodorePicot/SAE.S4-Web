@@ -1,8 +1,8 @@
 <?php
 /** @var \App\PlusCourtChemin\Modele\DataObject\Utilisateur $utilisateur */
+use App\PlusCourtChemin\Lib\Conteneur;
 
 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
-use TheFeed\Lib\Conteneur;
 
 $login = $utilisateur->getLogin();
 $loginHTML = htmlspecialchars($login);

@@ -1,7 +1,5 @@
 <?php
-
-use TheFeed\Lib\Conteneur;
-
+use App\PlusCourtChemin\Lib\Conteneur;
 $generateurUrl = Conteneur::recupererService("generateurUrl");
 $assistantUrl = Conteneur::recupererService("assistantUrl");?>
 <div class="container-fluid">
