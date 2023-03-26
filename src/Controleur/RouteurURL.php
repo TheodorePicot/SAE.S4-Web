@@ -119,6 +119,11 @@ class RouteurURL
         $route->setMethods(["GET"]);
         $routes->add("afficherDetailCommune", $route);
 
+        // Route d'autocomplétion des communes
+        $route = new Route("/autocompletion/{nomCommune}", [
+            "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::getVillesAutoCompletion",
+        ]);
+        $routes->add("afficherDetailCommune", $route);
 
         $contexteRequete = (new RequestContext())->fromRequest($requete);
 //        var_dump($contexteRequete);

@@ -4,6 +4,7 @@ namespace App\PlusCourtChemin\Modele\Repository;
 
 use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
+use PDO;
 
 class NoeudCommuneRepository extends AbstractRepository
 {
@@ -50,4 +51,16 @@ class NoeudCommuneRepository extends AbstractRepository
         return false;
     }
 
+    public function getVillesAutoCompletion(string $nomCommune): array
+    {
+        $sql = "SELECT nom_comm FROM noeud_commune WHERE nom_comm LIKE :nomCommune";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute(['nomCommune' => $nomCommune . '%']);
+        $resultats = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        $villes = [];
+        foreach ($resultats as $resultat) {
+            $villes[] = $resultat['nom_comm'];
+        }
+        return $villes;
+    }
 }
