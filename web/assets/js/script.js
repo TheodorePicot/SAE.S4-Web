@@ -1,5 +1,4 @@
-let xhr = new XMLHttpRequest();
-let input_départ = document.getElementById("nomCommuneDepart_id");
+let input_depart = document.getElementById("nomCommuneDepart_id");
 let input_arrive = document.getElementById("nomCommuneArrivee_id");
 let autocompletionA = document.getElementById("autocompletionA");
 let autocompletionD = document.getElementById("autocompletionD");
@@ -38,25 +37,21 @@ function initMap() {
 
 window.initMap = initMap;
 
+autocompletionA.addEventListener("click", function (event) {
+    input_arrive.value = event.target.textContent;
+});
 
-function callbackA() {
-    let array = [];
-    console.log(xhr.responseText);
+autocompletionD.addEventListener("click", function (event) {
+    input_depart.value = event.target.textContent;
+});
 
-    let xhrJSON = JSON.parse(xhr.responseText);
-    for (commune of xhrJSON) {
-        array.unshift(commune.nom_comm);
-    }
+function callbackA(xhr) {
+    let array = JSON.parse(xhr.responseText).map(elem => elem.nom_comm);
     afficheCommuneA(array);
 }
 
-function callbackD() {
-    let array = [];
-    let xhrJSON = JSON.parse(xhr.responseText);
-    console.log(xhrJSON);
-    for (commune of xhrJSON) {
-        array.unshift(commune.nom_comm);
-    }
+function callbackD(xhr) {
+    let array = JSON.parse(xhr.responseText).map(elem => elem.nom_comm);
     afficheCommuneD(array);
 }
 
@@ -66,39 +61,48 @@ function videCommunes() {
 }
 
 function charger_commune(lettre, callback) {
+    let xhr = new XMLHttpRequest();
     let url = `autocompletion/${lettre}`;
     xhr.open("GET", url, true);
     xhr.addEventListener("load", function () {
-        callback();
+        callback(xhr);
     });
     xhr.send(null);
 }
+let timer;
 
-
-input_départ.addEventListener('input', function () {
-    charger_commune(input_départ.value, callbackD);
+input_depart.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+        if (input_depart.value.length > 1)
+            charger_commune(input_depart.value, callbackD);
+    }, 200);
 });
 
 input_arrive.addEventListener('input', function () {
-    charger_commune(input_départ.value, callbackA);
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+        if (input_arrive.value.length > 1)
+            charger_commune(input_arrive.value, callbackA);
+    }, 200);
 });
 
 
 function afficheCommuneD(array) {
     videCommunes();
-    for (c of array) {
-        let elem = document.createElement("p");
-        elem.innerHTML = c;
-        autocompletionD.append(c);
+    for (char of array) {
+        let p = document.createElement("p");
+        p.insertAdjacentHTML('beforeend', char);
+        autocompletionD.appendChild(p);
     }
 }
 
 function afficheCommuneA(array) {
     videCommunes();
     for (c of array) {
-        let elem = document.createElement("p");
-        elem.innerHTML = c;
-        autocompletionA.append(c);
+        let p = document.createElement("p");
+        p.insertAdjacentHTML('beforeend', char);
+        autocompletionA.appendChild(c);
     }
 }
 

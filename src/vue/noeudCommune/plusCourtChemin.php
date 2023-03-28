@@ -1,6 +1,4 @@
 <div class=" container-fluid my-5">
-
-
     <div class="container-fluid d-flex justify-content-center">
         <form action="" method="post">
             <fieldset>
@@ -13,17 +11,17 @@
 
                     <div class="form-group row">
                         <label for="nomCommuneDepart_id" class="col-sm-2 col-form-label">Départ</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="nomCommuneDepart_id" placeholder="Ex : Menton">
-                            <div id="autocompletionD"></div>
+                        <div class="col-sm-10 acdiv">
+                            <input type="text" class="form-control" id="nomCommuneDepart_id" autocomplete="off" placeholder="Ex : Menton">
+                            <div id="autocompletionD" class="autocompletion"></div>
                         </div>
                     </div>
 
                     <div class="form-group row my-4">
                         <label for="nomCommuneArrivee_id" class="col-sm-2 col-form-label">Arrivée</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="nomCommuneArrivee_id" placeholder="Ex : Menton">
-                            <div id="autocompletionA"></div>
+                        <div class="col-sm-10 acdiv">
+                            <input type="text" class="form-control" id="nomCommuneArrivee_id" autocomplete="off" placeholder="Ex : Porspoder">
+                            <div id="autocompletionA" class="autocompletion"></div>
                         </div>
                     </div>
 

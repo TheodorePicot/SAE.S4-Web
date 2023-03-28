@@ -1,22 +1,22 @@
-nav a{
+nav a {
     color: blue;
 }
 
-body{
+body {
     font-family: 'Raleway', sans-serif;
-    background: rgb(32,37,96);
-    background: radial-gradient(circle, rgba(32,37,96,1) 0%, rgba(11,14,52,1) 100%);
+    background: rgb(32, 37, 96);
+    background: radial-gradient(circle, rgba(32, 37, 96, 1) 0%, rgba(11, 14, 52, 1) 100%);
 }
 
-div{
-    color:white;
-}
-
-p{
+div {
     color: white;
 }
 
-a{
+p {
+    color: white;
+}
+
+a {
     color: #bfd1ec;
 }
 
@@ -24,7 +24,7 @@ ul {
     list-style-type: none;
 }
 
-#map{
+#map {
     height: 400px;
     width: 100%;
 }
@@ -105,6 +105,44 @@ ul {
     transform: rotate(0deg);
 }
 
-img{
+img {
     width: 25px;
+}
+
+
+.autocompletion {
+    /*width: inherit;*/
+    background-color: white;
+    border: 1px solid grey;
+    line-height: 1.5;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+
+}
+
+.autocompletion p {
+    color: blue;
+    margin: 0 0 0 0;
+    padding: 0 5px 0 5px;
+}
+
+.autocompletion p:hover {
+    background-color: aliceblue;
+    cursor: default;
+}
+
+.acdiv {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.acdiv * {
+    vertical-align: top;
+}
+
+#loading {
+    visibility: hidden;
+    width: 20px;
 }
