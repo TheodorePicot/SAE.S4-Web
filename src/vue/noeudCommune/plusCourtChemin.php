@@ -29,7 +29,7 @@
 
                     <!--            <input type="hidden" name="XDEBUG_TRIGGER" value="1">-->
                     <div class="d-flex justify-content-center my-4">
-                        <button type="submit" class="btn btn-light">Calculer</button>
+                        <button id="buttonCalculer" type="submit" class="btn btn-light">Calculer</button>
                     </div>
                 </div>
             </fieldset>

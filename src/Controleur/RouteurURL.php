@@ -20,8 +20,7 @@ use App\PlusCourtChemin\Lib\Conteneur;
 class RouteurURL
 {
     public static function traiterRequete() {
-
-        $requete = Request::createFromGlobals();
+        $requete = new Request;
 //        var_dump($requete->getPathInfo());
 
         $routes = new RouteCollection();
