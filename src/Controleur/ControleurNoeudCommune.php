@@ -57,9 +57,12 @@ class ControleurNoeudCommune extends ControleurGenerique
             "pagetitle" => "Plus court chemin",
             "cheminVueBody" => "noeudCommune/plusCourtChemin.php",
         ];
+//        var_dump($_REQUEST);
+//        var_dump($_POST);
 
 
-        if (!empty($_POST)) {
+        if (empty($_POST)) {
+            echo "test";
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
             $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
 

@@ -81,7 +81,7 @@ class NoeudRoutierRepository extends AbstractRepository
         // TODO index sur l'id du noeud du quel on veut trouver les voisins
         // TODO
         $requeteSQL = <<<SQL
-            select noeud_routier_base, noeud_routier_gid, troncon_gid,  st_x(coordonnees_voisin) as longitude, st_y(coordonnees_voisin) as latitude, longueur from voisins group by noeud_routier_base, noeud_routier_gid, troncon_gid, longueur,longitude, latitude;
+            select noeud_routier_base, noeud_routier_gid, troncon_gid,  st_x(coordonnees_voisin) as longitude, st_y(coordonnees_voisin) as latitude, longueur from voisins;
         SQL;
         $pdoStatement = ConnexionBaseDeDonnees::getPdo()->query($requeteSQL);
 

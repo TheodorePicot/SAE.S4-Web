@@ -12,28 +12,27 @@ $urlCSS = $assistantUrl->getAbsoluteUrl("assets/css/style.css");
 
 
 ?>
-
-
-
-
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title><?= $pagetitle ?></title>
 
 
     <!-- css -->
-    <link rel="stylesheet" href="<?=$assistantUrl->getAbsoluteUrl("assets/css/bootstrap.min.css");?>">
-    <link rel="stylesheet" href="<?= $urlCSS?>">
+    <link rel="stylesheet" href="<?= $assistantUrl->getAbsoluteUrl("assets/css/bootstrap.min.css"); ?>">
+    <link rel="stylesheet" href="<?= $urlCSS ?>">
 
     <!-- Optional JavaScript -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="<?= $assistantUrl->getAbsoluteUrl("assets/js/script.js")?>" defer></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiW2J5xEe7wfr9_Q7Odlf-yGEi7S_6qfM&callback=initMap&v=weekly" defer></script>
+    <script src="<?= $assistantUrl->getAbsoluteUrl("assets/js/script.js") ?>" defer></script>
+    <script src="<?= $assistantUrl->getAbsoluteUrl("assets/js/autocompletion.js") ?>"
+            defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiW2J5xEe7wfr9_Q7Odlf-yGEi7S_6qfM&callback=initMap&v=weekly"
+            defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,10 +40,7 @@ $urlCSS = $assistantUrl->getAbsoluteUrl("assets/css/style.css");
           rel="stylesheet">
 </head>
 <body>
-
 <header>
-
-
     <nav class="navbar navbar-expand-lg navbar-dark  mx-4 fs-5">
         <a></a>
         <button class="navbar-toggler collapsed d-flex d-lg-none flex-column justify-content-around" type="button"
@@ -58,26 +54,28 @@ $urlCSS = $assistantUrl->getAbsoluteUrl("assets/css/style.css");
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="<?=$generateurUrl->generate("afficherListeUtilisateur");?>">Utilisateurs</a>
+                    <a class="nav-link"
+                       href="<?= $generateurUrl->generate("afficherListeUtilisateur"); ?>">Utilisateurs</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?=$generateurUrl->generate("afficherListeCommune");?>">Communes</a>
+                    <a class="nav-link" href="<?= $generateurUrl->generate("afficherListeCommune"); ?>">Communes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?=$generateurUrl->generate("plusCourtChemin");?>">Chemin</a>
+                    <a class="nav-link" href="<?= $generateurUrl->generate("plusCourtChemin"); ?>">Chemin</a>
                 </li>
             </ul>
 
             <ul class="navbar-nav ms-auto">
                 <?php if (!ConnexionUtilisateur::estConnecte()) : ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?=$generateurUrl->generate("afficherFormulaireConnexion");?>">Se connecter</a>
+                        <a class="nav-link" href="<?= $generateurUrl->generate("afficherFormulaireConnexion"); ?>">Se
+                            connecter</a>
                     </li>
                 <?php else : ?>
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="<?=$generateurUrl->generate("afficherDetailUtilisateur", ["login" => $loginURL])?>">
-                            <img alt="user" src="<?=$assistantUrl->getAbsoluteUrl("../ressources/img/user.png");?>">
+                           href="<?= $generateurUrl->generate("afficherDetailUtilisateur", ["login" => $loginURL]) ?>">
+                            <img alt="user" src="<?= $assistantUrl->getAbsoluteUrl("../ressources/img/user.png"); ?>">
                             <?php $loginHTML ?>
                         </a>
                     </li>
@@ -98,6 +96,7 @@ $urlCSS = $assistantUrl->getAbsoluteUrl("assets/css/style.css");
             }
             ?>
         </div>
+    </nav>
 </header>
 
 <main>
