@@ -13,7 +13,7 @@ $assistantUrl = Conteneur::recupererService("assistantUrl");?>
             <div class="my-4">
                 <div class="form-group row">
                     <div class="my-2">
-                        <input type="text" class="form-control" id="login_id" placeholder="Login">
+                        <input type="text" class="form-control" id="login_id" placeholder="Login" name="login">
                     </div>
                 </div>
 
