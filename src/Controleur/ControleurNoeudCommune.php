@@ -61,15 +61,19 @@ class ControleurNoeudCommune extends ControleurGenerique
 //        var_dump($_POST);
 
 
-        if (empty($_POST)) {
-            echo "test";
+        if (!empty($_POST)) {
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
             $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
+            echo "what" . $_POST["nomCommuneArrivee"];
+
 
             $noeudCommuneRepository = new NoeudCommuneRepository();
             /** @var NoeudCommune $noeudCommuneDepart */
+            var_dump( $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart]));
             $noeudCommuneDepart = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
             /** @var NoeudCommune $noeudCommuneArrivee */
+
+            var_dump( $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]));
             $noeudCommuneArrivee = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
 
             $noeudRoutierRepository = new NoeudRoutierRepository();
