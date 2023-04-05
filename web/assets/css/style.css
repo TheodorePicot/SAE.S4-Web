@@ -4,8 +4,15 @@ nav a{
 
 body{
     font-family: 'Raleway', sans-serif;
-    background: rgb(32,37,96);
-    background: radial-gradient(circle, rgba(32,37,96,1) 0%, rgba(11,14,52,1) 100%);
+    /*background: rgb(32,37,96);*/
+    /*background: radial-gradient(circle, rgba(32,37,96,1) 0%, rgba(11,14,52,1) 100%);*/
+    background: rgb(59,50,75);
+    background: radial-gradient(circle, rgba(59,50,75,1) 0%, rgba(2,9,83,1) 100%);
+
+}
+#map {
+    width: 500px;
+    height: 500px;
 }
 
 div{
