@@ -3,12 +3,21 @@
 namespace App\PlusCourtChemin\Service;
 
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
+use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepositoryInterface;
 
-class NoeudCommuneService
+class NoeudCommuneService implements NoeudCommuneServiceInterface
 {
-    public static function recuperer()
+
+    private NoeudRoutierRepositoryInterface $noeudRoutierRepository;
+
+    public function __construct(NoeudRoutierRepositoryInterface $noeudRoutierRepository)
     {
-        $noeudsCommunes = (new NoeudCommuneRepository())->recuperer();
+        $this->noeudRoutierRepository = $noeudRoutierRepository;
+    }
+
+    public function recuperer()
+    {
+        $noeudsCommunes = $this->noeudRoutierRepository->recuperer();
         return $noeudsCommunes;
     }
 }
