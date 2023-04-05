@@ -5,8 +5,6 @@ namespace App\PlusCourtChemin\Controleur;
 use App\PlusCourtChemin\Configuration\Configuration;
 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 use App\PlusCourtChemin\Lib\MessageFlash;
-use App\PlusCourtChemin\Lib\MotDePasse;
-use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
@@ -18,7 +16,7 @@ class ControleurUtilisateur extends ControleurGenerique
 
     public static function afficherErreur($errorMessage = "", $controleur = ""): Response
     {
-        parent::afficherErreur($errorMessage, "utilisateur");
+        return parent::afficherErreur($errorMessage, "utilisateur");
     }
 
 
@@ -36,17 +34,17 @@ class ControleurUtilisateur extends ControleurGenerique
     {
 //        if (isset($_REQUEST['login'])) {
 //            $login = $_REQUEST['login'];
-            $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($login);
-            if ($utilisateur === null) {
-                MessageFlash::ajouter("warning", "Login inconnu.");
-                return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
-            } else {
-                return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-                    "utilisateur" => $utilisateur,
-                    "pagetitle" => "Détail de l'utilisateur",
-                    "cheminVueBody" => "utilisateur/detail.php"
-                ]);
-            }
+        $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($login);
+        if ($utilisateur === null) {
+            MessageFlash::ajouter("warning", "Login inconnu.");
+            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+        } else {
+            return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+                "utilisateur" => $utilisateur,
+                "pagetitle" => "Détail de l'utilisateur",
+                "cheminVueBody" => "utilisateur/detail.php"
+            ]);
+        }
 //        } else {
 //            MessageFlash::ajouter("danger", "Login manquant.");
 //            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
@@ -57,16 +55,16 @@ class ControleurUtilisateur extends ControleurGenerique
     {
 //        if (isset($_REQUEST['login'])) {
 //            $login = $_REQUEST['login'];
-            $utilisateurRepository = new UtilisateurRepository();
-            $deleteSuccessful = $utilisateurRepository->supprimer($login);
-            $utilisateurs = $utilisateurRepository->recuperer();
-            if ($deleteSuccessful) {
-                MessageFlash::ajouter("success", "L'utilisateur a bien été supprimé !");
-                return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
-            } else {
-                MessageFlash::ajouter("warning", "Login inconnu.");
-                return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
-            }
+        $utilisateurRepository = new UtilisateurRepository();
+        $deleteSuccessful = $utilisateurRepository->supprimer($login);
+        $utilisateurs = $utilisateurRepository->recuperer();
+        if ($deleteSuccessful) {
+            MessageFlash::ajouter("success", "L'utilisateur a bien été supprimé !");
+            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+        } else {
+            MessageFlash::ajouter("warning", "Login inconnu.");
+            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+        }
 //        } else {
 //            MessageFlash::ajouter("danger", "Login manquant.");
 //            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
@@ -83,7 +81,8 @@ class ControleurUtilisateur extends ControleurGenerique
     }
 
 
-    public static function creerDepuisFormulaire(): Response {
+    public static function creerDepuisFormulaire(): Response
+    {
         $login = $_POST['login'] ?? null;
         $nom = $_POST['nom'] ?? null;
         $prenom = $_POST['prenom'] ?? null;
@@ -93,8 +92,7 @@ class ControleurUtilisateur extends ControleurGenerique
         //Recupérer les différentes variables (login, mot de passe, adresse mail, données photo de profil...)
         try {
             (new UtilisateurService())->creerUtilisateur($login, $nom, $prenom, $mdp, $mdp2, $email);
-        }
-        catch(ServiceException $e) {
+        } catch (ServiceException $e) {
             MessageFlash::ajouter("error", $e->getMessage());
             return ControleurUtilisateur::rediriger('afficherFormulaireCreation');
         }
@@ -106,39 +104,39 @@ class ControleurUtilisateur extends ControleurGenerique
     {
 //        if (isset($_REQUEST['login'])) {
 //            $login = $_REQUEST['login'];
-            /** @var Utilisateur $utilisateur */
-            $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($login);
-            if ($utilisateur === null) {
-                MessageFlash::ajouter("danger", "Login inconnu.");
-                return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
-            }
-            if (!(ConnexionUtilisateur::estUtilisateur($login) || ConnexionUtilisateur::estAdministrateur())) {
-                MessageFlash::ajouter("danger", "La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
-                return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
-            }
+        /** @var Utilisateur $utilisateur */
+        $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($login);
+        if ($utilisateur === null) {
+            MessageFlash::ajouter("danger", "Login inconnu.");
+            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+        }
+        if (!(ConnexionUtilisateur::estUtilisateur($login) || ConnexionUtilisateur::estAdministrateur())) {
+            MessageFlash::ajouter("danger", "La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
+            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+        }
 
-            $loginHTML = htmlspecialchars($login);
-            $prenomHTML = htmlspecialchars($utilisateur->getPrenom());
-            $nomHTML = htmlspecialchars($utilisateur->getNom());
-            $emailHTML = htmlspecialchars($utilisateur->getEmail());
-            return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-                "pagetitle" => "Mise à jour d'un utilisateur",
-                "cheminVueBody" => "utilisateur/formulaireMiseAJour.php",
-                "loginHTML" => $loginHTML,
-                "prenomHTML" => $prenomHTML,
-                "nomHTML" => $nomHTML,
-                "emailHTML" => $emailHTML,
-                "estAdmin" => $utilisateur->getEstAdmin(),
-                "method" => Configuration::getDebug() ? "get" : "post",
-            ]);
+        $loginHTML = htmlspecialchars($login);
+        $prenomHTML = htmlspecialchars($utilisateur->getPrenom());
+        $nomHTML = htmlspecialchars($utilisateur->getNom());
+        $emailHTML = htmlspecialchars($utilisateur->getEmail());
+        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+            "pagetitle" => "Mise à jour d'un utilisateur",
+            "cheminVueBody" => "utilisateur/formulaireMiseAJour.php",
+            "loginHTML" => $loginHTML,
+            "prenomHTML" => $prenomHTML,
+            "nomHTML" => $nomHTML,
+            "emailHTML" => $emailHTML,
+            "estAdmin" => $utilisateur->getEstAdmin(),
+            "method" => Configuration::getDebug() ? "get" : "post",
+        ]);
 //        } else {
 //            MessageFlash::ajouter("danger", "Login manquant.");
 //            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
 //        }
     }
 
-
-    public static function mettreAJour(): Response {
+    public static function mettreAJour(): Response
+    {
         $login = $_POST['login'] ?? null;
         $nom = $_POST['nom'] ?? null;
         $prenom = $_POST['prenom'] ?? null;
@@ -149,8 +147,7 @@ class ControleurUtilisateur extends ControleurGenerique
         //Recupérer les différentes variables (login, mot de passe, adresse mail, données photo de profil...)
         try {
             (new UtilisateurService())->mettreAJour($login, $nom, $prenom, $mdp, $mdp2, $mdpAncien, $email);
-        }
-        catch(ServiceException $e) {
+        } catch (ServiceException $e) {
             MessageFlash::ajouter("error", $e->getMessage());
             return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
         }
@@ -167,29 +164,25 @@ class ControleurUtilisateur extends ControleurGenerique
         ]);
     }
 
-
     public function connecter(): Response
     {
         $login = $_POST['login'] ?? null;
         $password = $_POST['mdp'] ?? null;
         try {
             (new UtilisateurService())->connecter($login, $password);
-        }
-        catch(ServiceException $e) {
+        } catch (ServiceException $e) {
             MessageFlash::ajouter("danger", $e->getMessage());
             return ControleurUtilisateur::rediriger('afficherFormulaireConnexion');
         }
         MessageFlash::ajouter("success", "Connexion effectuée.");
-        return ControleurUtilisateur::rediriger( "afficherDetailUtilisateur", ["login" => $login]);
+        return ControleurUtilisateur::rediriger("afficherDetailUtilisateur", ["login" => $login]);
     }
-
 
     public function deconnecter(): Response
     {
         try {
             (new UtilisateurService())->deconnecter();
-        }
-        catch(ServiceException $e) {
+        } catch (ServiceException $e) {
 
             MessageFlash::ajouter("danger", $e->getMessage());
             return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
@@ -199,22 +192,17 @@ class ControleurUtilisateur extends ControleurGenerique
 
     }
 
-
     public function validerEmail(): Response
     {
         $login = $_POST['login'] ?? null;
         $nonce = $_POST['nonce'] ?? null;
         try {
             (new UtilisateurService())->validerEmail($login, $nonce);
-        }
-        catch(ServiceException $e) {
+        } catch (ServiceException $e) {
             MessageFlash::ajouter("danger", $e->getMessage());
             return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
         }
         MessageFlash::ajouter("success", "Validation d'email réussie");
         return ControleurUtilisateur::rediriger("afficherDetailUtilisateur", ["login" => $login]);
-
     }
-
-
 }

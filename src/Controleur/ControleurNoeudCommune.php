@@ -3,9 +3,7 @@
 namespace App\PlusCourtChemin\Controleur;
 
 use App\PlusCourtChemin\Lib\MessageFlash;
-use App\PlusCourtChemin\Lib\PlusCourtChemin;
 use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
-
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
@@ -17,7 +15,7 @@ class ControleurNoeudCommune extends ControleurGenerique
 
     public static function afficherErreur($errorMessage = "", $controleur = ""): Response
     {
-        parent::afficherErreur($errorMessage, "noeudCommune");
+        return parent::afficherErreur($errorMessage, "noeudCommune");
     }
 
     public static function afficherListe(): Response
@@ -70,11 +68,11 @@ class ControleurNoeudCommune extends ControleurGenerique
 
             $noeudCommuneRepository = new NoeudCommuneRepository();
             /** @var NoeudCommune $noeudCommuneDepart */
-            var_dump( $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart]));
+            var_dump($noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart]));
             $noeudCommuneDepart = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
             /** @var NoeudCommune $noeudCommuneArrivee */
 
-            var_dump( $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]));
+            var_dump($noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]));
             $noeudCommuneArrivee = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
 
             $noeudRoutierRepository = new NoeudRoutierRepository();

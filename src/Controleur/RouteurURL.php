@@ -120,7 +120,7 @@ class RouteurURL
         $route = new Route("/autocompletion/{lettre}", [
             "_controller" => "\App\PlusCourtChemin\Controleur\ControleurNoeudCommune::autoCompletion",
         ]);
-        $routes->add("afficherDetailCommune", $route);
+        $routes->add("autocompletion", $route);
 
 //        var_dump($contexteRequete);
 
