@@ -53,9 +53,11 @@ class NoeudCommuneRepository extends AbstractRepository
 
     public function getVillesAutoCompletion(string $nomCommune): array
     {
-        $sql = "SELECT nom_comm FROM noeud_commune WHERE nom_comm LIKE :nomCommune";
-        $pdoStatement = $this->pdo->prepare($sql);
+        $nomCommune = strtolower($nomCommune);
+        $sql = "SELECT nom_comm FROM noeud_commune WHERE lower(nom_comm) LIKE :nomCommune LIMIT 5";
+        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($sql);
         $pdoStatement->execute(['nomCommune' => $nomCommune . '%']);
-        return $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        $pdoStatement->setFetchMode(PDO::FETCH_OBJ);
+        return $pdoStatement->fetchAll();
     }
 }

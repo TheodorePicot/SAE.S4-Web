@@ -8,7 +8,7 @@ class Configuration
 {
 
     // la variable debug est un boolean
-    static private bool $debug = true;
+    static private bool $debug = false;
 
     public ConfigurationBDDInterface $configurationBDD;
 
