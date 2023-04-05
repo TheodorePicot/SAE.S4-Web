@@ -297,13 +297,13 @@ class ControleurUtilisateur extends ControleurGenerique
     public function connecter(): Response
     {
         $login = $_POST['login'] ?? null;
-        $password = $_POST['password'] ?? null;
+        $password = $_POST['mdp'] ?? null;
         //Recupérer les différentes variables (login, mot de passe)
         try {
             (new UtilisateurService())->connecter($login, $password);
         }
         catch(ServiceException $e) {
-            MessageFlash::ajouter("error", $e->getMessage());
+            MessageFlash::ajouter("danger", $e->getMessage());
             return ControleurUtilisateur::rediriger('afficherFormulaireConnexion');
         }
         MessageFlash::ajouter("success", "Connexion effectuée.");
