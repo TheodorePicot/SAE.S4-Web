@@ -6,8 +6,17 @@ use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
 use PDO;
 
-class NoeudCommuneRepository extends AbstractRepository
+class NoeudCommuneRepository extends AbstractRepository implements NoeudCommuneRepositoryInterface
 {
+
+    private ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees;
+
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        $this->connexionBaseDeDonnees = $connexionBaseDeDonnees;
+    }
+
+
     public function construireDepuisTableau(array $noeudRoutierTableau): NoeudCommune
     {
         return new NoeudCommune(
@@ -54,7 +63,7 @@ class NoeudCommuneRepository extends AbstractRepository
     {
         $nomCommune = strtolower($nomCommune);
         $sql = "SELECT nom_comm FROM noeud_commune WHERE lower(nom_comm) LIKE :nomCommune LIMIT 5";
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($sql);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($sql);
         $pdoStatement->execute(['nomCommune' => $nomCommune . '%']);
         $pdoStatement->setFetchMode(PDO::FETCH_OBJ);
         return $pdoStatement->fetchAll();

@@ -6,8 +6,15 @@ use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
 use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
 use PDO;
 
-class NoeudRoutierRepository extends AbstractRepository
+class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierRepositoryInterface
 {
+
+    private ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees;
+
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        $this->connexionBaseDeDonnees = $connexionBaseDeDonnees;
+    }
 
     public function construireDepuisTableau(array $noeudRoutierTableau): NoeudRoutier
     {
@@ -64,7 +71,7 @@ class NoeudRoutierRepository extends AbstractRepository
         $requeteSQL = <<<SQL
             select noeud_routier_gid, troncon_gid, st_x(coordonnees_voisin) as longitude, st_y(coordonnees_voisin) as latitude, longueur from voisins where noeud_routier_base =:gidTag;
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
         $array = [
             "gidTag" => $noeudRoutierGid
         ];
@@ -77,7 +84,7 @@ class NoeudRoutierRepository extends AbstractRepository
         $requeteSQL = <<<SQL
             select noeud_routier_base, noeud_routier_gid, troncon_gid,  st_x(coordonnees_voisin) as longitude, st_y(coordonnees_voisin) as latitude, longueur from voisins;
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->query($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->query($requeteSQL);
 
         return $pdoStatement->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
     }
@@ -90,7 +97,7 @@ class NoeudRoutierRepository extends AbstractRepository
                 where gid = :gidTag
             );
         SQL;
-        $pdoStatement = ConnexionBaseDeDonnees::getPdo()->prepare($requeteSQL);
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->prepare($requeteSQL);
         $pdoStatement->execute(array(
             "gidTag" => $noeudRoutierGid
         ));
