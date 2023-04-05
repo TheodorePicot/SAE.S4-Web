@@ -17,35 +17,32 @@ class UtilisateurService {
 
     public static function creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email)
     {
-        if (
-            isset($login) && isset($prenom) && isset($nom)
-            && isset($mdp) && isset($mdp2)
+        if (!(isset($login) && isset($prenom) && isset($nom)
+            && isset($mdp) && isset($mdp2))
         ) {
-            if ($mdp !== $mdp2) {
-                throw new ServiceException("Mots de passe distincts.");
-            }
-
-            if (!ConnexionUtilisateur::estAdministrateur()) {
-                unset($_REQUEST["estAdmin"]);
-            }
-
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                throw new ServiceException("Email non valide");
-            }
-
-            $utilisateur = Utilisateur::construireDepuisFormulaire($_REQUEST);
-
-            VerificationEmail::envoiEmailValidation($utilisateur);
-
-            $utilisateurRepository = new UtilisateurRepository();
-            $succesSauvegarde = $utilisateurRepository->ajouter($utilisateur);
-            if ($succesSauvegarde) {
-                throw new ServiceException("L'utilisateur a bien été créé !");
-            } else {
-                throw new ServiceException("Login existant.");
-            }
-        } else {
             throw new ServiceException("Login, nom, prenom ou mot de passe manquant.");
+        }
+
+        if ($mdp !== $mdp2) {
+            throw new ServiceException("Mots de passe distincts.");
+        }
+
+        if (!ConnexionUtilisateur::estAdministrateur()) {
+            unset($_REQUEST["estAdmin"]);
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new ServiceException("Email non valide");
+        }
+
+        $utilisateur = Utilisateur::construireDepuisFormulaire($_REQUEST);
+
+        VerificationEmail::envoiEmailValidation($utilisateur);
+
+        $utilisateurRepository = new UtilisateurRepository();
+        $succesSauvegarde = $utilisateurRepository->ajouter($utilisateur);
+        if (!$succesSauvegarde) {
+            throw new ServiceException("Login existant.");
         }
     }
 
@@ -98,8 +95,6 @@ class UtilisateurService {
         }
 
         $utilisateurRepository->mettreAJour($utilisateur);
-
-        throw new ServiceException("L'utilisateur a bien été modifié !");
     }
 
     public static function connecter($login, $mdp)
@@ -124,7 +119,6 @@ class UtilisateurService {
         }
 
         ConnexionUtilisateur::connecter($utilisateur->getLogin());
-        throw new ServiceException("Connexion effectuée.");
     }
 
 

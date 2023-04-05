@@ -300,17 +300,12 @@ class ControleurUtilisateur extends ControleurGenerique
         $password = $_POST['password'] ?? null;
         //Recupérer les différentes variables (login, mot de passe)
         try {
-            //Enregistrer l'utilisateur via le service
             (new UtilisateurService())->connecter($login, $password);
         }
         catch(ServiceException $e) {
-            //Ajouter message flash d'erreur
-            //Rediriger sur afficherFormulaireConnexion
             MessageFlash::ajouter("error", $e->getMessage());
             return ControleurUtilisateur::rediriger('afficherFormulaireConnexion');
         }
-        //Ajouter un message flash de succès (Connexion effectuée.)
-        //Rediriger sur la page d'accueil (route feed)
         MessageFlash::ajouter("success", "Connexion effectuée.");
         return ControleurUtilisateur::rediriger( "afficherDetailUtilisateur", ["login" => $login]);
     }
