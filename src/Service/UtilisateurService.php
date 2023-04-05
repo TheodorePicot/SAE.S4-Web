@@ -121,5 +121,26 @@ class UtilisateurService {
         ConnexionUtilisateur::connecter($utilisateur->getLogin());
     }
 
+    public static function deconnecter()
+    {
+        if (!ConnexionUtilisateur::estConnecte()) {
+            throw new ServiceException("Utilisateur non connecté.");
+        }
+        ConnexionUtilisateur::deconnecter();
+    }
+
+    public static function validerEmail($login, $nonce)
+    {
+        if (!(isset($login) && isset($nonce))) {
+            throw new ServiceException("Login ou nonce manquant.");
+        }
+
+        $succesValidation = VerificationEmail::traiterEmailValidation($login, $nonce);
+
+        if (!$succesValidation) {
+            throw new ServiceException("Email de validation incorrect.");
+        }
+    }
+
 
 }
