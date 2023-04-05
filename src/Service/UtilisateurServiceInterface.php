@@ -13,4 +13,10 @@ interface UtilisateurServiceInterface
     public function deconnecter();
 
     public function validerEmail($login, $nonce);
+
+    public function recupererUtilisateur();
+
+    public function recupererUtilisateurParClePrimaire($login);
+
+    public function supprimerUtilisateur(string $login, ?string $loginUtilisateurConnecte);
 }

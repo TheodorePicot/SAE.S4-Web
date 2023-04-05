@@ -165,4 +165,29 @@ class UtilisateurService implements UtilisateurServiceInterface
             throw new ServiceException("Email de validation incorrect.");
         }
     }
+
+    public function recupererUtilisateur() {
+        $utilisateur = $this->utilisateurRepository->recuperer();
+        return $utilisateur;
+    }
+
+    public function recupererUtilisateurParClePrimaire($login) {
+        $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($login);
+        if($utilisateur == null) {
+            throw new ServiceException("L’utilisateur n’existe pas!");
+        }
+        return $utilisateur;
+    }
+
+    public function supprimerUtilisateur(string $login, ?string $loginUtilisateurConnecte) {
+        $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($login);
+
+        if ($utilisateur === null)
+            throw new ServiceException("Utilisateur inconnue.");
+
+        if ($utilisateur->getLogin() !== intval($loginUtilisateurConnecte))
+            throw new ServiceException("Seul l'utilisateur connecter peut supprimer son compte");
+
+        return $this->utilisateurRepository->supprimer($login);
+    }
 }

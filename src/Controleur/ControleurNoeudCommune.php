@@ -8,6 +8,7 @@ use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
 use App\PlusCourtChemin\Service\NoeudCommuneService;
+use App\PlusCourtChemin\Service\NoeudCommuneServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class ControleurNoeudCommune extends ControleurGenerique
@@ -16,6 +17,13 @@ class ControleurNoeudCommune extends ControleurGenerique
     public static function afficherErreur($errorMessage = "", $controleur = ""): Response
     {
         return parent::afficherErreur($errorMessage, "noeudCommune");
+    }
+
+    private NoeudCommuneServiceInterface $noeudCommuneService;
+
+    public function __construct(NoeudCommuneServiceInterface $noeudCommuneService)
+    {
+        $this->noeudCommuneService = $noeudCommuneService;
     }
 
     public static function afficherListe(): Response
