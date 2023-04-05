@@ -9,6 +9,8 @@ use App\PlusCourtChemin\Lib\MotDePasse;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use App\PlusCourtChemin\Service\Exception\ServiceException;
+use App\PlusCourtChemin\Service\UtilisateurService;
 use Symfony\Component\HttpFoundation\Response;
 
 class ControleurUtilisateur extends ControleurGenerique
@@ -80,43 +82,62 @@ class ControleurUtilisateur extends ControleurGenerique
         ]);
     }
 
-    public static function creerDepuisFormulaire(): Response
-    {
-        if (
-            isset($_REQUEST['login']) && isset($_REQUEST['prenom']) && isset($_REQUEST['nom'])
-            && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])
-        ) {
-            if ($_REQUEST["mdp"] !== $_REQUEST["mdp2"]) {
-                MessageFlash::ajouter("warning", "Mots de passe distincts.");
-                return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
-            }
+//    public static function creerDepuisFormulaire(): Response
+//    {
+//        if (
+//            isset($_REQUEST['login']) && isset($_REQUEST['prenom']) && isset($_REQUEST['nom'])
+//            && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2'])
+//        ) {
+//            if ($_REQUEST["mdp"] !== $_REQUEST["mdp2"]) {
+//                MessageFlash::ajouter("warning", "Mots de passe distincts.");
+//                return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
+//            }
+//
+//            if (!ConnexionUtilisateur::estAdministrateur()) {
+//                unset($_REQUEST["estAdmin"]);
+//            }
+//
+//            if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)) {
+//                MessageFlash::ajouter("warning", "Email non valide");
+//                return ControleurUtilisateur::rediriger( "afficherFormulaireCreation");
+//            }
+//
+//            $utilisateur = Utilisateur::construireDepuisFormulaire($_REQUEST);
+//
+//            VerificationEmail::envoiEmailValidation($utilisateur);
+//
+//            $utilisateurRepository = new UtilisateurRepository();
+//            $succesSauvegarde = $utilisateurRepository->ajouter($utilisateur);
+//            if ($succesSauvegarde) {
+//                MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
+//                return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+//            } else {
+//                MessageFlash::ajouter("warning", "Login existant.");
+//                return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
+//            }
+//        } else {
+//            MessageFlash::ajouter("danger", "Login, nom, prenom ou mot de passe manquant.");
+//            return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
+//        }
+//    }
 
-            if (!ConnexionUtilisateur::estAdministrateur()) {
-                unset($_REQUEST["estAdmin"]);
-            }
-
-            if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)) {
-                MessageFlash::ajouter("warning", "Email non valide");
-                return ControleurUtilisateur::rediriger( "afficherFormulaireCreation");
-            }
-
-            $utilisateur = Utilisateur::construireDepuisFormulaire($_REQUEST);
-
-            VerificationEmail::envoiEmailValidation($utilisateur);
-
-            $utilisateurRepository = new UtilisateurRepository();
-            $succesSauvegarde = $utilisateurRepository->ajouter($utilisateur);
-            if ($succesSauvegarde) {
-                MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
-                return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
-            } else {
-                MessageFlash::ajouter("warning", "Login existant.");
-                return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
-            }
-        } else {
-            MessageFlash::ajouter("danger", "Login, nom, prenom ou mot de passe manquant.");
-            return ControleurUtilisateur::rediriger("afficherFormulaireCreation");
+    public static function creerDepuisFormulaire(): Response {
+        $login = $_POST['login'] ?? null;
+        $nom = $_POST['nom'] ?? null;
+        $prenom = $_POST['prenom'] ?? null;
+        $mdp = $_POST['mdp'] ?? null;
+        $mdp2 = $_POST['mdp2'] ?? null;
+        $email = $_POST['email'] ?? null;
+        //Recupérer les différentes variables (login, mot de passe, adresse mail, données photo de profil...)
+        try {
+            (new UtilisateurService())->creerUtilisateur($login, $nom, $prenom, $mdp, $mdp2, $email);
         }
+        catch(ServiceException $e) {
+            MessageFlash::ajouter("error", $e->getMessage());
+            return ControleurUtilisateur::rediriger('afficherFormulaireCreation');
+        }
+        MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
+        return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
     }
 
     public static function afficherFormulaireMiseAJour($login): Response
@@ -154,62 +175,82 @@ class ControleurUtilisateur extends ControleurGenerique
 //        }
     }
 
-    public static function mettreAJour(): Response
-    {
-        if (!(isset($_REQUEST['login']) && isset($_REQUEST['prenom']) && isset($_REQUEST['nom'])
-            && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2']) && isset($_REQUEST['mdpAncien'])
-            && isset($_REQUEST['email'])
-        )) {
-            MessageFlash::ajouter("danger", "Login, nom, prenom, email ou mot de passe manquant.");
-            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+//    public static function mettreAJour(): Response
+//    {
+//        if (!(isset($_REQUEST['login']) && isset($_REQUEST['prenom']) && isset($_REQUEST['nom'])
+//            && isset($_REQUEST['mdp']) && isset($_REQUEST['mdp2']) && isset($_REQUEST['mdpAncien'])
+//            && isset($_REQUEST['email'])
+//        )) {
+//            MessageFlash::ajouter("danger", "Login, nom, prenom, email ou mot de passe manquant.");
+//            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+//        }
+//
+//        if ($_REQUEST["mdp"] !== $_REQUEST["mdp2"]) {
+//            MessageFlash::ajouter("warning", "Mots de passe distincts.");
+//            return ControleurUtilisateur::rediriger("afficherFormulaireMiseAJour", ["login" => $_REQUEST["login"]]);
+//        }
+//
+//        if (!(ConnexionUtilisateur::estConnecte($_REQUEST["login"]) || ConnexionUtilisateur::estAdministrateur())) {
+//            MessageFlash::ajouter("danger", "La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
+//            return ControleurUtilisateur::rediriger( "afficherListeUtilisateur");
+//        }
+//
+//        if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)) {
+//            MessageFlash::ajouter("warning", "Email non valide");
+//            return ControleurUtilisateur::rediriger( "afficherFormulaireMiseAJour", ["login" => $_REQUEST["login"]]);
+//        }
+//
+//        $utilisateurRepository = new UtilisateurRepository();
+//        /** @var Utilisateur $utilisateur */
+//        $utilisateur = $utilisateurRepository->recupererParClePrimaire($_REQUEST['login']);
+//
+//        if ($utilisateur == null) {
+//            MessageFlash::ajouter("danger", "Login inconnu");
+//            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+//        }
+//
+//        if (!MotDePasse::verifier($_REQUEST["mdpAncien"], $utilisateur->getMdpHache())) {
+//            MessageFlash::ajouter("warning", "Ancien mot de passe erroné.");
+//            return ControleurUtilisateur::rediriger("afficherFormulaireMiseAJour", ["login" => $_REQUEST["login"]]);
+//        }
+//
+//        $utilisateur->setNom($_REQUEST["nom"]);
+//        $utilisateur->setPrenom($_REQUEST["prenom"]);
+//        $utilisateur->setMdpHache($_REQUEST["mdp"]);
+//
+//        if (ConnexionUtilisateur::estAdministrateur()) {
+//            $utilisateur->setEstAdmin(isset($_REQUEST["estAdmin"]));
+//        }
+//
+//        if ($_REQUEST["email"] !== $utilisateur->getEmail()) {
+//            $utilisateur->setEmailAValider($_REQUEST["email"]);
+//            $utilisateur->setNonce(MotDePasse::genererChaineAleatoire());
+//
+//            VerificationEmail::envoiEmailValidation($utilisateur);
+//        }
+//
+//        $utilisateurRepository->mettreAJour($utilisateur);
+//
+//        MessageFlash::ajouter("success", "L'utilisateur a bien été modifié !");
+//        return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+//    }
+
+    public static function mettreAJour(): Response {
+        $login = $_POST['login'] ?? null;
+        $nom = $_POST['nom'] ?? null;
+        $prenom = $_POST['prenom'] ?? null;
+        $mdp = $_POST['mdp'] ?? null;
+        $mdp2 = $_POST['mdp2'] ?? null;
+        $mdpAncien = $_POST['mdpAncien'] ?? null;
+        $email = $_POST['email'] ?? null;
+        //Recupérer les différentes variables (login, mot de passe, adresse mail, données photo de profil...)
+        try {
+            (new UtilisateurService())->mettreAJour($login, $nom, $prenom, $mdp, $mdp2, $mdpAncien, $email);
         }
-
-        if ($_REQUEST["mdp"] !== $_REQUEST["mdp2"]) {
-            MessageFlash::ajouter("warning", "Mots de passe distincts.");
-            return ControleurUtilisateur::rediriger("afficherFormulaireMiseAJour", ["login" => $_REQUEST["login"]]);
+        catch(ServiceException $e) {
+            MessageFlash::ajouter("error", $e->getMessage());
+            return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
         }
-
-        if (!(ConnexionUtilisateur::estConnecte($_REQUEST["login"]) || ConnexionUtilisateur::estAdministrateur())) {
-            MessageFlash::ajouter("danger", "La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
-            return ControleurUtilisateur::rediriger( "afficherListeUtilisateur");
-        }
-
-        if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)) {
-            MessageFlash::ajouter("warning", "Email non valide");
-            return ControleurUtilisateur::rediriger( "afficherFormulaireMiseAJour", ["login" => $_REQUEST["login"]]);
-        }
-
-        $utilisateurRepository = new UtilisateurRepository();
-        /** @var Utilisateur $utilisateur */
-        $utilisateur = $utilisateurRepository->recupererParClePrimaire($_REQUEST['login']);
-
-        if ($utilisateur == null) {
-            MessageFlash::ajouter("danger", "Login inconnu");
-            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
-        }
-
-        if (!MotDePasse::verifier($_REQUEST["mdpAncien"], $utilisateur->getMdpHache())) {
-            MessageFlash::ajouter("warning", "Ancien mot de passe erroné.");
-            return ControleurUtilisateur::rediriger("afficherFormulaireMiseAJour", ["login" => $_REQUEST["login"]]);
-        }
-
-        $utilisateur->setNom($_REQUEST["nom"]);
-        $utilisateur->setPrenom($_REQUEST["prenom"]);
-        $utilisateur->setMdpHache($_REQUEST["mdp"]);
-
-        if (ConnexionUtilisateur::estAdministrateur()) {
-            $utilisateur->setEstAdmin(isset($_REQUEST["estAdmin"]));
-        }
-
-        if ($_REQUEST["email"] !== $utilisateur->getEmail()) {
-            $utilisateur->setEmailAValider($_REQUEST["email"]);
-            $utilisateur->setNonce(MotDePasse::genererChaineAleatoire());
-
-            VerificationEmail::envoiEmailValidation($utilisateur);
-        }
-
-        $utilisateurRepository->mettreAJour($utilisateur);
-
         MessageFlash::ajouter("success", "L'utilisateur a bien été modifié !");
         return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
     }
@@ -223,34 +264,55 @@ class ControleurUtilisateur extends ControleurGenerique
         ]);
     }
 
-    public static function connecter(): Response
+//    public static function connecter(): Response
+//    {
+//        if (!(isset($_REQUEST['login']) && isset($_REQUEST['mdp']))) {
+//            MessageFlash::ajouter("danger", "Login ou mot de passe manquant.");
+//            return ControleurUtilisateur::rediriger("afficherFormulaireConnexion");
+//        }
+//        $utilisateurRepository = new UtilisateurRepository();
+//        /** @var Utilisateur $utilisateur */
+//        $utilisateur = $utilisateurRepository->recupererParClePrimaire($_REQUEST["login"]);
+//
+//        if ($utilisateur == null) {
+//            MessageFlash::ajouter("warning", "Login inconnu.");
+//            return ControleurUtilisateur::rediriger("afficherFormulaireConnexion");
+//        }
+//
+//        if (!MotDePasse::verifier($_REQUEST["mdp"], $utilisateur->getMdpHache())) {
+//            MessageFlash::ajouter("warning", "Mot de passe incorrect.");
+//            return ControleurUtilisateur::rediriger("afficherFormulaireConnexion");
+//        }
+//
+//        if (!VerificationEmail::aValideEmail($utilisateur)) {
+//            MessageFlash::ajouter("warning", "Adresse email non validée.");
+//            return ControleurUtilisateur::rediriger( "afficherFormulaireConnexion");
+//        }
+//
+//        ConnexionUtilisateur::connecter($utilisateur->getLogin());
+//        MessageFlash::ajouter("success", "Connexion effectuée.");
+//        return ControleurUtilisateur::rediriger( "afficherDetailUtilisateur", ["login" => $_REQUEST["login"]]);
+//    }
+
+    public function connecter(): Response
     {
-        if (!(isset($_REQUEST['login']) && isset($_REQUEST['mdp']))) {
-            MessageFlash::ajouter("danger", "Login ou mot de passe manquant.");
-            return ControleurUtilisateur::rediriger("afficherFormulaireConnexion");
+        $login = $_POST['login'] ?? null;
+        $password = $_POST['password'] ?? null;
+        //Recupérer les différentes variables (login, mot de passe)
+        try {
+            //Enregistrer l'utilisateur via le service
+            (new UtilisateurService())->connecter($login, $password);
         }
-        $utilisateurRepository = new UtilisateurRepository();
-        /** @var Utilisateur $utilisateur */
-        $utilisateur = $utilisateurRepository->recupererParClePrimaire($_REQUEST["login"]);
-
-        if ($utilisateur == null) {
-            MessageFlash::ajouter("warning", "Login inconnu.");
-            return ControleurUtilisateur::rediriger("afficherFormulaireConnexion");
+        catch(ServiceException $e) {
+            //Ajouter message flash d'erreur
+            //Rediriger sur afficherFormulaireConnexion
+            MessageFlash::ajouter("error", $e->getMessage());
+            return ControleurUtilisateur::rediriger('afficherFormulaireConnexion');
         }
-
-        if (!MotDePasse::verifier($_REQUEST["mdp"], $utilisateur->getMdpHache())) {
-            MessageFlash::ajouter("warning", "Mot de passe incorrect.");
-            return ControleurUtilisateur::rediriger("afficherFormulaireConnexion");
-        }
-
-        if (!VerificationEmail::aValideEmail($utilisateur)) {
-            MessageFlash::ajouter("warning", "Adresse email non validée.");
-            return ControleurUtilisateur::rediriger( "afficherFormulaireConnexion");
-        }
-
-        ConnexionUtilisateur::connecter($utilisateur->getLogin());
+        //Ajouter un message flash de succès (Connexion effectuée.)
+        //Rediriger sur la page d'accueil (route feed)
         MessageFlash::ajouter("success", "Connexion effectuée.");
-        return ControleurUtilisateur::rediriger( "afficherDetailUtilisateur", ["login" => $_REQUEST["login"]]);
+        return ControleurUtilisateur::rediriger( "afficherDetailUtilisateur", ["login" => $login]);
     }
 
     public static function deconnecter(): Response
