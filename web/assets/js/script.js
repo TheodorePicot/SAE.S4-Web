@@ -1,6 +1,4 @@
 
-
-
 let featureLayer;
 
 function initMap() {

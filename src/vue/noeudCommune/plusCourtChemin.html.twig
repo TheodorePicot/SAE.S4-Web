@@ -4,55 +4,62 @@
 
 {% block page_content %}
     <main>
-        <div class="container-fluid d-flex justify-content-center">
-            <form action="" method="post">
-                <fieldset>
-                    <div class="d-flex align-content-center justify-content-center my-5">
-                        <h2> Calculer un plus court chemin</h2>
-                    </div>
-
-                    <div class="my-5">
-                        <div class="form-group row">
-                            <label for="nomCommuneDepart_id" class="col-sm-2 col-form-label">Départ</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nomCommuneDepart_id" placeholder="Ex : Menton">
-                                <div id="autocompletionD"></div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row my-4">
-                            <label for="nomCommuneArrivee_id" class="col-sm-2 col-form-label">Arrivée</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nomCommuneArrivee_id" placeholder="Ex : Menton">
-                                <div id="autocompletionA"></div>
-                            </div>
-                        </div>
-
-
-                        <!--            <input type="hidden" name="XDEBUG_TRIGGER" value="1">-->
-                        <div class="d-flex justify-content-center my-4">
-                            <button type="submit" class="btn btn-light">Calculer</button>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
-
-        <p>
-{#            Le plus court chemin entre {{ nomCommuneDepart }} et {{ nomCommuneArrivee }}> mesure {{ distance }} km.#}
-        </p>
-
-
         <div class="container-fluid">
-            <div id="map">
+            <div class="row">
+                <div class="col-3">
+
+                    <form action="" method="post">
+                    <fieldset>
+                        <div class="my-5">
+                            <h2> Calculer un plus court chemin</h2>
+                        </div>
+
+                        <div class="my-5">
+                            <div class="form-group row">
+                                <label for="nomCommuneDepart_id" class="col-sm-2 col-form-label">Départ</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nomCommuneDepart_id"
+                                           placeholder="Ex : Menton">
+                                    <div id="autocompletionD"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row my-4">
+                                <label for="nomCommuneArrivee_id" class="col-sm-2 col-form-label">Arrivée</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nomCommuneArrivee_id"
+                                           placeholder="Ex : Menton">
+                                    <div id="autocompletionA"></div>
+                                </div>
+                            </div>
+
+
+                            <!--            <input type="hidden" name="XDEBUG_TRIGGER" value="1">-->
+                            <div class="d-flex justify-content-center my-4">
+                                <button type="submit" class="btn btn-light">Calculer</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+
+                <p>
+                    {#            Le plus court chemin entre {{ nomCommuneDepart }} et {{ nomCommuneArrivee }}> mesure {{ distance }} km. #}
+                </p>
+                </div>
+
+
+
+                <div class="col-9">
+                    <div id="map" class="mx-3" style="height: 1000px">
+                        test
+                    </div>
+                </div>
             </div>
         </div>
 
 
-
-
     </main>
-
 
 
 {% endblock %}

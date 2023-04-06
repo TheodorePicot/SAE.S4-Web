@@ -1,29 +1,30 @@
-nav a{
+nav a {
     color: blue;
 }
 
-body{
+body {
     font-family: 'Raleway', sans-serif;
     /*background: rgb(32,37,96);*/
     /*background: radial-gradient(circle, rgba(32,37,96,1) 0%, rgba(11,14,52,1) 100%);*/
-    background: rgb(59,50,75);
-    background: radial-gradient(circle, rgba(59,50,75,1) 0%, rgba(2,9,83,1) 100%);
+    background: rgb(59, 50, 75);
+    background: radial-gradient(circle, rgba(59, 50, 75, 1) 0%, rgba(2, 9, 83, 1) 100%);
 
 }
+
 #map {
     width: 500px;
     height: 500px;
 }
 
-div{
-    color:white;
-}
-
-p{
+div {
     color: white;
 }
 
-a{
+p {
+    color: white;
+}
+
+a {
     color: #bfd1ec;
 }
 
@@ -31,9 +32,8 @@ ul {
     list-style-type: none;
 }
 
-#map{
-    height: 400px;
-    width: 100%;
+#map {
+
 }
 
 /*BURGER MENU*/
@@ -112,6 +112,6 @@ ul {
     transform: rotate(0deg);
 }
 
-img{
+img {
     width: 25px;
 }
