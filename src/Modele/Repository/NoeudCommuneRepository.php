@@ -8,7 +8,6 @@ use PDO;
 
 class NoeudCommuneRepository extends AbstractRepository
 {
-
     public function construireDepuisTableau(array $noeudRoutierTableau): NoeudCommune
     {
         return new NoeudCommune(

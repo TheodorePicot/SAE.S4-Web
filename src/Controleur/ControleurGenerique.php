@@ -7,8 +7,8 @@ use App\PlusCourtChemin\Lib\MessageFlash;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class ControleurGenerique {
-
+class ControleurGenerique
+{
     protected static function afficherVue(string $cheminVue, array $parametres = []): Response
     {
         extract($parametres);
@@ -19,7 +19,7 @@ class ControleurGenerique {
         return new Response($corpsReponse);
     }
 
-    protected static function rediriger(string $name, ?array $tab = []) : RedirectResponse
+    protected static function rediriger(string $name, ?array $tab = []): RedirectResponse
     {
         $UrlGenerator = Conteneur::recupererService("generateurUrl");
 
@@ -37,5 +37,4 @@ class ControleurGenerique {
         $reponse->setStatusCode($statusCode);
         return $reponse;
     }
-
 }

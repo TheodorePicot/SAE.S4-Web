@@ -61,9 +61,6 @@ class NoeudRoutierRepository extends AbstractRepository
      **/
     public function getVoisins(int $noeudRoutierGid): array
     {
-        // TODO Vue materialisée pour stocker les voisins
-        // TODO index sur l'id du noeud du quel on veut trouver les voisins
-        // TODO
         $requeteSQL = <<<SQL
             select noeud_routier_gid, troncon_gid, st_x(coordonnees_voisin) as longitude, st_y(coordonnees_voisin) as latitude, longueur from voisins where noeud_routier_base =:gidTag;
         SQL;
@@ -77,9 +74,6 @@ class NoeudRoutierRepository extends AbstractRepository
 
     public function getTousLesVoisins(): array
     {
-        // TODO Vue materialisée pour stocker les voisins
-        // TODO index sur l'id du noeud du quel on veut trouver les voisins
-        // TODO
         $requeteSQL = <<<SQL
             select noeud_routier_base, noeud_routier_gid, troncon_gid,  st_x(coordonnees_voisin) as longitude, st_y(coordonnees_voisin) as latitude, longueur from voisins;
         SQL;

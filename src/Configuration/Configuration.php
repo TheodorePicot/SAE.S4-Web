@@ -38,7 +38,6 @@ class Configuration
     public static function getAbsoluteURL() : string
     {
         return 'https://webinfo.iutmontp.univ-montp2.fr/~picott/SAE.S4-Web/web/controleurFrontal.php';
-        //throw new Exception("URL absolue non renseignée !");
     }
 
 }
