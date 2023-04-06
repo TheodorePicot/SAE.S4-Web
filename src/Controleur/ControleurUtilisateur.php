@@ -15,11 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 class ControleurUtilisateur extends ControleurGenerique
 {
 
-    private UtilisateurServiceInterface $utilisateurService;
 
-    public function __construct(UtilisateurServiceInterface $utilisateurService)
+    public function __construct(private readonly UtilisateurServiceInterface $utilisateurService)
     {
-        $this->utilisateurService = $utilisateurService;
+
     }
 
     public static function afficherErreur($errorMessage = "", $controleur = ""): Response

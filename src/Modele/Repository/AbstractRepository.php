@@ -13,7 +13,7 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
     protected abstract function construireDepuisTableau(array $objetFormatTableau): AbstractDataObject;
 
 
-    private ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees;
+    protected ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees;
 
     public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
     {

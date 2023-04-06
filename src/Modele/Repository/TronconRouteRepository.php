@@ -8,11 +8,9 @@ use App\PlusCourtChemin\Modele\DataObject\TronconRoute;
 class TronconRouteRepository extends AbstractRepository implements TronconRouteRepositoryInterface
 {
 
-    private ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees;
-
     public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
     {
-        $this->connexionBaseDeDonnees = $connexionBaseDeDonnees;
+        parent::__construct($connexionBaseDeDonnees);
     }
 
     public function construireDepuisTableau(array $noeudRoutierTableau): TronconRoute

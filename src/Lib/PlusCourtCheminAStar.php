@@ -4,26 +4,29 @@ namespace App\PlusCourtChemin\Lib;
 
 use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepositoryInterface;
+use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
 
 class PlusCourtCheminAStar
 {
     public function __construct(
         private int $noeudRoutierDepartGid,
-        private int $noeudRoutierArriveeGid
+        private int $noeudRoutierArriveeGid,
+        private readonly NoeudRoutierServiceInterface $noeudRoutierService
     )
     {
     }
 
     public function calculer(bool $affichageDebug = false): float
     {
-        $this->tousLesNoeudsRoutiers = (new NoeudRoutierRepository)->getTousLesVoisins();
+        $this->tousLesNoeudsRoutiers = $this->noeudRoutierService->getTousLesVoisins();
         $this->priorityQueue = new PlusCourtCheminPriorityQueue();
         $this->distances = [$this->noeudRoutierDepartGid => 0];
-        $noeudRoutierRepository = new NoeudRoutierRepository();
+//        $noeudRoutierRepository = new NoeudRoutierRepository();
 
 
-        $tabArrive = $noeudRoutierRepository->getLongitudeLatitude($this->noeudRoutierArriveeGid);
-        $tabDepart = $noeudRoutierRepository->getLongitudeLatitude($this->noeudRoutierDepartGid);
+        $tabArrive = $this->noeudRoutierService->getLongitudeLatitude($this->noeudRoutierArriveeGid);
+        $tabDepart = $this->noeudRoutierService->getLongitudeLatitude($this->noeudRoutierDepartGid);
 
         $this->priorityQueue->insert($this->noeudRoutierDepartGid, $this->calculDistanceHeuristque($tabDepart['st_x'], $tabDepart['st_y'], $tabArrive['st_x'], $tabArrive['st_y']) * 1000);
         $this->noeudsALaFrontiere[$this->noeudRoutierDepartGid] = true;

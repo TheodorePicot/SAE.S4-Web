@@ -9,11 +9,9 @@ use PDO;
 class NoeudCommuneRepository extends AbstractRepository implements NoeudCommuneRepositoryInterface
 {
 
-    private ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees;
-
     public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
     {
-        $this->connexionBaseDeDonnees = $connexionBaseDeDonnees;
+        parent::__construct($connexionBaseDeDonnees);
     }
 
 

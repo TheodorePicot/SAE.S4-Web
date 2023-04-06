@@ -5,10 +5,19 @@ namespace App\PlusCourtChemin\Lib;
 use App\PlusCourtChemin\Configuration\Configuration;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
+use App\PlusCourtChemin\Service\UtilisateurServiceInterface;
 
 class VerificationEmail
 {
-    public static function envoiEmailValidation(Utilisateur $utilisateur): void
+
+    public function __construct(
+        private readonly UtilisateurServiceInterface $utilisateurService
+    )
+    {
+    }
+
+    public function envoiEmailValidation(Utilisateur $utilisateur): void
     {
         $loginURL = rawurlencode($utilisateur->getLogin());
         $nonceURL = rawurlencode($utilisateur->getNonce());
@@ -26,11 +35,10 @@ class VerificationEmail
          );
     }
 
-    public static function traiterEmailValidation($login, $nonce): bool
+    public function traiterEmailValidation($login, $nonce): bool
     {
-        $utilisateurRepository = new UtilisateurRepository();
         /** @var Utilisateur $utilisateur */
-        $utilisateur = $utilisateurRepository->recupererParClePrimaire($login);
+        $utilisateur = $this->utilisateurService->recupererUtilisateurParClePrimaire($login);
 
         if ($utilisateur === null)
             return false;
@@ -43,7 +51,7 @@ class VerificationEmail
         $utilisateur->setEmailAValider("");
         $utilisateur->setNonce("");
 
-        $utilisateurRepository->mettreAJour($utilisateur);
+        $this->utilisateurService->mettreAJour($utilisateur);
         return true;
     }
 

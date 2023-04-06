@@ -13,11 +13,9 @@ use App\PlusCourtChemin\Service\Exception\ServiceException;
 class UtilisateurService implements UtilisateurServiceInterface
 {
 
-    private UtilisateurRepositoryInterface $utilisateurRepository;
-
-    public function __construct(UtilisateurRepositoryInterface $utilisateurRepository)
+    public function __construct(private readonly UtilisateurRepositoryInterface $utilisateurRepository)
     {
-        $this->utilisateurRepository = $utilisateurRepository;
+
     }
 
     public function creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email)
