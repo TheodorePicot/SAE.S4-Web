@@ -1,6 +1,8 @@
 <?php
 namespace App\PlusCourtChemin\Controleur;
 
+use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\MessageFlash;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -15,11 +17,25 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use App\PlusCourtChemin\Lib\Conteneur;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
 
 
 class RouteurURL
 {
     public static function traiterRequete() {
+
+        $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
+        $twig = new Environment(
+            $twigLoader,
+            [
+                'autoescape' => 'html',
+                'strict_variables' => true
+            ]
+        );
+        Conteneur::ajouterService("twig", $twig);
+
         $requete = Request::createFromGlobals();
         $routes = new RouteCollection();
 
@@ -124,18 +140,33 @@ class RouteurURL
 
 //        var_dump($contexteRequete);
 
+        $contexteRequete = (new RequestContext())->fromRequest($requete);
+
+
+        $generateurUrl = new UrlGenerator($routes, $contexteRequete);
+        $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
+        Conteneur::ajouterService("generateurUrl", $generateurUrl);
+        Conteneur::ajouterService("assistantUrl", $assistantUrl);
+
+        //            TWIG Config
+
+        $fonctionAsset = $assistantUrl->getAbsoluteUrl(...);
+        $fonctionRoute = $generateurUrl->generate(...);
+
+        $twig->addFunction(new TwigFunction("assets", $fonctionAsset));
+        $twig->addFunction(new TwigFunction("route", $fonctionRoute));
+        $twig->addGlobal('idUtilisateurCo', ConnexionUtilisateur::getLoginUtilisateurConnecte());
+        $twig->addGlobal('idUtilisateurAdmin', ConnexionUtilisateur::estAdministrateur());
+        $twig->addGlobal('messageFlash', new MessageFlash());
+
         try {
-            $contexteRequete = (new RequestContext())->fromRequest($requete);
             // 3 méthodes qui lèvent des exceptions
-            $generateurUrl = new UrlGenerator($routes, $contexteRequete);
-            $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
-            Conteneur::ajouterService("generateurUrl", $generateurUrl);
-            Conteneur::ajouterService("assistantUrl", $assistantUrl);
+
 //        @throws NoConfigurationException  If no routing configuration could be found
 //        @throws ResourceNotFoundException If the resource could not be found
 //        @throws MethodNotAllowedException If the resource was found but the request method is not allowed
-
             $associateurUrl = new UrlMatcher($routes, $contexteRequete);
+
             $donneesRoute = $associateurUrl->match($requete->getPathInfo());
 
             $requete->attributes->add($donneesRoute);
@@ -149,6 +180,8 @@ class RouteurURL
             $arguments = $resolveurDArguments->getArguments($requete, $controleur);
 //        @throws \RuntimeException When no value could be provided for a required argument
             $reponse = call_user_func_array($controleur, $arguments);
+
+
         } catch (ResourceNotFoundException $exception) {
             $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 404);
         } catch (MethodNotAllowedException $exception) {

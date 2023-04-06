@@ -28,13 +28,20 @@ class ControleurGenerique
 
     public static function afficherErreur($errorMessage = "", $statusCode = 400): Response
     {
-        $reponse = ControleurGenerique::afficherVue('vueGenerale.php', [
-            "pagetitle" => "Problème",
-            "cheminVueBody" => "erreur.php",
+        $reponse = ControleurGenerique::afficherTwig('base.html.twig', [
+
             "errorMessage" => $errorMessage
         ]);
 
         $reponse->setStatusCode($statusCode);
         return $reponse;
     }
+
+    protected static function afficherTwig(string $cheminVue, array $parametres = []): Response
+    {
+        /** @var Environment $twig */
+        $twig = Conteneur::recupererService("twig");
+        return new Response($twig->render($cheminVue, $parametres));
+    }
 }
+
