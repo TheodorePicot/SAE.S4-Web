@@ -5,30 +5,37 @@ namespace App\PlusCourtChemin\Lib;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\HTTP\Session;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use App\PlusCourtChemin\Service\UtilisateurServiceInterface;
 
 class ConnexionUtilisateur
 {
     private static string $cleConnexion = "_utilisateurConnecte";
 
-    public static function connecter(string $loginUtilisateur): void
+    public function __construct(
+        private readonly UtilisateurServiceInterface $utilisateurService
+    )
+    {
+    }
+
+    public function connecter(string $loginUtilisateur): void
     {
         $session = Session::getInstance();
         $session->enregistrer(ConnexionUtilisateur::$cleConnexion, $loginUtilisateur);
     }
 
-    public static function estConnecte(): bool
+    public function estConnecte(): bool
     {
         $session = Session::getInstance();
         return $session->existeCle(ConnexionUtilisateur::$cleConnexion);
     }
 
-    public static function deconnecter()
+    public function deconnecter()
     {
         $session = Session::getInstance();
         $session->supprimer(ConnexionUtilisateur::$cleConnexion);
     }
 
-    public static function getLoginUtilisateurConnecte(): ?string
+    public function getLoginUtilisateurConnecte(): ?string
     {
         $session = Session::getInstance();
         if ($session->existeCle(ConnexionUtilisateur::$cleConnexion)) {
@@ -37,14 +44,14 @@ class ConnexionUtilisateur
             return null;
     }
 
-    public static function estUtilisateur($login): bool
+    public function estUtilisateur($login): bool
     {
         return (ConnexionUtilisateur::estConnecte() &&
             ConnexionUtilisateur::getLoginUtilisateurConnecte() == $login
         );
     }
 
-    public static function estAdministrateur() : bool
+    public function estAdministrateur() : bool
     {
         $loginConnecte = ConnexionUtilisateur::getLoginUtilisateurConnecte();
 
@@ -52,9 +59,8 @@ class ConnexionUtilisateur
         if ($loginConnecte === null)
             return false;
 
-        $utilisateurRepository = new UtilisateurRepository();
         /** @var Utilisateur $utilisateurConnecte */
-        $utilisateurConnecte = $utilisateurRepository->recupererParClePrimaire($loginConnecte);
+        $utilisateurConnecte = $this->utilisateurService->recupererUtilisateurParClePrimaire($loginConnecte);
 
         return ($utilisateurConnecte !== null && $utilisateurConnecte->getEstAdmin());
     }

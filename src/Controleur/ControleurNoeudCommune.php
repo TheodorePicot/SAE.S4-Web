@@ -2,25 +2,39 @@
 
 namespace App\PlusCourtChemin\Controleur;
 
+use App\PlusCourtChemin\Configuration\ConfigurationBDDPostgreSQL;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
+use App\PlusCourtChemin\Modele\Repository\ConnexionBaseDeDonnees;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
 use App\PlusCourtChemin\Service\NoeudCommuneService;
+use App\PlusCourtChemin\Service\NoeudCommuneServiceInterface;
+use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class ControleurNoeudCommune extends ControleurGenerique
 {
+
+    public function __construct(
+        private readonly NoeudCommuneServiceInterface $noeudCommuneService,
+        private readonly NoeudRoutierServiceInterface $noeudRoutierService
+    )
+    {
+
+    }
+
 
     public static function afficherErreur($errorMessage = "", $controleur = ""): Response
     {
         return parent::afficherErreur($errorMessage, "noeudCommune");
     }
 
-    public static function afficherListe(): Response
+
+    public function afficherListe(): Response
     {
-        $noeudsCommunes = (new NoeudCommuneService())->recuperer();     //appel au modèle pour gerer la BD
+        $noeudsCommunes = $this->noeudCommuneService->recupererNoeudCommune();     //appel au modèle pour gerer la BD
         return ControleurNoeudCommune::afficherVue('vueGenerale.php', [
             "noeudsCommunes" => $noeudsCommunes,
             "pagetitle" => "Liste des Noeuds Routiers",
@@ -28,7 +42,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         ]);
     }
 
-    public static function afficherDetail($gid): Response
+    public function afficherDetail($gid): Response
     {
 //        if (!isset($_REQUEST['gid'])) {
 //            MessageFlash::ajouter("danger", "Immatriculation manquante.");
@@ -36,7 +50,7 @@ class ControleurNoeudCommune extends ControleurGenerique
 //        }
 
 //        $gid = $_REQUEST['gid'];
-        $noeudCommune = (new NoeudCommuneRepository())->recupererParClePrimaire($gid);
+        $noeudCommune = $this->noeudCommuneService->recupererNoeudCommuneParClePrimaire($gid);
 
         if ($noeudCommune === null) {
             MessageFlash::ajouter("warning", "gid inconnue.");
@@ -50,57 +64,15 @@ class ControleurNoeudCommune extends ControleurGenerique
         ]);
     }
 
-//    public static function plusCourtChemin(): Response
-//    {
-//        $parametres = [
-//            "pagetitle" => "Plus court chemin",
-//            "cheminVueBody" => "noeudCommune/plusCourtChemin.php",
-//        ];
-////        var_dump($_REQUEST);
-////        var_dump($_POST);
-//
-//
-//        if (!empty($_POST)) {
-//            $nomCommuneDepart = $_POST["nomCommuneDepart"];
-//            $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
-//            echo "what" . $_POST["nomCommuneArrivee"];
-//
-//
-//            $noeudCommuneRepository = new NoeudCommuneRepository();
-//            /** @var NoeudCommune $noeudCommuneDepart */
-//            var_dump($noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart]));
-//            $noeudCommuneDepart = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
-//            /** @var NoeudCommune $noeudCommuneArrivee */
-//
-//            var_dump($noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]));
-//            $noeudCommuneArrivee = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
-//
-//            $noeudRoutierRepository = new NoeudRoutierRepository();
-//            $noeudRoutierDepartGid = $noeudRoutierRepository->recupererPar([
-//                "id_rte500" => $noeudCommuneDepart->getId_nd_rte()
-//            ])[0]->getGid();
-//            $noeudRoutierArriveeGid = $noeudRoutierRepository->recupererPar([
-//                "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
-//            ])[0]->getGid();
-//
-//            $pcc = new PlusCourtCheminAStar($noeudRoutierDepartGid, $noeudRoutierArriveeGid);
-//            $distance = $pcc->calculer();
-//
-//            $parametres["nomCommuneDepart"] = $nomCommuneDepart;
-//            $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;
-//            $parametres["distance"] = $distance;
-//        }
-//
-//        return ControleurNoeudCommune::afficherVue('vueGenerale.php', $parametres);
-//    }
-
-    public static function plusCourtChemin(): Response
+    public function plusCourtChemin(): Response
     {
         $parametres = [
-
+            "pagetitle" => "Plus court chemin",
+            "cheminVueBody" => "noeudCommune/plusCourtChemin.php",
         ];
 //        var_dump($_REQUEST);
 //        var_dump($_POST);
+
 
         if (!empty($_POST)) {
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
@@ -110,22 +82,22 @@ class ControleurNoeudCommune extends ControleurGenerique
 
             $noeudCommuneRepository = new NoeudCommuneRepository();
             /** @var NoeudCommune $noeudCommuneDepart */
-            var_dump($noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart]));
-            $noeudCommuneDepart = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneDepart])[0];
+            var_dump($this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneDepart]));
+            $noeudCommuneDepart = $this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneDepart])[0];
             /** @var NoeudCommune $noeudCommuneArrivee */
 
-            var_dump($noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee]));
-            $noeudCommuneArrivee = $noeudCommuneRepository->recupererPar(["nom_comm" => $nomCommuneArrivee])[0];
+            var_dump($this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneArrivee]));
+            $noeudCommuneArrivee = $this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneArrivee])[0];
 
-            $noeudRoutierRepository = new NoeudRoutierRepository();
-            $noeudRoutierDepartGid = $noeudRoutierRepository->recupererPar([
+
+            $noeudRoutierDepartGid = $this->noeudRoutierService->recupererNoeudRoutierPar([
                 "id_rte500" => $noeudCommuneDepart->getId_nd_rte()
             ])[0]->getGid();
-            $noeudRoutierArriveeGid = $noeudRoutierRepository->recupererPar([
+            $noeudRoutierArriveeGid = $this->noeudRoutierService->recupererNoeudRoutierPar([
                 "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
             ])[0]->getGid();
 
-            $pcc = new PlusCourtCheminAStar($noeudRoutierDepartGid, $noeudRoutierArriveeGid);
+            $pcc = new PlusCourtCheminAStar($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierService);
             $distance = $pcc->calculer();
 
             $parametres["nomCommuneDepart"] = $nomCommuneDepart;
@@ -136,15 +108,9 @@ class ControleurNoeudCommune extends ControleurGenerique
         return ControleurNoeudCommune::afficherTwig('noeudCommune/plusCourtChemin.html.twig', $parametres);
     }
 
-
-
-
-
-
-    public static function autoCompletion($lettre): Response
+    public function autoCompletion($lettre): Response
     {
-        $noeudCommuneRepository = new NoeudCommuneRepository();
-        $resultat = $noeudCommuneRepository->getVillesAutoCompletion($lettre);
+        $resultat = $this->noeudCommuneService->getVillesAutoCompletion($lettre);
         return new Response(json_encode($resultat));
     }
 }

@@ -7,11 +7,18 @@ use App\PlusCourtChemin\Lib\MotDePasse;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use App\PlusCourtChemin\Modele\Repository\UtilisateurRepositoryInterface;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
 
-class UtilisateurService
+class UtilisateurService implements UtilisateurServiceInterface
 {
-    public static function creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email)
+
+    public function __construct(private readonly UtilisateurRepositoryInterface $utilisateurRepository)
+    {
+
+    }
+
+    public function creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email)
     {
         /* TODO : se mettre d'accord pour les règles de validation
         $utilisateurRepository = new UtilisateurRepository();
@@ -52,15 +59,14 @@ class UtilisateurService
 
         $utilisateur = Utilisateur::construireDepuisFormulaire($_REQUEST);
         VerificationEmail::envoiEmailValidation($utilisateur);
-        $utilisateurRepository = new UtilisateurRepository();
-        $succesSauvegarde = $utilisateurRepository->ajouter($utilisateur);
+        $succesSauvegarde = $this->utilisateurRepository->ajouter($utilisateur);
 
         if (!$succesSauvegarde) {
             throw new ServiceException("Login existant.");
         }
     }
 
-    public static function mettreAJour($login, $prenom, $nom, $mdp, $mdp2, $mdpAncien, $email)
+    public function mettreAJour($login, $prenom, $nom, $mdp, $mdp2, $mdpAncien, $email)
     {
         if (!(isset($login) && isset($prenom) && isset($nom)
             && isset($mdp) && isset($mdp2) && isset($mdpAncien)
@@ -85,9 +91,8 @@ class UtilisateurService
             throw new ServiceException("Email non valide");
         }
 
-        $utilisateurRepository = new UtilisateurRepository();
         /** @var Utilisateur $utilisateur */
-        $utilisateur = $utilisateurRepository->recupererParClePrimaire($login);
+        $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($login);
 
         if ($utilisateur == null) {
             throw new ServiceException("Login inconnu");
@@ -112,17 +117,16 @@ class UtilisateurService
             VerificationEmail::envoiEmailValidation($utilisateur);
         }
 
-        $utilisateurRepository->mettreAJour($utilisateur);
+        $this->utilisateurRepository->mettreAJour($utilisateur);
     }
 
-    public static function connecter($login, $mdp)
+    public function connecter($login, $mdp)
     {
         if (!(isset($login) && isset($mdp))) {
             throw new ServiceException("Login ou mot de passe manquant.");
         }
-        $utilisateurRepository = new UtilisateurRepository();
         /** @var Utilisateur $utilisateur */
-        $utilisateur = $utilisateurRepository->recupererParClePrimaire($login);
+        $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($login);
 
         if ($utilisateur == null) {
             throw new ServiceException("Login inconnu.");
@@ -139,7 +143,7 @@ class UtilisateurService
         ConnexionUtilisateur::connecter($utilisateur->getLogin());
     }
 
-    public static function deconnecter()
+    public function deconnecter()
     {
         if (!ConnexionUtilisateur::estConnecte()) {
             throw new ServiceException("Utilisateur non connecté.");
@@ -147,7 +151,7 @@ class UtilisateurService
         ConnexionUtilisateur::deconnecter();
     }
 
-    public static function validerEmail($login, $nonce)
+    public function validerEmail($login, $nonce)
     {
         if (!(isset($login) && isset($nonce))) {
             throw new ServiceException("Login ou nonce manquant.");
@@ -158,5 +162,30 @@ class UtilisateurService
         if (!$succesValidation) {
             throw new ServiceException("Email de validation incorrect.");
         }
+    }
+
+    public function recupererUtilisateur() {
+        $utilisateur = $this->utilisateurRepository->recuperer();
+        return $utilisateur;
+    }
+
+    public function recupererUtilisateurParClePrimaire($login) {
+        $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($login);
+        if($utilisateur == null) {
+            throw new ServiceException("L’utilisateur n’existe pas!");
+        }
+        return $utilisateur;
+    }
+
+    public function supprimerUtilisateur(string $login, ?string $loginUtilisateurConnecte) {
+        $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($login);
+
+        if ($utilisateur === null)
+            throw new ServiceException("Utilisateur inconnue.");
+
+        if ($utilisateur->getLogin() !== intval($loginUtilisateurConnecte))
+            throw new ServiceException("Seul l'utilisateur connecter peut supprimer son compte");
+
+        return $this->utilisateurRepository->supprimer($login);
     }
 }

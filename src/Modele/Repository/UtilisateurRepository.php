@@ -5,8 +5,14 @@ namespace App\PlusCourtChemin\Modele\Repository;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use Exception;
 
-class UtilisateurRepository extends AbstractRepository
+class UtilisateurRepository extends AbstractRepository implements UtilisateurRepositoryInterface
 {
+
+    public function __construct(ConnexionBaseDeDonneesInterface $connexionBaseDeDonnees)
+    {
+        parent::__construct($connexionBaseDeDonnees);
+    }
+
 //    /**
 //     * @return Utilisateur[]
 //     */
