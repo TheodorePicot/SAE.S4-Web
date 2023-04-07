@@ -5,49 +5,57 @@
 {% block page_content %}
     <main>
         <div class="container-fluid">
-            <div class="row"  style="height: 90vh">
-                <div class="col-lg-3 col-md-12 col-sm-12">
-                    <form action="" method="post" id="form">
-                        <fieldset>
-                            <div class="my-5">
-                                <h2> Calculer un plus court chemin</h2>
-                            </div>
+            <div class="row my-4" style="height: 90vh">
 
-                            <div class="my-5">
-                                <div class="form-group row">
-                                    <label for="nomCommuneDepart_id" class="col-sm-2 col-form-label">Départ</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="nomCommuneDepart_id"
-                                               placeholder="Ex : Menton">
-                                        <div id="autocompletionD"></div>
+                <div class="col-lg-5 col-md-12 col-sm-12" style="height: 20px">
+                    <div>
+                        <form action="" method="post" id="form">
+                            <fieldset>
+                                <div class="d-flex align-content-center justify-content-center my-5">
+                                    <h2> Calculer un plus court chemin</h2>
+                                </div>
+
+                                <div class="my-5">
+                                    <div class="form-group row">
+                                        <div class="">
+                                            <input type="text" class="form-control" id="nomCommuneDepart_id"
+                                                   placeholder="Point de départ">
+                                            <div id="autocompletionD"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row my-4">
+
+                                        <div class="">
+                                            <input type="text" class="form-control" id="nomCommuneArrivee_id"
+                                                   placeholder="Point d'arrivé">
+                                            <div id="autocompletionA"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="d-flex justify-content-center my-4 col-12">
+                                            <button type="submit" class="btn btn-light">Calculer</button>
+                                            <a class="nav-link mx-4 align-self-center" href="{# lien #}"><img id="heart" alt="user" src="{{ assets("assets/img/heart.png") }}"></a>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="form-group row my-4">
-                                    <label for="nomCommuneArrivee_id" class="col-sm-2 col-form-label">Arrivée</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="nomCommuneArrivee_id"
-                                               placeholder="Ex : Menton">
-                                        <div id="autocompletionA"></div>
-                                    </div>
-                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
 
 
-                                <!--            <input type="hidden" name="XDEBUG_TRIGGER" value="1">-->
-                                <div class="d-flex justify-content-center my-4">
-                                    <button type="submit" class="btn btn-light">Calculer</button>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
+                    <div>
 
-                    <p>
-                        {#            Le plus court chemin entre {{ nomCommuneDepart }} et {{ nomCommuneArrivee }}> mesure {{ distance }} km. #}
-                    </p>
+                        {#         Le plus court chemin entre {{ nomCommuneDepart }} et {{ nomCommuneArrivee }}> mesure {{ distance }} km. #}
+
+                    </div>
+
+
                 </div>
 
 
-                <div class="col-lg-9 col-md-12 col-sm-12" >
+                <div class="col-lg-7 col-md-12 col-sm-12">
                     <div id="map">
 
                     </div>
