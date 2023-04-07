@@ -6,17 +6,13 @@ use App\PlusCourtChemin\Configuration\Configuration;
 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
-use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
-use App\PlusCourtChemin\Service\UtilisateurService;
 use App\PlusCourtChemin\Service\UtilisateurServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class ControleurUtilisateur extends ControleurGenerique
 {
-
-
-    public function __construct(private readonly UtilisateurServiceInterface $utilisateurService)
+    public function __construct(private readonly UtilisateurServiceInterface $utilisateurService, private readonly ConnexionUtilisateur $connexionUtilisateur)
     {
 
     }
@@ -62,7 +58,7 @@ class ControleurUtilisateur extends ControleurGenerique
     {
 //        if (isset($_REQUEST['login'])) {
 //            $login = $_REQUEST['login'];*
-        $idUtilisateurConnecte = ConnexionUtilisateur::getLoginUtilisateurConnecte();
+        $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
         $deleteSuccessful = $this->utilisateurService->supprimerUtilisateur($login, $idUtilisateurConnecte);
         $utilisateurs = $this->utilisateurService->recupererUtilisateur();
         if ($deleteSuccessful) {
@@ -116,7 +112,7 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter("danger", "Login inconnu.");
             return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
         }
-        if (!(ConnexionUtilisateur::estUtilisateur($login) || ConnexionUtilisateur::estAdministrateur())) {
+        if (!($this->connexionUtilisateur->estUtilisateur($login) || $this->connexionUtilisateur->estAdministrateur())) {
             MessageFlash::ajouter("danger", "La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
             return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
         }

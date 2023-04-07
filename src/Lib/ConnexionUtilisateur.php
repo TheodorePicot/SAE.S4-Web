@@ -5,6 +5,7 @@ namespace App\PlusCourtChemin\Lib;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\HTTP\Session;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use App\PlusCourtChemin\Modele\Repository\UtilisateurRepositoryInterface;
 use App\PlusCourtChemin\Service\UtilisateurServiceInterface;
 
 class ConnexionUtilisateur
@@ -12,7 +13,7 @@ class ConnexionUtilisateur
     private static string $cleConnexion = "_utilisateurConnecte";
 
     public function __construct(
-        private readonly UtilisateurServiceInterface $utilisateurService
+        private readonly UtilisateurRepositoryInterface $utilisateurRepository
     )
     {
     }
@@ -20,47 +21,47 @@ class ConnexionUtilisateur
     public function connecter(string $loginUtilisateur): void
     {
         $session = Session::getInstance();
-        $session->enregistrer(ConnexionUtilisateur::$cleConnexion, $loginUtilisateur);
+        $session->enregistrer(self::$cleConnexion, $loginUtilisateur);
     }
 
     public function estConnecte(): bool
     {
         $session = Session::getInstance();
-        return $session->existeCle(ConnexionUtilisateur::$cleConnexion);
+        return $session->existeCle(self::$cleConnexion);
     }
 
     public function deconnecter()
     {
         $session = Session::getInstance();
-        $session->supprimer(ConnexionUtilisateur::$cleConnexion);
+        $session->supprimer(self::$cleConnexion);
     }
 
     public function getLoginUtilisateurConnecte(): ?string
     {
         $session = Session::getInstance();
-        if ($session->existeCle(ConnexionUtilisateur::$cleConnexion)) {
-            return $session->lire(ConnexionUtilisateur::$cleConnexion);
+        if ($session->existeCle(self::$cleConnexion)) {
+            return $session->lire(self::$cleConnexion);
         } else
             return null;
     }
 
     public function estUtilisateur($login): bool
     {
-        return (ConnexionUtilisateur::estConnecte() &&
-            ConnexionUtilisateur::getLoginUtilisateurConnecte() == $login
+        return (self::estConnecte() &&
+            self::getLoginUtilisateurConnecte() == $login
         );
     }
 
     public function estAdministrateur() : bool
     {
-        $loginConnecte = ConnexionUtilisateur::getLoginUtilisateurConnecte();
+        $loginConnecte = self::getLoginUtilisateurConnecte();
 
         // Si personne n'est connecté
         if ($loginConnecte === null)
             return false;
 
         /** @var Utilisateur $utilisateurConnecte */
-        $utilisateurConnecte = $this->utilisateurService->recupererUtilisateurParClePrimaire($loginConnecte);
+        $utilisateurConnecte = $this->utilisateurRepository->recupererParClePrimaire($loginConnecte);
 
         return ($utilisateurConnecte !== null && $utilisateurConnecte->getEstAdmin());
     }

@@ -1,23 +1,35 @@
 <?php
+
 namespace App\PlusCourtChemin\Controleur;
 
+use App\PlusCourtChemin\Configuration\ConfigurationBDDPostgreSQL;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\Conteneur;
+use App\PlusCourtChemin\Lib\VerificationEmail;
+use App\PlusCourtChemin\Modele\Repository\ConnexionBaseDeDonnees;
+use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
+use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
+use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use App\PlusCourtChemin\Service\NoeudCommuneService;
+use App\PlusCourtChemin\Service\NoeudRoutierService;
+use App\PlusCourtChemin\Service\UtilisateurService;
 use Exception;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
-use App\PlusCourtChemin\Lib\Conteneur;
+
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
@@ -138,7 +150,43 @@ class RouteurURL
             "_controller" => "noeud_commune_controleur::autoCompletion",
         ]);
         $routes->add("autocompletion", $route);
+        $conteneur = new ContainerBuilder();
 
+        $conteneur->register('config_bdd', ConfigurationBDDPostgreSQL::class);
+
+        $connexionBaseService = $conteneur->register('connexion_base', ConnexionBaseDeDonnees::class);
+        $connexionBaseService->setArguments([new Reference('config_bdd')]);
+
+        $noeudCommuneRepository = $conteneur->register('noeud_commune_repository', NoeudCommuneRepository::class);
+        $noeudCommuneRepository->setArguments([new Reference('connexion_base')]);
+
+        $noeudRoutierRepository = $conteneur->register('noeud_routier_repository', NoeudRoutierRepository::class);
+        $noeudRoutierRepository->setArguments([new Reference('connexion_base')]);
+
+        $utilisateurRepository = $conteneur->register('utilisateur_repository', UtilisateurRepository::class);
+        $utilisateurRepository->setArguments([new Reference('connexion_base')]);
+
+        $connexionUtilisateur = $conteneur->register('connexion_utilisateur', ConnexionUtilisateur::class);
+        $connexionUtilisateur->setArguments([new Reference('utilisateur_repository')]);
+
+        $verificationEmail = $conteneur->register('verification_email', VerificationEmail::class);
+        $verificationEmail->setArguments([new Reference('utilisateur_repository')]);
+
+        $noeudCommuneService = $conteneur->register('noeud_commune_service', NoeudCommuneService::class);
+        $noeudCommuneService->setArguments([new Reference('noeud_commune_repository')]);
+
+        $noeudRoutierService = $conteneur->register('noeud_routier_service', NoeudRoutierService::class);
+        $noeudRoutierService->setArguments([new Reference('noeud_routier_repository')]);
+
+        $utilisateurService = $conteneur->register('utilisateur_service', UtilisateurService::class);
+        $utilisateurService->setArguments([new Reference('utilisateur_repository'), new Reference('connexion_utilisateur'), new Reference('verification_email')]);
+
+        $publicationControleurService = $conteneur->register('noeud_commune_controleur', ControleurNoeudCommune::class);
+        $publicationControleurService->setArguments([new Reference('noeud_commune_service'), new Reference('noeud_routier_service')]);
+
+        $publicationControleurService = $conteneur->register('utilisateur_controleur', ControleurUtilisateur::class);
+        $publicationControleurService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur')]);
+//
 //        var_dump($contexteRequete);
 
         $contexteRequete = (new RequestContext())->fromRequest($requete);
@@ -160,42 +208,8 @@ class RouteurURL
         $twig->addGlobal('idUtilisateurAdmin', ConnexionUtilisateur::estAdministrateur());
         $twig->addGlobal('messageFlash', new MessageFlash());
 
-        try {
-            // 3 méthodes qui lèvent des exceptions
 
-        $conteneur = new ContainerBuilder();
-
-        $conteneur->register('config_bdd', ConfigurationBDDPostgreSQL::class);
-
-        $connexionBaseService = $conteneur->register('connexion_base', ConnexionBaseDeDonnees::class);
-        $connexionBaseService->setArguments([new Reference('config_bdd')]);
-
-        $connexionBaseService = $conteneur->register('connexion_utilisateur', ConnexionUtilisateur::class);
-        $connexionBaseService->setArguments([new Reference('config_bdd')]);
-
-        $publicationsRepositoryService = $conteneur->register('noeud_commune_repository',NoeudCommuneRepository::class);
-        $publicationsRepositoryService->setArguments([new Reference('connexion_base')]);
-
-        $noeudRoutierRepositoryService = $conteneur->register('noeud_routier_repository',NoeudRoutierRepository::class);
-        $noeudRoutierRepositoryService->setArguments([new Reference('connexion_base')]);
-
-        $utilisateurRepositoryService = $conteneur->register('utilisateur_repository',UtilisateurRepository::class);
-        $utilisateurRepositoryService->setArguments([new Reference('connexion_base')]);
-
-        $publicationService = $conteneur->register('noeud_commune_service', NoeudCommuneService::class);
-        $publicationService->setArguments([new Reference('noeud_commune_repository')]);
-
-        $noeudRoutierService = $conteneur->register('noeud_routier_service', NoeudRoutierService::class);
-        $noeudRoutierService->setArguments([new Reference('noeud_routier_repository')]);
-
-        $noeudRoutierService = $conteneur->register('utilisateur_service', UtilisateurService::class);
-        $noeudRoutierService->setArguments([new Reference('utilisateur_repository')]);
-
-        $publicationControleurService = $conteneur->register('noeud_commune_controleur',ControleurNoeudCommune::class);
-        $publicationControleurService->setArguments([new Reference('noeud_commune_service'), new Reference('noeud_routier_service')]);
-
-        $publicationControleurService = $conteneur->register('utilisateur_controleur',ControleurUtilisateur::class);
-        $publicationControleurService->setArguments([new Reference('utilisateur_service')]);
+        // TODO renommer les nom de variable
 
         try {
             $contexteRequete = (new RequestContext())->fromRequest($requete);
@@ -227,7 +241,7 @@ class RouteurURL
         } catch (MethodNotAllowedException $exception) {
             $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 405);
         } catch (Exception $exception) {
-            $reponse = ControleurGenerique::afficherErreur($exception->getMessage()) ;
+            $reponse = ControleurGenerique::afficherErreur($exception->getMessage());
         }
         $reponse->send();
     }

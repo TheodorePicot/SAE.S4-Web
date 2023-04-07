@@ -5,14 +5,16 @@ namespace App\PlusCourtChemin\Lib;
 use App\PlusCourtChemin\Configuration\Configuration;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use App\PlusCourtChemin\Modele\Repository\UtilisateurRepositoryInterface;
 use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
+use App\PlusCourtChemin\Service\UtilisateurService;
 use App\PlusCourtChemin\Service\UtilisateurServiceInterface;
 
 class VerificationEmail
 {
 
     public function __construct(
-        private readonly UtilisateurServiceInterface $utilisateurService
+        private readonly UtilisateurRepositoryInterface $utilisateurRepository
     )
     {
     }
@@ -38,7 +40,7 @@ class VerificationEmail
     public function traiterEmailValidation($login, $nonce): bool
     {
         /** @var Utilisateur $utilisateur */
-        $utilisateur = $this->utilisateurService->recupererUtilisateurParClePrimaire($login);
+        $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($login);
 
         if ($utilisateur === null)
             return false;
@@ -51,7 +53,7 @@ class VerificationEmail
         $utilisateur->setEmailAValider("");
         $utilisateur->setNonce("");
 
-        $this->utilisateurService->mettreAJour($utilisateur);
+        $this->utilisateurRepository->mettreAJour($utilisateur);
         return true;
     }
 

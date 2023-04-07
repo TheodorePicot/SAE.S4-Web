@@ -2,13 +2,11 @@
 
 namespace App\PlusCourtChemin\Lib;
 
-use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
-use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
-use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepositoryInterface;
 use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
 
 class PlusCourtCheminAStar
 {
+    private static array $tousLesNoeudsRoutiers;
     public function __construct(
         private int $noeudRoutierDepartGid,
         private int $noeudRoutierArriveeGid,
@@ -19,7 +17,9 @@ class PlusCourtCheminAStar
 
     public function calculer(bool $affichageDebug = false): float
     {
-        $this->tousLesNoeudsRoutiers = $this->noeudRoutierService->getTousLesVoisins();
+        if (self::$tousLesNoeudsRoutiers === 0) {
+            self::$tousLesNoeudsRoutiers = $this->noeudRoutierService->getTousLesVoisins();
+        }
         $this->priorityQueue = new PlusCourtCheminPriorityQueue();
         $this->distances = [$this->noeudRoutierDepartGid => 0];
 //        $noeudRoutierRepository = new NoeudRoutierRepository();
@@ -38,7 +38,7 @@ class PlusCourtCheminAStar
 
             unset($this->noeudsALaFrontiere[$noeudRoutierGidCourant]);
 
-            $voisins = $this->tousLesNoeudsRoutiers[$noeudRoutierGidCourant]; // TODO Deux appelles aux PDO inutile il suffit de faire un appel au getVoisins !
+            $voisins = self::$tousLesNoeudsRoutiers[$noeudRoutierGidCourant]; // TODO Deux appelles aux PDO inutile il suffit de faire un appel au getVoisins !
             foreach ($voisins as $voisin) {
                 $noeudVoisinGid = $voisin["noeud_routier_gid"];
                 $distanceTroncon = $voisin["longueur"];

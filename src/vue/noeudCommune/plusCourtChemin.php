@@ -7,6 +7,7 @@
 
             <div class="my-5">
 
+                    <input type="hidden" name="XDEBUG_TRIGGER">
 
                 <div class="form-group row">
                     <label for="nomCommuneDepart_id" class="col-sm-2 col-form-label">Départ</label>
