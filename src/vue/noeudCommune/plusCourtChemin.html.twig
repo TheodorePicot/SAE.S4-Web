@@ -5,31 +5,29 @@
 {% block page_content %}
     <main>
         <div class="container-fluid">
-            <div class="row my-4" style="height: 90vh">
-
-                <div class="col-lg-5 col-md-12 col-sm-12" style="height: 20px">
-                    <div>
-                        <form action="" method="post" id="form">
-                            <fieldset>
-                                <div class="d-flex align-content-center justify-content-center my-5">
-                                    <h2> Calculer un plus court chemin</h2>
-                                </div>
+            <div class="row"  style="height: 90vh">
+                <div class="col-lg-3 col-md-12 col-sm-12">
+                    <form action="" method="post" id="form">
+                        <fieldset>
+                            <div class="my-5">
+                                <h2> Calculer un plus court chemin</h2>
+                            </div>
 
                                 <div class="my-5">
                                     <div class="form-group row">
                                         <div class="">
                                             <input type="text" class="form-control" id="nomCommuneDepart_id"
-                                                   placeholder="Point de départ">
-                                            <div id="autocompletionD"></div>
-                                        </div>
+                                                   placeholder="Point de départ" autocomplete="off">
+                                            <div class="autocompletion" id="autocompletionD"></div>                                        </div>
                                     </div>
 
                                     <div class="form-group row my-4">
 
                                         <div class="">
                                             <input type="text" class="form-control" id="nomCommuneArrivee_id"
-                                                   placeholder="Point d'arrivé">
-                                            <div id="autocompletionA"></div>
+                                                   placeholder="Point d'arrivé" autocomplete="off">
+                                            <div class="autocompletion" id="autocompletionA"></div>
+
                                         </div>
                                     </div>
 

@@ -39,20 +39,22 @@ function focusHandler(divAutocompletion, e) {
                 console.log("ArrowDown");
                 currentFocus++;
                 addActive(divAutocompletion);
+                e.preventDefault();
                 break;
             case "ArrowUp":
                 console.log("ArrowUp");
                 currentFocus--;
                 addActive(divAutocompletion);
+                e.preventDefault();
                 break;
             case "Enter":
                 if (currentFocus > -1) {
                     if (divAutocompletion) divAutocompletion.children[currentFocus].click();
                     currentFocus = -1;
                 }
+                e.preventDefault();
                 break;
         }
-        e.preventDefault();
     }
 }
 

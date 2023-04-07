@@ -127,3 +127,48 @@ ul {
     height: 30px ;
     width: 30px;
 }
+
+.autocompletion {
+    background-color: white;
+    border-radius: 5px;
+    /*border: 1px solid grey;*/
+    line-height: 2.5;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    z-index: 99;
+}
+
+.autocompletion p {
+    color: black;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    margin: 0 0 0 0;
+    padding: 0 5px 0 5px;
+}
+
+.autocompletion p:hover {
+    background-color: #e9e9e9;
+    cursor: pointer;
+}
+
+.acdiv {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.acdiv * {
+    vertical-align: top;
+}
+
+#loading {
+    visibility: hidden;
+    width: 20px;
+}
+
+.autocomplete-active {
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+}

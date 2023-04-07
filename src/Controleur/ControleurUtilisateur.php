@@ -183,6 +183,7 @@ class ControleurUtilisateur extends ControleurGenerique
             $this->utilisateurService->connecter($login, $password);
         } catch (ServiceException $e) {
             MessageFlash::ajouter("danger", $e->getMessage());
+            var_dump($e->getMessage());
             return ControleurUtilisateur::rediriger('afficherFormulaireConnexion');
         }
         MessageFlash::ajouter("success", "Connexion effectuée.");
