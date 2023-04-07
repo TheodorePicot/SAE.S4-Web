@@ -50,9 +50,9 @@ function focusHandler(divAutocompletion, e) {
                     if (divAutocompletion) divAutocompletion.children[currentFocus].click();
                     currentFocus = -1;
                 }
+                e.preventDefault();
                 break;
         }
-        e.preventDefault();
     }
 }
 

@@ -6,7 +6,6 @@
     <main>
         <div class="container-fluid col-3 my-5">
             <div class="row">
-                {#        changement méthode !! #}
                 <form class="my-5" method="{{ method }}" action="{{ route("connecter") }}">
                     <fieldset>
                         <div class="d-flex align-content-center justify-content-center">
@@ -16,15 +15,15 @@
                         <div class="my-4">
                             <div class="form-group row">
                                 <div class="my-2">
-                                    <input type="text" class="form-control" id="login_id" placeholder="Login">
+                                    <label for="login_id"></label><input type="text" class="form-control" id="login_id" placeholder="Login">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="my-2">
-                                    <input type="password" class="form-control" value="" placeholder="Mot de passe"
-                                           name="mdp"
-                                           id="mdp_id" required>
+                                    <label for="mdp_id"></label><input type="password" class="form-control" value="" placeholder="Mot de passe"
+                                                                       name="mdp"
+                                                                       id="mdp_id" required>
                                 </div>
                             </div>
 
