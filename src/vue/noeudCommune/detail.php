@@ -1,5 +1,3 @@
-
-
 <div class="d-flex justify-content-center">
     Noeud routier <br>
     gid <?= $noeudCommune->getGid() ?>,

@@ -39,11 +39,13 @@ function focusHandler(divAutocompletion, e) {
                 console.log("ArrowDown");
                 currentFocus++;
                 addActive(divAutocompletion);
+                e.preventDefault();
                 break;
             case "ArrowUp":
                 console.log("ArrowUp");
                 currentFocus--;
                 addActive(divAutocompletion);
+                e.preventDefault();
                 break;
             case "Enter":
                 if (currentFocus > -1) {
