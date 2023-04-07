@@ -24,6 +24,7 @@
                         </div>
                     </div>
 
+                    <input type="hidden" name="XDEBUG_TRIGGER">
 
                     <div class="d-flex justify-content-center my-4">
                         <button id="buttonCalculer" type="submit" class="btn btn-light">Calculer</button>

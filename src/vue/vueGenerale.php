@@ -3,9 +3,6 @@
 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 use App\PlusCourtChemin\Lib\Conteneur;
 
-$loginHTML = htmlspecialchars(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-$loginURL = rawurlencode(ConnexionUtilisateur::getLoginUtilisateurConnecte());
-
 $generateurUrl = Conteneur::recupererService("generateurUrl");
 $assistantUrl = Conteneur::recupererService("assistantUrl");
 $urlCSS = $assistantUrl->getAbsoluteUrl("assets/css/style.css");
@@ -66,7 +63,7 @@ $urlCSS = $assistantUrl->getAbsoluteUrl("assets/css/style.css");
             </ul>
 
             <ul class="navbar-nav ms-auto">
-                <?php if (!ConnexionUtilisateur::estConnecte()) : ?>
+                <?php if (true) : ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= $generateurUrl->generate("afficherFormulaireConnexion"); ?>">Se
                             connecter</a>

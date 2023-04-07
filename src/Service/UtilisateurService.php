@@ -13,7 +13,7 @@ use App\PlusCourtChemin\Service\Exception\ServiceException;
 class UtilisateurService implements UtilisateurServiceInterface
 {
 
-    public function __construct(private readonly UtilisateurRepositoryInterface $utilisateurRepository)
+    public function __construct(private readonly UtilisateurRepositoryInterface $utilisateurRepository, private readonly ConnexionUtilisateur $connexionUtilisateur, private readonly VerificationEmail $verificationEmail)
     {
 
     }
@@ -50,7 +50,7 @@ class UtilisateurService implements UtilisateurServiceInterface
         if ($mdp !== $mdp2) {
             throw new ServiceException("Mots de passe distincts!");
         }
-        if (!ConnexionUtilisateur::estAdministrateur()) {
+        if (!$this->connexionUtilisateur->estAdministrateur()) {
             unset($_REQUEST["estAdmin"]);
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -58,7 +58,7 @@ class UtilisateurService implements UtilisateurServiceInterface
         }
 
         $utilisateur = Utilisateur::construireDepuisFormulaire($_REQUEST);
-        VerificationEmail::envoiEmailValidation($utilisateur);
+        $this->verificationEmail->envoiEmailValidation($utilisateur);
         $succesSauvegarde = $this->utilisateurRepository->ajouter($utilisateur);
 
         if (!$succesSauvegarde) {
@@ -83,7 +83,7 @@ class UtilisateurService implements UtilisateurServiceInterface
         }
         */
 
-        if (!(ConnexionUtilisateur::estConnecte() || ConnexionUtilisateur::estAdministrateur())) {
+        if (!($this->connexionUtilisateur->estConnecte() || $this->connexionUtilisateur->estAdministrateur())) {
             throw new ServiceException("La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
         }
 
@@ -106,7 +106,7 @@ class UtilisateurService implements UtilisateurServiceInterface
         $utilisateur->setPrenom($prenom);
         $utilisateur->setMdpHache($mdp);
 
-        if (ConnexionUtilisateur::estAdministrateur()) {
+        if ($this->connexionUtilisateur->estAdministrateur()) {
             $utilisateur->setEstAdmin(isset($_REQUEST["estAdmin"]));
         }
 
@@ -114,7 +114,7 @@ class UtilisateurService implements UtilisateurServiceInterface
             $utilisateur->setEmailAValider($email);
             $utilisateur->setNonce(MotDePasse::genererChaineAleatoire());
 
-            VerificationEmail::envoiEmailValidation($utilisateur);
+            $this->verificationEmail->envoiEmailValidation($utilisateur);
         }
 
         $this->utilisateurRepository->mettreAJour($utilisateur);
@@ -136,19 +136,19 @@ class UtilisateurService implements UtilisateurServiceInterface
             throw new ServiceException("Mot de passe incorrect.");
         }
 
-        if (!VerificationEmail::aValideEmail($utilisateur)) {
+        if (!$this->verificationEmail->aValideEmail($utilisateur)) {
             throw new ServiceException("Adresse email non validée.");
         }
 
-        ConnexionUtilisateur::connecter($utilisateur->getLogin());
+        $this->connexionUtilisateur->connecter($utilisateur->getLogin());
     }
 
     public function deconnecter()
     {
-        if (!ConnexionUtilisateur::estConnecte()) {
+        if (!$this->connexionUtilisateur->estConnecte()) {
             throw new ServiceException("Utilisateur non connecté.");
         }
-        ConnexionUtilisateur::deconnecter();
+        $this->connexionUtilisateur->deconnecter();
     }
 
     public function validerEmail($login, $nonce)
@@ -157,7 +157,7 @@ class UtilisateurService implements UtilisateurServiceInterface
             throw new ServiceException("Login ou nonce manquant.");
         }
 
-        $succesValidation = VerificationEmail::traiterEmailValidation($login, $nonce);
+        $succesValidation = $this->verificationEmail->traiterEmailValidation($login, $nonce);
 
         if (!$succesValidation) {
             throw new ServiceException("Email de validation incorrect.");
