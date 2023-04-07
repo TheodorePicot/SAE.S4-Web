@@ -11,7 +11,7 @@ function initMap() {
 
 }
 
-window.initMap = initMap;
+
 
 //API Météo
 // function callback_weather(req) {

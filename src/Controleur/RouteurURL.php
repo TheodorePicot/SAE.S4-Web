@@ -1,10 +1,10 @@
 <?php
-
 namespace App\PlusCourtChemin\Controleur;
 
 use App\PlusCourtChemin\Configuration\ConfigurationBDDPostgreSQL;
 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 use App\PlusCourtChemin\Lib\Conteneur;
+use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\Repository\ConnexionBaseDeDonnees;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
@@ -29,7 +29,6 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
-
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
@@ -187,37 +186,41 @@ class RouteurURL
         $publicationControleurService = $conteneur->register('utilisateur_controleur', ControleurUtilisateur::class);
         $publicationControleurService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur')]);
 //
-//        var_dump($contexteRequete);
-
-        $contexteRequete = (new RequestContext())->fromRequest($requete);
-
-
-        $generateurUrl = new UrlGenerator($routes, $contexteRequete);
-        $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
-        Conteneur::ajouterService("generateurUrl", $generateurUrl);
-        Conteneur::ajouterService("assistantUrl", $assistantUrl);
-
-        //            TWIG Config
-
-        $fonctionAsset = $assistantUrl->getAbsoluteUrl(...);
-        $fonctionRoute = $generateurUrl->generate(...);
-
-        $twig->addFunction(new TwigFunction("assets", $fonctionAsset));
-        $twig->addFunction(new TwigFunction("route", $fonctionRoute));
-        $twig->addGlobal('idUtilisateurCo', ConnexionUtilisateur::getLoginUtilisateurConnecte());
-        $twig->addGlobal('idUtilisateurAdmin', ConnexionUtilisateur::estAdministrateur());
-        $twig->addGlobal('messageFlash', new MessageFlash());
 
 
         // TODO renommer les nom de variable
 
-        try {
+
+            //        var_dump($contexteRequete);
+
+            $contexteRequete = (new RequestContext())->fromRequest($requete);
+
+
+            $generateurUrl = new UrlGenerator($routes, $contexteRequete);
+            $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
+            Conteneur::ajouterService("generateurUrl", $generateurUrl);
+            Conteneur::ajouterService("assistantUrl", $assistantUrl);
+
+            //            TWIG Config
+
+            $fonctionAsset = $assistantUrl->getAbsoluteUrl(...);
+            $fonctionRoute = $generateurUrl->generate(...);
+
+            $twig->addFunction(new TwigFunction("assets", $fonctionAsset));
+            $twig->addFunction(new TwigFunction("route", $fonctionRoute));
+            $twig->addGlobal('idUtilisateurCo', $conteneur->get("connexion_utilisateur")->estConnecte());
+            $twig->addGlobal('idUtilisateurAdmin',  $conteneur->get("connexion_utilisateur")->estAdministrateur());
+            $twig->addGlobal('messageFlash', new MessageFlash());
+
+
+            try {
             $contexteRequete = (new RequestContext())->fromRequest($requete);
             // 3 méthodes qui lèvent des exceptions
             $generateurUrl = new UrlGenerator($routes, $contexteRequete);
             $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
             Conteneur::ajouterService("generateurUrl", $generateurUrl);
             Conteneur::ajouterService("assistantUrl", $assistantUrl);
+
 //        @throws NoConfigurationException  If no routing configuration could be found
 //        @throws ResourceNotFoundException If the resource could not be found
 //        @throws MethodNotAllowedException If the resource was found but the request method is not allowed
