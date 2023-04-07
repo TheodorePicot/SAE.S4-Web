@@ -11,10 +11,7 @@ body {
 
 }
 
-#map {
-    width: 500px;
-    height: 500px;
-}
+
 
 div {
     color: white;
@@ -37,9 +34,9 @@ ul {
     height: 100%;
     border: solid #ffffff 4px;
     border-radius : 20px;
-
-
 }
+
+
 
 #form {
     width: 100%;

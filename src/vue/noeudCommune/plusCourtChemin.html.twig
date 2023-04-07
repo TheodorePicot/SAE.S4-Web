@@ -3,65 +3,56 @@
 {% block page_title %}Plus court chemin{% endblock %}
 
 {% block page_content %}
+
     <main>
         <div class="container-fluid">
-            <div class="row"  style="height: 90vh">
-                <div class="col-lg-3 col-md-12 col-sm-12">
+
+            <div class="row my-3" style="height: 90vh">
+                <div class="col-lg-5 col-md-12 col-sm-12">
                     <form action="" method="post" id="form">
                         <fieldset>
-                            <div class="my-5">
+                            <div class="my-5 d-flex justify-content-center">
                                 <h2> Calculer un plus court chemin</h2>
                             </div>
-
-                                <div class="my-5">
-                                    <div class="form-group row">
-                                        <div class="">
-                                            <input type="text" class="form-control" id="nomCommuneDepart_id"
-                                                   placeholder="Point de départ" autocomplete="off">
-                                            <div class="autocompletion" id="autocompletionD"></div>                                        </div>
-                                    </div>
-
-                                    <div class="form-group row my-4">
-
-                                        <div class="">
-                                            <input type="text" class="form-control" id="nomCommuneArrivee_id"
-                                                   placeholder="Point d'arrivé" autocomplete="off">
-                                            <div class="autocompletion" id="autocompletionA"></div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="d-flex justify-content-center my-4 col-12">
-                                            <button type="submit" class="btn btn-light">Calculer</button>
-                                            <a class="nav-link mx-4 align-self-center" href="{# lien #}"><img id="heart" alt="user" src="{{ assets("assets/img/heart.png") }}"></a>
-                                        </div>
+                            <div class="my-5">
+                                <div class="form-group row">
+                                    <div class="acdiv">
+                                        <input type="text" class="form-control" id="nomCommuneDepart_id"
+                                               placeholder="Point de départ" autocomplete="off">
+                                        <div class="autocompletion" id="autocompletionD"></div>
                                     </div>
                                 </div>
-                            </fieldset>
-                        </form>
-                    </div>
-
-
+                                <div class="form-group row my-4">
+                                    <div class="acdiv">
+                                        <input type="text" class="form-control" id="nomCommuneArrivee_id"
+                                               placeholder="Point d'arrivé" autocomplete="off">
+                                        <div class="autocompletion" id="autocompletionA"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="d-flex justify-content-center my-4 col-12">
+                                    <button type="submit" class="btn btn-light">Calculer</button>
+                                    <a class="nav-link mx-4 align-self-center" href="{# lien #}"><img id="heart"
+                                                                                                      alt="user"
+                                                                                                      src="{{ assets("assets/img/heart.png") }}"></a>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
                     <div>
 
                         {#         Le plus court chemin entre {{ nomCommuneDepart }} et {{ nomCommuneArrivee }}> mesure {{ distance }} km. #}
 
                     </div>
-
-
                 </div>
 
 
                 <div class="col-lg-7 col-md-12 col-sm-12">
                     <div id="map">
-
                     </div>
                 </div>
-
             </div>
-        </div>
-
 
     </main>
 
