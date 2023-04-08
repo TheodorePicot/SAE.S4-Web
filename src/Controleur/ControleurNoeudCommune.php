@@ -29,16 +29,15 @@ class ControleurNoeudCommune extends ControleurGenerique
     public function afficherListe(): Response
     {
         $noeudsCommunes = $this->noeudCommuneService->recupererNoeudCommune();     //appel au modèle pour gerer la BD
-        return ControleurNoeudCommune::afficherVue('vueGenerale.php', [
+        return ControleurNoeudCommune::afficherTwig('noeudCommune/list.html.twig', [
             "noeudsCommunes" => $noeudsCommunes,
-            "pagetitle" => "Liste des Noeuds Routiers",
-            "cheminVueBody" => "noeudCommune/liste.php"
+
         ]);
     }
 
     public function afficherDetail($gid): Response
     {
-//        if (!isset($_REQUEST['gid'])) {
+//        if (!isset($_REQUEST[$gid'])) {
 //            MessageFlash::ajouter("danger", "Immatriculation manquante.");
 //            ControleurNoeudCommune::rediriger("noeudCommune", "afficherListe");
 //        }

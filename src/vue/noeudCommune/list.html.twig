@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}Gallia{% endblock %}
+
+{% block page_content %}
+
+    <main>
+        <div class="container-fluid">
+            <div class="d-flex justify-content-center">
+
+                <a href="">Calculer un plus court chemin</a>
+            </div>
+
+            <div class="row offset-lg-4">
+
+
+                <div class="mx-5 col-lg-6 col-md-12 col-sm-12 ">
+                    <form action="" method="post" id="form">
+                        <fieldset>
+                            <div class="my-5 d-flex justify-content-center">
+                                <h2><strong>Rechercher une commune en France</strong></h2>
+                            </div>
+                            <div class="my-5">
+                                <div class="form-group row">
+                                    <div class="acdiv">
+                                        <input name="nomCommun" type="text" class="form-control"
+                                               id="nomCommuneDepart_id"
+                                               placeholder="nom commune" autocomplete="off">
+                                        <div class="autocompletion" id="autocompletionD"></div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="XDEBUG_TRIGGER" value="1">
+                                <div class="row">
+                                    <div class="d-flex justify-content-center my-4 col-12">
+                                        <button type="submit" class="btn btn-light">Rechercher</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+
+                {#                <div class="d-flex justify-content-center"> #}
+                {#                    <ul> #}
+
+                {#                        {% for noeudCommune in noeudsCommunes %} #}
+
+                {#                            <div class="d-flex justify-content-center"> #}
+                {#                                Noeud routier <br> #}
+                {#                                nomCommune {{ noeudCommune.nomCommune }} #}
+                {#                            </div> #}
+
+
+                {#                            <li class=""> #}
+                {#                                <a href="">(Détail)</a> #}
+                {#                            </li> #}
+
+
+                {#                        {% endfor %} #}
+
+                {#                    </ul> #}
+            </div>
+        </div>
+
+        </div>
+    </main>
+
+{% endblock %}

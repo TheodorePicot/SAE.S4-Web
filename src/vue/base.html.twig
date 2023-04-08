@@ -129,7 +129,7 @@
 </header>
 
 
-<div id="flashes-container">
+<div id="flashes-container" class="d-flex justify-content-center">
     {% for type in ["success", "info", "warning", "danger"] %}
         {% for messagesFlash in messagesFlash.lireMessages(type) %}
             <span class="alert alert-{{ type }}">{{ messagesFlash }}</span>
