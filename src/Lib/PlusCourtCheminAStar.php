@@ -6,7 +6,7 @@ use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
 
 class PlusCourtCheminAStar
 {
-    private static ?array $tousLesNoeudsRoutiers;
+    private static array $tousLesNoeudsRoutiers;
     public function __construct(
         private int $noeudRoutierDepartGid,
         private int $noeudRoutierArriveeGid,
@@ -17,9 +17,9 @@ class PlusCourtCheminAStar
 
     public function calculer(bool $affichageDebug = false): float
     {
-        if (self::$tousLesNoeudsRoutiers === null) {
-            self::$tousLesNoeudsRoutiers = $this->noeudRoutierService->getTousLesVoisins();
-        }
+//        if (self::$tousLesNoeudsRoutiers === null) {
+        self::$tousLesNoeudsRoutiers = $this->noeudRoutierService->getTousLesVoisins();
+//        }
         $this->priorityQueue = new PlusCourtCheminPriorityQueue();
         $this->distances = [$this->noeudRoutierDepartGid => 0];
 //        $noeudRoutierRepository = new NoeudRoutierRepository();
