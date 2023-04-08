@@ -36,13 +36,11 @@ function focusHandler(divAutocompletion, e) {
     if (divAutocompletion.hasChildNodes()) {
         switch (e.key) {
             case "ArrowDown":
-                console.log("ArrowDown");
                 currentFocus++;
                 addActive(divAutocompletion);
                 e.preventDefault();
                 break;
             case "ArrowUp":
-                console.log("ArrowUp");
                 currentFocus--;
                 addActive(divAutocompletion);
                 e.preventDefault();

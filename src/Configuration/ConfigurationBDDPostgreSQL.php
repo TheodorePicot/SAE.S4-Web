@@ -2,9 +2,6 @@
 
 namespace App\PlusCourtChemin\Configuration;
 
-use Exception;
-use PDO;
-
 class ConfigurationBDDPostgreSQL implements ConfigurationBDDInterface
 {
     private string $nomBDD = "iut";
@@ -22,11 +19,13 @@ class ConfigurationBDDPostgreSQL implements ConfigurationBDDInterface
         return $this->mdp;
     }
 
-    public function getDSN() : string{
+    public function getDSN(): string
+    {
         return "pgsql:host={$this->hostname};dbname={$this->nomBDD};options='--client_encoding=UTF8'";
     }
 
-    public function getOptions() : array {
+    public function getOptions(): array
+    {
         return array();
     }
 }

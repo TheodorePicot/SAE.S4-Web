@@ -2,8 +2,6 @@
 
 namespace App\PlusCourtChemin\Configuration;
 
-use Exception;
-
 class Configuration
 {
 
@@ -13,10 +11,9 @@ class Configuration
     public ConfigurationBDDInterface $configurationBDD;
 
 
-
     public function __construct(ConfigurationBDDInterface $configurationBDD)
     {
-        $this->configurationBDD= $configurationBDD;
+        $this->configurationBDD = $configurationBDD;
     }
 
     public function getConfigurationBDD(): ConfigurationBDDInterface
@@ -29,13 +26,13 @@ class Configuration
         return Configuration::$debug;
     }
 
-    public static function getDureeExpirationSession() : string
+    public static function getDureeExpirationSession(): string
     {
         // Durée d'expiration des sessions en secondes
         return 120;
     }
 
-    public static function getAbsoluteURL() : string
+    public static function getAbsoluteURL(): string
     {
         return 'https://webinfo.iutmontp.univ-montp2.fr/~picott/SAE.S4-Web/web/controleurFrontal.php';
     }

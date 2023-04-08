@@ -2,14 +2,9 @@
 
 namespace App\PlusCourtChemin\Controleur;
 
-use App\PlusCourtChemin\Configuration\ConfigurationBDDPostgreSQL;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
-use App\PlusCourtChemin\Modele\Repository\ConnexionBaseDeDonnees;
-use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
-use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
-use App\PlusCourtChemin\Service\NoeudCommuneService;
 use App\PlusCourtChemin\Service\NoeudCommuneServiceInterface;
 use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +17,6 @@ class ControleurNoeudCommune extends ControleurGenerique
         private readonly NoeudRoutierServiceInterface $noeudRoutierService
     )
     {
-
     }
 
 
@@ -77,10 +71,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         if (!empty($_POST)) {
             $nomCommuneDepart = $_POST["nomCommuneDepart"];
             $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
-            echo "what" . $_POST["nomCommuneArrivee"];
 
-
-            $noeudCommuneRepository = new NoeudCommuneRepository();
             /** @var NoeudCommune $noeudCommuneDepart */
             var_dump($this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneDepart]));
             $noeudCommuneDepart = $this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneDepart])[0];
