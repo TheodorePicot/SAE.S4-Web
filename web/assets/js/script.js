@@ -9,6 +9,20 @@ function initMap() {
         mapId: 'dfc432536cbbab6e'
     });
 
+    // Create a marker for each city in France
+    var cities = [
+        {lat: 48.8566, lng: 2.3522, name: 'Paris'},
+        {lat: 43.2965, lng: 5.3698, name: 'Marseille'},
+    ];
+
+    cities.forEach(function(city) {
+        var marker = new google.maps.Marker({
+            position: city,
+            map: map,
+            title: city.name
+        });
+    });
+
 }
 
 
