@@ -75,9 +75,7 @@ class ControleurNoeudCommune extends ControleurGenerique
             /** @var NoeudCommune $noeudCommuneDepart */
             $noeudCommuneDepart = $this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneDepart])[0];
             /** @var NoeudCommune $noeudCommuneArrivee */
-
             $noeudCommuneArrivee = $this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneArrivee])[0];
-
 
             $noeudRoutierDepartGid = $this->noeudRoutierService->recupererNoeudRoutierPar([
                 "id_rte500" => $noeudCommuneDepart->getId_nd_rte()

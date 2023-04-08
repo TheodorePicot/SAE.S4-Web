@@ -10,8 +10,7 @@
     "symfony/http-kernel": "^6.2",
     "ext-pdo": "*",
     "twig/twig": "^3.5",
-    "symfony/dependency-injection": "^6.2",
-    "ext-memcache": "*"
+    "symfony/dependency-injection": "^6.2"
   },
   "require-dev": {
     "phpunit/phpunit": "9.6.5"
