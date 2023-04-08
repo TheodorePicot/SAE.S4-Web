@@ -73,11 +73,9 @@ class ControleurNoeudCommune extends ControleurGenerique
             $nomCommuneArrivee = $_POST["nomCommuneArrivee"];
 
             /** @var NoeudCommune $noeudCommuneDepart */
-            var_dump($this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneDepart]));
             $noeudCommuneDepart = $this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneDepart])[0];
             /** @var NoeudCommune $noeudCommuneArrivee */
 
-            var_dump($this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneArrivee]));
             $noeudCommuneArrivee = $this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneArrivee])[0];
 
 
