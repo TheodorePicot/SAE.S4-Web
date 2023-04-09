@@ -21,7 +21,7 @@ class HistoriqueService
 
     public function getHistorique($login)
     {
-        return $this->historiqueRepository->recupererPar(["loginUtilisateur" =>$login]);
+        return $this->historiqueRepository->recupererPar(["login_utilisateur" =>$login]);
     }
 
     public function supprimerTrajet($idTrajet)
