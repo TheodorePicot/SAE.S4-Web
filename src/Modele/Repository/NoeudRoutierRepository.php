@@ -97,6 +97,15 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
         }
     }
 
+    public function getTousLesVoisinsV2(): array
+    {
+        $requeteSQL = <<<SQL
+            select noeud_routier_base, noeud_routier_gid,st_x(coordonnees_base) as longitude_base, st_y(coordonnees_base) as latitude_base, troncon_gid, st_x(coordonnees_voisin) as longitude_voisin, st_y(coordonnees_voisin) as latitude_voisin, longueur from voisinsv3;
+            SQL;
+        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->query($requeteSQL);
+        return $pdoStatement->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+    }
+
     public function getLongitudeLatitude(int $noeudRoutierGid): array
     {
         $requeteSQL = <<<SQL
