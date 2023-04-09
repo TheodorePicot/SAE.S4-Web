@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ControleurUtilisateur extends ControleurGenerique
 {
-    public function __construct(private readonly UtilisateurServiceInterface $utilisateurService, private readonly ConnexionUtilisateur $connexionUtilisateur)
+    public function __construct(private readonly UtilisateurServiceInterface $utilisateurService, private readonly ConnexionUtilisateur $connexionUtilisateur, private $historiqueService)
     {
 
     }

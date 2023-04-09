@@ -8,9 +8,11 @@ use App\PlusCourtChemin\Lib\Conteneur;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\Repository\ConnexionBaseDeDonnees;
+use App\PlusCourtChemin\Modele\Repository\HistoriqueRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudCommuneRepository;
 use App\PlusCourtChemin\Modele\Repository\NoeudRoutierRepository;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use App\PlusCourtChemin\Service\HistoriqueService;
 use App\PlusCourtChemin\Service\NoeudCommuneService;
 use App\PlusCourtChemin\Service\NoeudRoutierService;
 use App\PlusCourtChemin\Service\UtilisateurService;
@@ -166,11 +168,17 @@ class RouteurURL
         $utilisateurRepository = $conteneur->register('utilisateur_repository', UtilisateurRepository::class);
         $utilisateurRepository->setArguments([new Reference('connexion_base')]);
 
+        $historiqueRepository = $conteneur->register('historique_repository', HistoriqueRepository::class);
+        $historiqueRepository->setArguments([new Reference('connexion_base')]);
+
         $connexionUtilisateur = $conteneur->register('connexion_utilisateur', ConnexionUtilisateur::class);
         $connexionUtilisateur->setArguments([new Reference('utilisateur_repository')]);
 
         $verificationEmail = $conteneur->register('verification_email', VerificationEmail::class);
         $verificationEmail->setArguments([new Reference('utilisateur_repository')]);
+
+        $noeudCommuneService = $conteneur->register('historique_service', HistoriqueService::class);
+        $noeudCommuneService->setArguments([new Reference('historique_repository')]);
 
         $noeudCommuneService = $conteneur->register('noeud_commune_service', NoeudCommuneService::class);
         $noeudCommuneService->setArguments([new Reference('noeud_commune_repository')]);
@@ -182,10 +190,10 @@ class RouteurURL
         $utilisateurService->setArguments([new Reference('utilisateur_repository'), new Reference('connexion_utilisateur'), new Reference('verification_email')]);
 
         $publicationControleurService = $conteneur->register('noeud_commune_controleur', ControleurNoeudCommune::class);
-        $publicationControleurService->setArguments([new Reference('noeud_commune_service'), new Reference('noeud_routier_service')]);
+        $publicationControleurService->setArguments([new Reference('noeud_commune_service'), new Reference('noeud_routier_service'), new Reference('historique_service'), new Reference('connexion_utilisateur')]);
 
         $publicationControleurService = $conteneur->register('utilisateur_controleur', ControleurUtilisateur::class);
-        $publicationControleurService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur')]);
+        $publicationControleurService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur'), new Reference('historique_service')]);
 //
 
 

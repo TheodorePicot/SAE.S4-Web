@@ -2,6 +2,7 @@
 
 namespace App\PlusCourtChemin\Modele\Repository;
 
+use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
 use PDOException;
 
@@ -165,7 +166,6 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
                 // Je ne traite que l'erreur "Duplicate entry"
                 return false;
             } else {
-                // Pour les autres erreurs, je transmets l'exception
                 throw $exception;
             }
         }

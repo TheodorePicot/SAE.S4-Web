@@ -2,11 +2,16 @@
 
 namespace App\PlusCourtChemin\Controleur;
 
+use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
+use App\PlusCourtChemin\Modele\Repository\HistoriqueRepository;
+use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
+use App\PlusCourtChemin\Service\HistoriqueService;
 use App\PlusCourtChemin\Service\NoeudCommuneServiceInterface;
 use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
+use PDOException;
 use PHPUnit\Util\Json;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,15 +20,18 @@ class ControleurNoeudCommune extends ControleurGenerique
 
     public function __construct(
         private readonly NoeudCommuneServiceInterface $noeudCommuneService,
-        private readonly NoeudRoutierServiceInterface $noeudRoutierService
+        private readonly NoeudRoutierServiceInterface $noeudRoutierService,
+        private readonly HistoriqueService $historiqueService,
+        private readonly ConnexionUtilisateur $connexionUtilisateur,
+//        private UtilisateurRepository $utilisateurRepository
     )
     {
     }
 
 
-    public static function afficherErreur($errorMessage = "", $controleur = ""): Response
+    public static function afficherErreur($errorMessage = "", $statusCode = 400): Response
     {
-        return parent::afficherErreur($errorMessage, "noeudCommune");
+        return parent::afficherErreur($errorMessage, $statusCode);
     }
 
 
@@ -95,6 +103,14 @@ class ControleurNoeudCommune extends ControleurGenerique
             $parametres["nomCommuneDepart"] = $nomCommuneDepart;
             $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;
             $parametres["distance"] = $distance;
+            if ($this->connexionUtilisateur->estConnecte()) {
+                try {
+                    $this->historiqueService->ajouterTrajet($this->connexionUtilisateur->getLoginUtilisateurConnecte(), $nomCommuneDepart, $parametres["coordonneesDepart"], $nomCommuneArrivee, $parametres["coordonneesArrivee"], $distance, $parametres["coordonneesChemin"], date("d-m-Y H:i:s"));
+                } catch (PDOException $e) {
+                    var_dump($e->getMessage());
+                    ControleurNoeudCommune::afficherErreur($e->getMessage(), "34324");
+                }
+            }
         }
 
         return ControleurNoeudCommune::afficherTwig('noeudCommune/plusCourtChemin.html.twig', $parametres);
