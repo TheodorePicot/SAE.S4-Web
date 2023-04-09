@@ -7,6 +7,7 @@ use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
 use App\PlusCourtChemin\Service\NoeudCommuneServiceInterface;
 use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
+use PHPUnit\Util\Json;
 use Symfony\Component\HttpFoundation\Response;
 
 class ControleurNoeudCommune extends ControleurGenerique
@@ -28,11 +29,17 @@ class ControleurNoeudCommune extends ControleurGenerique
 
     public function afficherListe(): Response
     {
-        $noeudsCommunes = $this->noeudCommuneService->recupererNoeudCommune();     //appel au modèle pour gerer la BD
-        return ControleurNoeudCommune::afficherTwig('noeudCommune/list.html.twig', [
-            "noeudsCommunes" => $noeudsCommunes,
+//        if (!empty($_POST)) {
+//            $nomCommuneRecherche = $_POST["nomCommuneDepart"];
+//
+//            $noeudsCommunes = $this->noeudCommuneService->recupererNoeudCommune();     //appel au modèle pour gerer la BD
+            /** @var NoeudCommune $noeudCommuneDepart */
+//            $noeudCommuneRecherche = $this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneRecherche])[0];
+            return ControleurNoeudCommune::afficherTwig('noeudCommune/list.html.twig', [
+//                "noeudsCommunes" => $noeudsCommunes,
 
-        ]);
+            ]);
+//        }
     }
 
     public function afficherDetail($gid): Response
@@ -59,10 +66,7 @@ class ControleurNoeudCommune extends ControleurGenerique
 
     public function plusCourtChemin(): Response
     {
-        $parametres = [
-            "pagetitle" => "Plus court chemin",
-            "cheminVueBody" => "noeudCommune/plusCourtChemin.php",
-        ];
+        $parametres = [];
 //        var_dump($_REQUEST);
 //        var_dump($_POST);
 
@@ -84,8 +88,10 @@ class ControleurNoeudCommune extends ControleurGenerique
             ])[0]->getGid();
 
             $pcc = new PlusCourtCheminAStar($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierService);
-            $distance = $pcc->calculer();
-
+            $distance = $pcc->getDistanceFinale();
+            $parametres["coordonneesChemin"] = json_encode($pcc->getCoordonneesDuChemin());
+            $parametres["coordonneesDepart"] = json_encode($pcc->getCoordsDepart());
+            $parametres["coordonneesArrivee"] = json_encode($pcc->getCoordsArrivee());
             $parametres["nomCommuneDepart"] = $nomCommuneDepart;
             $parametres["nomCommuneArrivee"] = $nomCommuneArrivee;
             $parametres["distance"] = $distance;

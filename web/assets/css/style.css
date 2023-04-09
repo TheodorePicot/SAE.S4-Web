@@ -138,6 +138,23 @@ ul {
     width: 38px;
 }
 
+#coord{
+    visibility: hidden;
+    display: none;
+}
+
+#coordDepart{
+    visibility: hidden;
+    display: none;
+}
+
+#coordArrivee{
+    visibility: hidden;
+    display: none;
+
+
+}
+
 .autocompletion {
     background-color: white;
     border-radius: 5px;

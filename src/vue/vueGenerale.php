@@ -27,7 +27,7 @@ $urlCSS = $assistantUrl->getAbsoluteUrl("assets/css/style.css");
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-    <script type="text/javascript" src="<?= $assistantUrl->getAbsoluteUrl("assets/js/script.js") ?>" defer></script>
+    <script type="text/javascript" src="<?= $assistantUrl->getAbsoluteUrl("assets/js/map.js") ?>" defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiW2J5xEe7wfr9_Q7Odlf-yGEi7S_6qfM&callback=initMap&v=weekly"
             defer></script>
 
