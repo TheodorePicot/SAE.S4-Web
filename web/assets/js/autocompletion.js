@@ -70,9 +70,16 @@ function removeActive(divAutocompletion) {
         divAutocompletion.children[i].classList.remove("autocomplete-active");
     }
 }
-document.addEventListener("click", function (e) {
+document.addEventListener("click", function () {
     videCommunes(divAutocompletionD);
     videCommunes(divAutocompletionA);
+});
+
+document.addEventListener("keydown", function (e) {
+    if (e.key === "Tab" || e.key === "Escape") {
+        videCommunes(divAutocompletionA);
+        videCommunes(divAutocompletionD);
+    }
 });
 
 function callback(xhr, afficherCommunes) {

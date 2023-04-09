@@ -1,4 +1,5 @@
 <?php
+ini_set("memory_limit", "10000M");
 //use App\PlusCourtChemin\Lib\Psr4AutoloaderClass;
 
 //require_once __DIR__ . '/../src/Lib/Psr4AutoloaderClass.php';

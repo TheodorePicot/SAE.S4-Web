@@ -3,10 +3,10 @@
 namespace App\PlusCourtChemin\Lib;
 
 use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
-
+use Phpfastcache\Helper\Psr16Adapter;
+use phpFastCache\CacheManager;
 class PlusCourtCheminAStar
 {
-    private static array $tousLesNoeudsRoutiers;
     public function __construct(
         private int $noeudRoutierDepartGid,
         private int $noeudRoutierArriveeGid,
@@ -17,9 +17,15 @@ class PlusCourtCheminAStar
 
     public function calculer(bool $affichageDebug = false): float
     {
-//        if (self::$tousLesNoeudsRoutiers === null) {
-        self::$tousLesNoeudsRoutiers = $this->noeudRoutierService->getTousLesVoisins();
-//        }
+        $defaultDriver = 'Files';
+        $Psr16Adapter = new Psr16Adapter($defaultDriver);
+        if(!$Psr16Adapter->has('tousLesNoeudsRoutiers')){
+            $Psr16Adapter->set('tousLesNoeudsRoutiers', $this->tousLesVoisins, 300);// 5 minutes
+        }else{
+            // Getter action
+            $this->tousLesVoisins = $Psr16Adapter->get('tousLesNoeudsRoutiers');
+        }
+        $this->tousLesVoisins = $this->noeudRoutierService->getTousLesVoisins();
         $this->priorityQueue = new PlusCourtCheminPriorityQueue();
         $this->distances = [$this->noeudRoutierDepartGid => 0];
 //        $noeudRoutierRepository = new NoeudRoutierRepository();
@@ -38,7 +44,7 @@ class PlusCourtCheminAStar
 
             unset($this->noeudsALaFrontiere[$noeudRoutierGidCourant]);
 
-            $voisins = self::$tousLesNoeudsRoutiers[$noeudRoutierGidCourant]; // TODO Deux appelles aux PDO inutile il suffit de faire un appel au getVoisins !
+            $voisins = $this->tousLesVoisins[$noeudRoutierGidCourant]; // TODO Deux appelles aux PDO inutile il suffit de faire un appel au getVoisins !
             foreach ($voisins as $voisin) {
                 $noeudVoisinGid = $voisin["noeud_routier_gid"];
                 $distanceTroncon = $voisin["longueur"];
