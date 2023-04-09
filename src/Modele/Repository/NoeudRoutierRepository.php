@@ -5,6 +5,7 @@ namespace App\PlusCourtChemin\Modele\Repository;
 use App\PlusCourtChemin\Modele\DataObject\AbstractDataObject;
 use App\PlusCourtChemin\Modele\DataObject\NoeudRoutier;
 use PDO;
+use Phpfastcache\Helper\Psr16Adapter;
 
 class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierRepositoryInterface
 {
@@ -79,12 +80,21 @@ class NoeudRoutierRepository extends AbstractRepository implements NoeudRoutierR
 
     public function getTousLesVoisins(): array
     {
-        $requeteSQL = <<<SQL
+        $defaultDriver = 'Files';
+        $Psr16Adapter = new Psr16Adapter($defaultDriver);
+        if (!$Psr16Adapter->has('queried')) {
+            $Psr16Adapter->set('queried', 'query', 300);// 5 minutes
+            $requeteSQL = <<<SQL
             select noeud_routier_base, noeud_routier_gid,st_x(coordonnees_base) as longitude_base, st_y(coordonnees_base) as latitude_base, troncon_gid, st_x(coordonnees_voisin) as longitude_voisin, st_y(coordonnees_voisin) as latitude_voisin, longueur from voisinsv3;
-        SQL;
-        $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->query($requeteSQL);
-
-        return $pdoStatement->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+            SQL;
+            $pdoStatement = $this->connexionBaseDeDonnees->getPdo()->query($requeteSQL);
+            $fetchResult = $pdoStatement->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+            $Psr16Adapter->set('tousLesNoeudsRoutiers', $fetchResult, 300);
+            return $fetchResult;
+        } else {
+            // Getter action
+            return $Psr16Adapter->get('tousLesNoeudsRoutiers');
+        }
     }
 
     public function getLongitudeLatitude(int $noeudRoutierGid): array

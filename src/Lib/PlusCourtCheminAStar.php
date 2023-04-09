@@ -3,8 +3,6 @@
 namespace App\PlusCourtChemin\Lib;
 
 use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
-use Phpfastcache\Helper\Psr16Adapter;
-use phpFastCache\CacheManager;
 
 class PlusCourtCheminAStar
 {
@@ -25,20 +23,12 @@ class PlusCourtCheminAStar
 
     public function calculer(bool $affichageDebug = false): void
     {
-
         //vérifie si le cache contient les noeuds routiers, sinon récupération des noeuds routiers et stock dans le cache 5 minutes
-//        $defaultDriver = 'Files';
-//        $Psr16Adapter = new Psr16Adapter($defaultDriver);
-//        if (!$Psr16Adapter->has('tousLesNoeudsRoutiers')) {
-//            $Psr16Adapter->set('tousLesNoeudsRoutiers', $this->tousLesVoisins, 300);// 5 minutes
-//        } else {
-//            // Getter action
-//            $this->tousLesVoisins = $Psr16Adapter->get('tousLesNoeudsRoutiers');
-//        }
+
+        $this->tousLesVoisins = $this->noeudRoutierService->getTousLesVoisins();
 
         //initialisation de la liste de tous les voisins, de la priorityQueue qui contient les noeuds à la frontière, le tableau distance indexé par le gid qui donne la distance de chaque noeud par rapport au
         // noeud de départ, et le predecesseurs de chaque noeud
-        $this->tousLesVoisins = $this->noeudRoutierService->getTousLesVoisins();
 
         $this->priorityQueue = new PlusCourtCheminPriorityQueue();
         $this->distances = [$this->noeudRoutierDepartGid => 0];
@@ -46,6 +36,7 @@ class PlusCourtCheminAStar
 //        $noeudRoutierRepository = new NoeudRoutierRepository();
 
         //recupération de la latitude et longitude des points de départ et arrivés
+//        var_dump($this->tousLesVoisins);
 
         $this->coordsArrivee = [
             "lng" => (float) $this->tousLesVoisins[$this->noeudRoutierArriveeGid][0]["longitude_base"],
@@ -58,7 +49,7 @@ class PlusCourtCheminAStar
 
 
         // on insère dans la pq le noeud de départ avec sa distance heuristique
-        $this->priorityQueue->insert($this->noeudRoutierDepartGid, $this->calculDistanceHeuristque($this->coordsDepart["lng"], $this->coordsDepart["lat"], $this->coordsArrivee["lng"], $this->coordsArrivee["lat"]) * 1000);
+        $this->priorityQueue->insert($this->noeudRoutierDepartGid, $this->calculDistanceHeuristque($this->coordsDepart["lng"], $this->coordsDepart["lat"], $this->coordsArrivee["lng"], $this->coordsArrivee["lat"]));
 
         //Il initialise le tableau des nœuds à la frontière avec le nœud de départ.
         $this->noeudsALaFrontiere[$this->noeudRoutierDepartGid] = true;
@@ -98,7 +89,7 @@ class PlusCourtCheminAStar
                 //soit on n'a jamais vu le voisin, soit la distance est meilleur
                 if (!isset($this->distances[$noeudVoisinGid]) || $distanceProposee < $this->distances[$noeudVoisinGid]) {
                     $this->distances[$noeudVoisinGid] = $distanceProposee;
-                    $distanceHeuristique = $distanceProposee + ($this->calculDistanceHeuristque($voisin['longitude_voisin'], $voisin['latitude_voisin'], $this->coordsArrivee['lng'], $this->coordsArrivee['lat']) * 1000);
+                    $distanceHeuristique = $distanceProposee + ($this->calculDistanceHeuristque($voisin['longitude_voisin'], $voisin['latitude_voisin'], $this->coordsArrivee['lng'], $this->coordsArrivee['lat']));
                     $this->priorityQueue->insert($noeudVoisinGid, $distanceHeuristique);
                     $this->predecesseurs[$noeudVoisinGid] = $noeudRoutierGidCourant;
                     $this->noeudsALaFrontiere[$noeudVoisinGid] = true;

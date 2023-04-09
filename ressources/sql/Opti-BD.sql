@@ -74,8 +74,9 @@ select noeud_routier_gid,
 from voisins
 where noeud_routier_base = :gidTag;
 
-CREATE TABLE voisinsv2 AS
+CREATE TABLE voisinsv3 AS
 select nr.gid   as noeud_routier_base,
+       nr.geom  as coordonnees_base,
        nr2.gid  as noeud_routier_gid,
        nr2.geom as coordonnees_voisin,
        tr.gid   as troncon_gid,
