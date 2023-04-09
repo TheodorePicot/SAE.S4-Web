@@ -1,0 +1,56 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}Info{% endblock %}
+
+{% block page_content %}
+
+    <main>
+        <div class="container-fluid">
+            <div class="d-flex align-content-center justify-content-center my-5">
+                <h1><strong>Liste des utilisateurs</strong> </h1>
+            </div>
+
+            <!--    LISTE DES ADMINISTRATEURS-->
+
+            <div class="row offset-md-0 offset-lg-4 my-5">
+
+                <div class="col-md-12 col-md-4 col-lg-3 shadowBox my-4 mx-md-0 mx-lg-3 overflow-hidden">
+                    <h3> Administrateurs </h3>
+                    <div class="my-4">
+                    </div>
+                    <ul>
+{#                        {% for administrateur in administrateurs %}#}
+{#                        <li style="list-style: none"><a href="">test </a></li>#}
+{#                        {% endfor %}#}
+                    </ul>
+                </div>
+
+
+                <!--        LISTE DES UTILISATEURS-->
+
+                <div class="col-md-12 col-md-4 col-lg-3 shadowBox my-4 mx-lg-4 overflow-hidden">
+                    <h3> Utilisateurs </h3>
+                    <div class="my-4">
+
+                    </div>
+
+                    <ul>
+                        {% for utilisateur in utilisateurs %}
+                            <li style="list-style: none"><a href="{{ route("afficherDetailUtilisateur", {'login' : utilisateur.login}) }}"> {{ utilisateur.login }} </a></li>
+                        {% endfor %}
+                    </ul>
+
+
+                </div>
+            </div>
+
+
+            <div class="d-flex align-content-center justify-content-center my-5">
+                <a class="btn btn-light text-nowrap align-self-center"
+                   href="{{ route("creerDepuisFormulaire") }}">Créer un utilisateur</a>
+            </div>
+        </div>
+    </main>
+
+
+{% endblock %}

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\PlusCourtChemin\Controleur;
 
 use App\PlusCourtChemin\Configuration\ConfigurationBDDPostgreSQL;
@@ -35,7 +36,8 @@ use Twig\TwigFunction;
 
 class RouteurURL
 {
-    public static function traiterRequete() {
+    public static function traiterRequete()
+    {
 
         $twigLoader = new FilesystemLoader(__DIR__ . '/../vue/');
         $twig = new Environment(
@@ -190,29 +192,30 @@ class RouteurURL
         // TODO renommer les nom de variable
 
 
-            //        var_dump($contexteRequete);
+        //        var_dump($contexteRequete);
 
-            $contexteRequete = (new RequestContext())->fromRequest($requete);
-
-
-            $generateurUrl = new UrlGenerator($routes, $contexteRequete);
-            $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
-            Conteneur::ajouterService("generateurUrl", $generateurUrl);
-            Conteneur::ajouterService("assistantUrl", $assistantUrl);
-
-            //            TWIG Config
-
-            $fonctionAsset = $assistantUrl->getAbsoluteUrl(...);
-            $fonctionRoute = $generateurUrl->generate(...);
-
-            $twig->addFunction(new TwigFunction("assets", $fonctionAsset));
-            $twig->addFunction(new TwigFunction("route", $fonctionRoute));
-            $twig->addGlobal('idUtilisateurCo', $conteneur->get("connexion_utilisateur")->estConnecte());
-            $twig->addGlobal('idUtilisateurAdmin',  $conteneur->get("connexion_utilisateur")->estAdministrateur());
-            $twig->addGlobal('messageFlash', new MessageFlash());
+        $contexteRequete = (new RequestContext())->fromRequest($requete);
 
 
-            try {
+        $generateurUrl = new UrlGenerator($routes, $contexteRequete);
+        $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
+        Conteneur::ajouterService("generateurUrl", $generateurUrl);
+        Conteneur::ajouterService("assistantUrl", $assistantUrl);
+
+        //            TWIG Config
+
+        $fonctionAsset = $assistantUrl->getAbsoluteUrl(...);
+        $fonctionRoute = $generateurUrl->generate(...);
+
+        $twig->addFunction(new TwigFunction("assets", $fonctionAsset));
+        $twig->addFunction(new TwigFunction("route", $fonctionRoute));
+        $twig->addGlobal('idUtilisateurCo', $conteneur->get("connexion_utilisateur")->estConnecte());
+        $twig->addGlobal('utilisateurLogin', $conteneur->get("connexion_utilisateur")->getLoginUtilisateurConnecte());
+        $twig->addGlobal('idUtilisateurAdmin', $conteneur->get("connexion_utilisateur")->estAdministrateur());
+        $twig->addGlobal('messagesFlash', new MessageFlash());
+
+
+        try {
             $contexteRequete = (new RequestContext())->fromRequest($requete);
             // 3 méthodes qui lèvent des exceptions
             $generateurUrl = new UrlGenerator($routes, $contexteRequete);

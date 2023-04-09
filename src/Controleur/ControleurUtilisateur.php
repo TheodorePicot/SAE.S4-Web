@@ -26,10 +26,9 @@ class ControleurUtilisateur extends ControleurGenerique
     public function afficherListe(): Response
     {
         $utilisateurs = $this->utilisateurService->recupererUtilisateur();     //appel au modèle pour gerer la BD
-        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
+
+        return ControleurUtilisateur::afficherTwig('utilisateur/list.html.twig', [
             "utilisateurs" => $utilisateurs,
-            "pagetitle" => "Liste des utilisateurs",
-            "cheminVueBody" => "utilisateur/liste.php"
         ]);
     }
 
@@ -42,10 +41,8 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter("warning", "Login inconnu.");
             return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
         } else {
-            return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-                "utilisateur" => $utilisateur,
-                "pagetitle" => "Détail de l'utilisateur",
-                "cheminVueBody" => "utilisateur/detail.php"
+            return ControleurUtilisateur::afficherTwig('utilisateur/read.html.twig', [
+                "utilisateur" => $utilisateur
             ]);
         }
 //        } else {
@@ -121,9 +118,7 @@ class ControleurUtilisateur extends ControleurGenerique
         $prenomHTML = htmlspecialchars($utilisateur->getPrenom());
         $nomHTML = htmlspecialchars($utilisateur->getNom());
         $emailHTML = htmlspecialchars($utilisateur->getEmail());
-        return ControleurUtilisateur::afficherVue('vueGenerale.php', [
-            "pagetitle" => "Mise à jour d'un utilisateur",
-            "cheminVueBody" => "utilisateur/formulaireMiseAJour.php",
+        return ControleurUtilisateur::afficherTwig('utilisateur/update.html.twig', [
             "loginHTML" => $loginHTML,
             "prenomHTML" => $prenomHTML,
             "nomHTML" => $nomHTML,

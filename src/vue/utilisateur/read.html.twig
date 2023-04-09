@@ -1,0 +1,81 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}Info{% endblock %}
+
+{% block page_content %}
+
+    <div class="container-fluid">
+        <div class="offset-1 offset-lg-3 row my-5">
+
+            <div class="row my-5">
+                <h3 class="col-lg-6 col-sm-12 align-self-center">
+                    <img id="accountImgPage" alt="compte" src="{{ assets("assets/img/user.png") }}">
+                    {{ utilisateur.login }}
+                    {#                    <small class="text-muted"> #}
+                    {#                        <?php if ($utilisateur->isAdmin()) : ?> #}
+                    {#                        Administrateur #}
+                    {#                        <?php elseif ($utilisateur->isOrganisateur()): ?> #}
+                    {#                        Organisateur #}
+                    {#                        <!--                --><?php //else : ?> #}
+                    {#                        <!--                    Droits--> #}
+                    {#                        <!--                    Utilisateur--> #}
+                    {#                        <?php endif ?> #}
+
+                    {#                    </small> #}
+                </h3>
+                {#                <?php if ($utilisateur->isAdmin()) : ?> #}
+                {#                <div class="dropdown align-self-center col-sm-12 col-lg-3"> #}
+                {#                    <a class="btn btn-primary text-nowrap align-self-center" #}
+                {#                       href="frontController.php?action=readAll&controller=utilisateur"> Outils d'administrations</a> #}
+
+                {#                </div> #}
+                {#                <?php endif ?> #}
+            </div>
+
+
+            <div class="col-lg-3 ">
+                <h3>Prenom <br></h3>
+                {{ utilisateur.prenom }}<br>
+
+                <div class="my-3">
+                    <h3>Adresse email <br></h3>
+                    {{ utilisateur.email }}<br>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <h3>Nom <br></h3>
+                {{ utilisateur.nom }}<br>
+
+            </div>
+        </div>
+
+        <div class="container-fluid offset-1 offset-lg-3">
+
+            <div class="my-3">
+                <a class="btn btn-light" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button"
+                   aria-expanded="false" aria-controls="multiCollapseExample1">Itinéraires enregistrées</a>
+            </div>
+
+            <div class="collapse multi-collapse col-md-6 col-sm-6 col-lg-3 my-3" id="multiCollapseExample1">
+                <div class="card card-body">
+                </div>
+            </div>
+
+
+            <div class="row my-4">
+                <div class="col-lg-12 my-3">
+                    <a class="btn btn-light text-nowrap" href="{{ route("supprimer", {'login' : utilisateur.login}) }}"> Supprimer</a>
+                    <a class="btn btn-light text-nowrap mx-2" href="{{ route("afficherFormulaireMiseAJour", {'login' : utilisateur.login}) }}"> Mettre à jour
+                        mes informations</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+{% endblock %}

@@ -50,17 +50,16 @@
             </a>
         </div>
 
-        <form method="post" action="{{ route("creerDepuisFormulaire") }}">
+        <form method="{{ method }}" action="{{ route("creerDepuisFormulaire") }}">
 
             <fieldset>
                 <div class="my-4">
-
                     <div class="my-4 ">
-
                         <div class="form-group row">
                             <div class="my-2">
                                 <input class="form-control" type="text" value="" placeholder="Login" name="login"
                                        id="login_id" required>
+
                             </div>
                         </div>
 

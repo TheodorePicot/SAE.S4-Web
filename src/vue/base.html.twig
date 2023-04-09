@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block page_title %}Gallia{% endblock %}</title>
+    <link rel="icon" href="{{ assets("assets/img/world.png") }}">
+
 
     <!-- css -->
     <link rel="stylesheet" href="{{ assets("assets/css/bootstrap.min.css") }}">
@@ -13,15 +15,16 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
 
-        <script type="text/javascript" src="{{assets("assets/js/script.js")}}" defer></script>
-        <script type="text/javascript" src="{{assets("assets/js/autocompletion.js")}}" defer></script>
+    <script type="text/javascript" src="{{ assets("assets/js/script.js") }}" defer></script>
+    <script type="text/javascript" src="{{ assets("assets/js/autocompletion.js") }}" defer></script>
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiW2J5xEe7wfr9_Q7Odlf-yGEi7S_6qfM&callback=initMap&v=weekly"
-                defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiW2J5xEe7wfr9_Q7Odlf-yGEi7S_6qfM&callback=initMap&v=weekly"
+            defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&family=Roboto:wght@300;500&display=swap"
+          rel="stylesheet">
 
 </head>
 <body>
@@ -88,28 +91,36 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route("afficherListeCommune") }}">Communes</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route("plusCourtChemin") }}">Itinéraire</a>
-                </li>
+                {#                <li class="nav-item"> #}
+                {#                    <a class="nav-link" href="{{ route("plusCourtChemin") }}">Itinéraire</a> #}
+                {#                </li> #}
             </ul>
+
 
             <ul class="navbar-nav ms-auto">
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route("afficherFormulaireConnexion") }}">Se
-                        connecter</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route("afficherFormulaireCreation") }}">S'inscrire</a>
-                </li>
-                {% if idUtilisateurCo %}
+                {% if not idUtilisateurCo %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route("afficherFormulaireConnexion") }}">Se
+                            connecter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route("afficherFormulaireCreation") }}">S'inscrire</a>
+                    </li>
+                {% endif %}
 
+                {% if idUtilisateurCo %}
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="{# lien #}">
-                            <img alt="user" src="{# lien #}">
-                            {# login #}
+                           href="{{ route("afficherDetailUtilisateur", {'login' : utilisateurLogin}) }}">
+                            <img alt="user" id="accountImg" src="{{ assets("assets/img/user.png") }}">
+                            {{ utilisateurLogin }}
                         </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route("deconnecter") }}"> <img id="log" alt="logout"
+                                                                                    src="{{ assets("assets/img/logout.png") }}"></a>
                     </li>
                 {% endif %}
             </ul>
@@ -118,15 +129,13 @@
 </header>
 
 
-
-<div id="flashes-container">
-    {# boucle sur les types de messages flash #}
-    {# boucle sur les messages flash de ce type #}
-    <span class="flashes flashes-{# type du message #}">{# message flash #}</span>
-    {# fin boucle #}
-    {# fin boucle #}
+<div id="flashes-container" class="d-flex justify-content-center">
+    {% for type in ["success", "info", "warning", "danger"] %}
+        {% for messagesFlash in messagesFlash.lireMessages(type) %}
+            <span class="alert alert-{{ type }}">{{ messagesFlash }}</span>
+        {% endfor %}
+    {% endfor %}
 </div>
-
 
 
 {% block page_content %}

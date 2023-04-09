@@ -41,6 +41,7 @@ class ControleurGenerique
     {
         /** @var Environment $twig */
         $twig = Conteneur::recupererService("twig");
+
         return new Response($twig->render($cheminVue, $parametres));
     }
 }
