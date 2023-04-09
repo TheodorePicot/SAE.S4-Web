@@ -31,6 +31,12 @@ class NoeudRoutierService implements NoeudRoutierServiceInterface
         return $noeudRoutier;
     }
 
+    public function getTousLesVoisinsV2()
+    {
+        $noeudRoutier = $this->noeudRoutierRepository->getTousLesVoisinsV2();
+        return $noeudRoutier;
+    }
+
     public function getLongitudeLatitude(int $noeudRoutierGid)
     {
         $noeudRoutier = $this->noeudRoutierRepository->getLongitudeLatitude($noeudRoutierGid);
