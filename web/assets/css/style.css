@@ -35,10 +35,31 @@ ul {
 }
 
 
-#form {
-    width: 100%;
-    height: 100%;
+@media (max-width: 990px) {
+    #map {
+        width: 800px;
+        height: 900px;
+    }
 }
+
+@media (max-width: 800px) {
+    #map {
+        width: 600px;
+        height: 900px;
+    }
+}
+
+
+
+
+@media (max-width: 600px) {
+    #map {
+        width: 450px;
+        height: 900px;
+    }
+}
+
+
 
 
 /*BURGER MENU*/
@@ -118,8 +139,8 @@ ul {
 }
 
 #heart {
-    height: 20px;
-    width: 20px;
+    height: 40px;
+    width: 40px;
 }
 
 #log {
@@ -151,7 +172,6 @@ ul {
 #coordArrivee{
     visibility: hidden;
     display: none;
-
 
 }
 
@@ -207,4 +227,8 @@ ul {
 
 .form-group{
     font-family: Roboto, sans-serif;
+}
+
+#apropos{
+    margin-top: 150px;
 }

@@ -8,6 +8,13 @@ function initMap() {
         mapId: 'dfc432536cbbab6e'
     });
 
+    if(document.getElementById("test").children.length !== 0){
+        tracerChemin();
+    }
+
+}
+
+function tracerChemin() {
 
     constDepart = JSON.parse(document.getElementById("coordDepart").innerHTML);
     constArrivee = JSON.parse(document.getElementById("coordArrivee").innerHTML);
@@ -30,7 +37,7 @@ function initMap() {
     citiesPath.setMap(map)
 
     // Create a marker for each city in France
-    citiesCoordinates.forEach(function(city) {
+    citiesCoordinates.forEach(function (city) {
         var marker = new google.maps.Marker({
             position: city,
             map: map,

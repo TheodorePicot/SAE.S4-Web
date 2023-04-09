@@ -79,6 +79,50 @@ class ControleurUtilisateur extends ControleurGenerique
         ]);
     }
 
+    public static function aPropos(): Response
+    {
+        return ControleurUtilisateur::afficherTwig("utilisateur/aPropos.html.twig", [
+
+        ]);
+    }
+
+    public function vosTrajets(): Response
+    {
+        $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
+        $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
+
+        return ControleurUtilisateur::afficherTwig("utilisateur/vosTrajets.html.twig", [
+            "trajets" => $trajets]);
+    }
+
+    public function afficherFavoris(): Response
+    {
+        $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
+        $trajets = $this->historiqueService->getFavoris($idUtilisateurConnecte);
+
+        return ControleurUtilisateur::afficherTwig("utilisateur/favoris.html.twig", [
+            "trajets" => $trajets
+        ]);
+    }
+
+    public function ajouterFavoris($idTrajet) {
+        $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
+        $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
+
+        $this->historiqueService->ajouterFavoris($idTrajet);
+        return ControleurUtilisateur::afficherTwig("utilisateur/vosTrajets.html.twig", [
+            "trajets" => $trajets
+        ]);
+    }
+
+    public function supprimerFavoris($idTrajet) {
+        $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
+        $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
+        $this->historiqueService->supprimerFavoris($idTrajet);
+        return ControleurUtilisateur::afficherTwig("utilisateur/vosTrajets.html.twig", [
+            "trajets" => $trajets
+        ]);
+    }
 
     public function creerDepuisFormulaire(): Response
     {

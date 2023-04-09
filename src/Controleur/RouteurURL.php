@@ -101,6 +101,18 @@ class RouteurURL
         ]);
         $routes->add("afficherListeUtilisateur", $route);
 
+        // Route aPropos
+        $route = new Route("/aPropos", [
+            "_controller" => "utilisateur_controleur::aPropos",
+        ]);
+        $routes->add("aPropos", $route);
+
+        // Route vosTrajets
+        $route = new Route("/vosTrajets", [
+            "_controller" => "utilisateur_controleur::vosTrajets",
+        ]);
+        $routes->add("trajets", $route);
+
         // Route afficherDetailUtilisateur
         $route = new Route("/detailUtilisateur/{login}", [
             "_controller" => "utilisateur_controleur::afficherDetail",
@@ -147,11 +159,36 @@ class RouteurURL
         $route->setMethods(["GET"]);
         $routes->add("afficherDetailCommune", $route);
 
+
         // Route d'autocomplétion des communes
         $route = new Route("/autocompletion/{lettre}", [
             "_controller" => "noeud_commune_controleur::autoCompletion",
         ]);
         $routes->add("autocompletion", $route);
+
+    // Route afficher trajet historique
+        $route = new Route("/afficherTrajet/{idTrajet}", [
+            "_controller" => "noeud_commune_controleur::afficherTrajet",
+        ]);
+        $routes->add("afficherTrajet", $route);
+
+        // Route afficher trajet favoris
+        $route = new Route("/afficherFavoris", [
+            "_controller" => "utilisateur_controleur::afficherFavoris",
+        ]);
+        $routes->add("afficherFavoris", $route);
+
+        $route = new Route("/ajouterFavoris/{idTrajet}", [
+            "_controller" => "utilisateur_controleur::ajouterFavoris",
+        ]);
+        $routes->add("ajouterFavoris", $route);
+
+        $route = new Route("/supprimerFavoris/{idTrajet}", [
+            "_controller" => "utilisateur_controleur::supprimerFavoris",
+        ]);
+        $routes->add("supprimerFavoris", $route);
+
+
         $conteneur = new ContainerBuilder();
 
         $conteneur->register('config_bdd', ConfigurationBDDPostgreSQL::class);

@@ -116,6 +116,18 @@ class ControleurNoeudCommune extends ControleurGenerique
         return ControleurNoeudCommune::afficherTwig('noeudCommune/plusCourtChemin.html.twig', $parametres);
     }
 
+    public function afficherTrajet(int $idTrajet) {
+        $trajet = $this->historiqueService->recupererParClePrimaire($idTrajet);
+        $parametres["coordonneesChemin"] = $trajet->getCoordonneesDuChemin();
+        $parametres["coordonneesDepart"] =  $trajet->getCoords_depart();
+        $parametres["coordonneesArrivee"] = $trajet->getCoords_arrivee();
+        $parametres["nomCommuneDepart"] = $trajet->getComm_depart();
+        $parametres["nomCommuneArrivee"] = $trajet->getComm_arrivee();
+        $parametres["distance"] = $trajet->getDistance();
+        return ControleurNoeudCommune::afficherTwig('noeudCommune/plusCourtChemin.html.twig', $parametres);
+
+    }
+
     public function autoCompletion($lettre): Response
     {
         $resultat = $this->noeudCommuneService->getVillesAutoCompletion($lettre);
