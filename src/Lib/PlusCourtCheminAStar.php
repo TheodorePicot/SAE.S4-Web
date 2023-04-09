@@ -25,7 +25,7 @@ class PlusCourtCheminAStar
     {
         //vérifie si le cache contient les noeuds routiers, sinon récupération des noeuds routiers et stock dans le cache 5 minutes
 
-        $this->tousLesVoisins = $this->noeudRoutierService->getTousLesVoisins();
+        $this->tousLesVoisins = $this->noeudRoutierService->getTousLesVoisinsV2();
 
         //initialisation de la liste de tous les voisins, de la priorityQueue qui contient les noeuds à la frontière, le tableau distance indexé par le gid qui donne la distance de chaque noeud par rapport au
         // noeud de départ, et le predecesseurs de chaque noeud
