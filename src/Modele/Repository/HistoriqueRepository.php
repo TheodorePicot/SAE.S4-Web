@@ -39,7 +39,7 @@ class HistoriqueRepository extends AbstractRepository implements HistoriqueRepos
     protected function getNomsColonnesSelect(): array
     {
         return [
-            'idTrajet',
+            'historique_trajets.idTrajet',
             'login_utilisateur',
             'comm_depart',
             'coords_depart',
