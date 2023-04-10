@@ -183,11 +183,17 @@ class RouteurURL
         ]);
         $routes->add("ajouterFavoris", $route);
 
-        $route = new Route("/api/supprimerFavoris/{idTrajet}", [
-            "_controller" => "controleur_historique_api::supprimer",
+        $route = new Route("/supprimerFavoris/{idTrajet}", [
+            "_controller" => "utilisateur_controleur::supprimerFavoris",
         ]);
-        $route->setMethods(["DELETE"]);
+//        $route->setMethods(["DELETE"]);
         $routes->add("supprimerFavoris", $route);
+
+//        $route = new Route("/api/supprimerFavoris/{idTrajet}", [
+//            "_controller" => "controleur_historique_api::supprimer",
+//        ]);
+//        $route->setMethods(["DELETE"]);
+//        $routes->add("supprimerFavoris", $route);
 
 
         $conteneur = new ContainerBuilder();
@@ -216,7 +222,7 @@ class RouteurURL
         $verificationEmail->setArguments([new Reference('utilisateur_repository')]);
 
         $noeudCommuneService = $conteneur->register('historique_service', HistoriqueService::class);
-        $noeudCommuneService->setArguments([new Reference('historique_repository')]);
+        $noeudCommuneService->setArguments([new Reference('historique_repository'), new Reference('connexion_utilisateur')]);
 
         $noeudCommuneService = $conteneur->register('noeud_commune_service', NoeudCommuneService::class);
         $noeudCommuneService->setArguments([new Reference('noeud_commune_repository')]);

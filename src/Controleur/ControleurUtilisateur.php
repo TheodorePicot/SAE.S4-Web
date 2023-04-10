@@ -7,12 +7,13 @@ use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
+use App\PlusCourtChemin\Service\HistoriqueServiceInterface;
 use App\PlusCourtChemin\Service\UtilisateurServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class ControleurUtilisateur extends ControleurGenerique
 {
-    public function __construct(private readonly UtilisateurServiceInterface $utilisateurService, private readonly ConnexionUtilisateur $connexionUtilisateur, private $historiqueService)
+    public function __construct(private readonly UtilisateurServiceInterface $utilisateurService, private readonly ConnexionUtilisateur $connexionUtilisateur, private HistoriqueServiceInterface $historiqueService)
     {
 
     }
@@ -89,8 +90,12 @@ class ControleurUtilisateur extends ControleurGenerique
     public function vosTrajets(): Response
     {
         $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
-        $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
-
+        try {
+            $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
+        } catch (ServiceException $e) {
+            MessageFlash::ajouter("error", $e->getMessage());
+            return ControleurUtilisateur::rediriger('plusCourtChemin');
+        }
         return ControleurUtilisateur::afficherTwig("utilisateur/vosTrajets.html.twig", [
             "trajets" => $trajets]);
     }
@@ -98,8 +103,12 @@ class ControleurUtilisateur extends ControleurGenerique
     public function afficherFavoris(): Response
     {
         $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
-        $trajets = $this->historiqueService->getFavoris($idUtilisateurConnecte);
-
+        try {
+            $trajets = $this->historiqueService->getFavoris($idUtilisateurConnecte);
+        } catch (ServiceException $e) {
+            MessageFlash::ajouter("error", $e->getMessage());
+            return ControleurUtilisateur::rediriger('plusCourtChemin');
+        }
         return ControleurUtilisateur::afficherTwig("utilisateur/favoris.html.twig", [
             "trajets" => $trajets
         ]);
@@ -107,9 +116,15 @@ class ControleurUtilisateur extends ControleurGenerique
 
     public function ajouterFavoris($idTrajet) {
         $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
-        $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
 
-        $this->historiqueService->ajouterFavoris($idTrajet);
+
+        try {
+            $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
+            $this->historiqueService->ajouterFavoris($idTrajet);
+        } catch (ServiceException $e) {
+            MessageFlash::ajouter("error", $e->getMessage());
+            return ControleurUtilisateur::rediriger('plusCourtChemin');
+        }
         return ControleurUtilisateur::rediriger("trajets", [
             "trajets" => $trajets
         ]);
@@ -117,8 +132,13 @@ class ControleurUtilisateur extends ControleurGenerique
 
     public function supprimerFavoris($idTrajet) {
         $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
-        $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
-        $this->historiqueService->supprimerFavoris($idTrajet);
+        try {
+            $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
+            $this->historiqueService->supprimerFavoris($idTrajet);
+        } catch (ServiceException $e) {
+            MessageFlash::ajouter("error", $e->getMessage());
+            return ControleurUtilisateur::rediriger('plusCourtChemin');
+        }
         return ControleurUtilisateur::rediriger("afficherFavoris", [
             "trajets" => $trajets
         ]);

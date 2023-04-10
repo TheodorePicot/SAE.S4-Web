@@ -108,7 +108,7 @@ class ControleurNoeudCommune extends ControleurGenerique
                     $this->historiqueService->ajouterTrajet($this->connexionUtilisateur->getLoginUtilisateurConnecte(), $nomCommuneDepart, $parametres["coordonneesDepart"], $nomCommuneArrivee, $parametres["coordonneesArrivee"], $distance, $parametres["coordonneesChemin"], date("d-m-Y H:i:s"));
                 } catch (PDOException $e) {
                     var_dump($e->getMessage());
-                    ControleurNoeudCommune::afficherErreur($e->getMessage(), "34324");
+                    ControleurNoeudCommune::afficherErreur($e->getMessage());
                 }
             }
         }

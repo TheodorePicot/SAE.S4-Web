@@ -20,20 +20,15 @@ class UtilisateurService implements UtilisateurServiceInterface
 
     public function creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email)
     {
-        /* TODO : se mettre d'accord pour les règles de validation
-        $utilisateurRepository = new UtilisateurRepository();
-        $utilisateur = $utilisateurRepository->recupererParClePrimaire($login);
+        $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($login);
         if ($utilisateur != null) {
             throw new ServiceException("Ce login est déjà pris!");
         }
 
-        $utilisateur = $utilisateurRepository->recupererPar(["email" => $email]);
+        $utilisateur = $this->utilisateurRepository->recupererPar(["email" => $email]);
         if ($utilisateur != null) {
             throw new ServiceException("Un compte est déjà enregistré avec cette adresse mail!");
         }
-
-        */
-
         if (!(isset($login) && isset($prenom) && isset($nom) && isset($mdp) && isset($mdp2))) {
             throw new ServiceException("Login, nom, prenom ou mot de passe manquant!");
         }

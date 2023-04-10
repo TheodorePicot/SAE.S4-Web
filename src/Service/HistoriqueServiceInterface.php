@@ -16,5 +16,5 @@ interface HistoriqueServiceInterface
 
     public function ajouterFavoris(int $idTrajet);
 
-    public function supprimerFavoris(int $idTrajet, ?string $idUtilisateurConnecte);
+    public function supprimerFavoris(int $idTrajet);
 }
