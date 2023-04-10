@@ -292,7 +292,7 @@ class RouteurURL
             $reponse = ControleurGenerique::afficherErreur($exception->getMessage());
         }
 
-        $reponse = call_user_func_array($controleur, $arguments);
+//        $reponse = call_user_func_array($controleur, $a rguments);
         $reponse->send();
     }
 }

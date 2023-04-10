@@ -3,7 +3,7 @@
 {% block page_title %}Gallia{% endblock %}
 
 {% block page_content %}
-    <script type="text/javascript" src="{{ assets("assets/js/autocompletion.js") }}" defer></script>
+{#    <script type="text/javascript" src="{{ assets("assets/js/autocompletion.js") }}" defer></script>#}
 
     <main>
         <div class="container-fluid">
@@ -28,7 +28,7 @@
                                     <div class="acdiv">
                                         <input name="nomCommuneArrivee" type="text" class="form-control"
                                                id="nomCommuneArrivee_id"
-                                               placeholder="Point d'arrivé" autocomplete="off">
+                                                placeholder="Point d'arrivé" autocomplete="off">
                                         <div class="autocompletion" id="autocompletionA"></div>
                                     </div>
 
@@ -51,10 +51,11 @@
 
                     <div class="my-5" id="weather">
                         <div class="d-flex justify-content-center">
-                            <h4><strong>Météo de la ville d'arrivée</strong></h4>
+                            <h4 data-textvar="weatherHTML.titre" ><strong>Météo de la ville d'arrivée</strong></h4>
                         </div>
                         <p class="my-5"><span data-textvar="weatherHTML.name"></span></p>
-                        <p>Temperature : <span data-textvar="weatherHTML.temp"></span>°C</p>
+                        <p><span data-textvar="weatherHTML.temp"></span></p>
+                        <img data-srcvar="weatherHTML.src" alt="">
                     </div>
 
                 </div>

@@ -19,7 +19,7 @@ class ControleurHistoriqueAPI extends ControleurGenerique
     {
         try {
             $loginUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
-            $this->historiqueService->supprimerFavoris($idTrajet, $loginUtilisateurConnecte);
+            $this->historiqueService->supprimerFavoris($idTrajet);
             return new JsonResponse('', Response::HTTP_OK);
         } catch (ServiceException $exception) {
             return new JsonResponse(["error" => $exception->getMessage()], $exception->getCode());

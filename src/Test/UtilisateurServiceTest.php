@@ -5,14 +5,13 @@ namespace App\PlusCourtChemin\Test;
 use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
-use App\PlusCourtChemin\Modele\HTTP\Session;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepositoryInterface;
 use App\PlusCourtChemin\Service\UtilisateurService;
-
 use Exception;
 use PHPUnit\Framework\TestCase;
 
-class UtilisateurServiceTest extends TestCase {
+class UtilisateurServiceTest extends TestCase
+{
 
     private $service;
 
@@ -31,7 +30,8 @@ class UtilisateurServiceTest extends TestCase {
         $this->service = new UtilisateurService($this->utilisateurRepositoryMock, $this->connexionUtilisateurMock, $this->verificationEmailMock);
     }
 
-    public function testCreerUtilisateurSansPrenom(){
+    public function testCreerUtilisateurSansPrenom()
+    {
 
         $fakeUtilisateur = $this->createMock(Utilisateur::class);
         $fakeUtilisateur->method("getPrenom")->willReturn("");
@@ -49,7 +49,8 @@ class UtilisateurServiceTest extends TestCase {
     }
 
 
-    public function testCreerUtilisateurMdpDistinxts(){
+    public function testCreerUtilisateurMdpDistinxts()
+    {
         $login = "test";
         $prenom = 'test';
         $nom = "test";
@@ -63,7 +64,8 @@ class UtilisateurServiceTest extends TestCase {
     }
 
 
-    public function testCreerUtilisateurEmailInvalide(){
+    public function testCreerUtilisateurEmailInvalide()
+    {
 
         $fakeUtilisateur = $this->createMock(Utilisateur::class);
         $fakeUtilisateur->method("getEmail")->willReturn("testyopmail.com");
@@ -80,11 +82,13 @@ class UtilisateurServiceTest extends TestCase {
         $this->service->creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email);
     }
 
-    public function testCreerUtilisateur(){
+    public function testCreerUtilisateur()
+    {
 
     }
 
-    public function testMettreAJourSansPrenom(){
+    public function testMettreAJourSansPrenom()
+    {
 
         $fakeUtilisateur = $this->createMock(Utilisateur::class);
         $fakeUtilisateur->method("getPrenom")->willReturn("");
@@ -103,7 +107,8 @@ class UtilisateurServiceTest extends TestCase {
     }
 
 
-    public function testMettreAJourMdpDistinxts(){
+    public function testMettreAJourMdpDistinxts()
+    {
         $login = "test";
         $prenom = 'test';
         $nom = "test";
@@ -118,8 +123,8 @@ class UtilisateurServiceTest extends TestCase {
     }
 
 
-
-    public function testMettreAJourEmailInvalid(){
+    public function testMettreAJourEmailInvalid()
+    {
         $fakeUtilisateur = $this->createMock(Utilisateur::class);
         $fakeUtilisateur->method("getEmail")->willReturn("testyopmail.com");
 
@@ -137,7 +142,8 @@ class UtilisateurServiceTest extends TestCase {
     }
 
 //Todo fonction pas
-    public function testMettreAJourUtilisateurInexistant(){
+    public function testMettreAJourUtilisateurInexistant()
+    {
         $fakeUtilisateur = $this->createMock(Utilisateur::class);
         $this->utilisateurRepositoryMock->method("recupererParClePrimaire")->willReturn(null);
 
@@ -158,7 +164,8 @@ class UtilisateurServiceTest extends TestCase {
 //Todo test Mot de passe eroné
 
 //Todo fonctionne pas a cause methode
-    public function testMettreAJourPasConnecte(){
+    public function testMettreAJourPasConnecte()
+    {
         $fakeUtilisateur = $this->createMock(Utilisateur::class);
         $this->utilisateurRepositoryMock->method("recupererParClePrimaire")->willReturn($fakeUtilisateur->getLogin());
         $this->connexionUtilisateurMock->method("getLoginUtilisateurConnecte")->willReturn(null);
@@ -177,11 +184,13 @@ class UtilisateurServiceTest extends TestCase {
     }
 
     //Todo test mettre a jour
-    public function testMettreAJour(){
+    public function testMettreAJour()
+    {
 
     }
 
-    public function testConnecterSansLogin(){
+    public function testConnecterSansLogin()
+    {
         $fakeUtilisateur = $this->createMock(Utilisateur::class);
         $fakeUtilisateur->method("getLogin")->willReturn("");
 
@@ -193,7 +202,8 @@ class UtilisateurServiceTest extends TestCase {
         $this->service->connecter($login, $mdp);
     }
 
-    public function testConecterutilisateurInexistant(){
+    public function testConecterutilisateurInexistant()
+    {
         $fakeUtilisateur = $this->createMock(Utilisateur::class);
         $this->utilisateurRepositoryMock->method("recupererParClePrimaire")->willReturn(null);
         $login = 'test';
@@ -203,17 +213,6 @@ class UtilisateurServiceTest extends TestCase {
         $this->expectExceptionMessage("Login ou mot de passe manquant.");
         $this->service->connecter($login, $mdp);
     }
-
-
-
-
-
-
-
-
-
-
-
 }
 
 

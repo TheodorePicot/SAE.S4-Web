@@ -3,7 +3,7 @@ let registeringEffect = null;
 let objetDependencies = new Map();
 
 function registerEffect(target, key) {
-    console.log("on enregistre un effet sur la clef " + key);
+    // console.log("on enregistre un effet sur la clef " + key);
     if (!objetDependencies.get(target).has(key)) {
         objetDependencies.get(target).set(key, new Set());
     }
@@ -37,8 +37,8 @@ function reactive(passiveObject, name) {
             return target[key];
         },
         set(target, key, value) {
-            console.log("la propriété " + key + " prend la valeur " + value
-                + " et son ancienne valeur était " + target[key]);
+            // console.log("la propriété " + key + " prend la valeur " + value
+            //     + " et son ancienne valeur était " + target[key]);
             target[key] = value;
             trigger(target, key);
             return true;

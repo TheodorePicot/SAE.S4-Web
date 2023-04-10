@@ -73,10 +73,13 @@ class HistoriqueService implements HistoriqueServiceInterface
 
     public function supprimerFavoris(int $idTrajet) {
         $trajet = $this->historiqueRepository->recupererParClePrimaire($idTrajet);
-        if (is_null($this->connexionUtilisateur->getLoginUtilisateurConnecte()))
+        if (is_null($this->connexionUtilisateur->getLoginUtilisateurConnecte())) {
             throw new ServiceException("Il faut être connecté pour supprimer un trajet", Response::HTTP_UNAUTHORIZED);
-        if ($idTrajet === null)
+        }
+        if ($idTrajet === null) {
             throw new ServiceException("Trajet inconnue.", Response::HTTP_NOT_FOUND);
+        }
+
         $this->historiqueRepository->supprimerFavoris($idTrajet);
     }
 }
