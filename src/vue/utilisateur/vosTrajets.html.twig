@@ -23,7 +23,7 @@
                             <a href="{{ route("afficherTrajet", {'idTrajet' : trajet.idTrajet}) }}"
                                class="btn btn-primary">Voir le trajet</a>
                             {% if trajet.estFavoris %}
-                                <img alt="user" id="heart" src="{{ assets("assets/img/heart.png") }}">
+                                <img alt="user" class="heart" src="{{ assets("assets/img/heart.png") }}">
                             {% endif %}
                             {% if not trajet.estFavoris %}
                                 <a href="{{ route("ajouterFavoris",  {'idTrajet' : trajet.idTrajet}) }}"

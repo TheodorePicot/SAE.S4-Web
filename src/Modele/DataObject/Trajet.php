@@ -14,7 +14,7 @@ class Trajet extends AbstractDataObject
         private float  $distance,
         private string $coordonneesDuChemin,
         private string $date,
-        private ?bool $estFavoris
+        private int $estFavoris
     )
     {
     }
@@ -65,7 +65,7 @@ class Trajet extends AbstractDataObject
     }
 
     public function getEstFavoris(): bool {
-        return !($this->estFavoris == null);
+        return $this->estFavoris == 1;
     }
 
     public function exporterEnFormatRequetePreparee(): array

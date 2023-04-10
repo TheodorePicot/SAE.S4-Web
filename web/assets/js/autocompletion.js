@@ -83,6 +83,7 @@ document.addEventListener("keydown", function (e) {
 });
 
 function callback(xhr, afficherCommunes) {
+    console.log(xhr.responseText);
     let array = JSON.parse(xhr.responseText).map(elem => elem.nom_comm);
     afficherCommunes(array);
 }
