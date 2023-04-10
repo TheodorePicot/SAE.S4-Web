@@ -83,9 +83,6 @@ class UtilisateurService implements UtilisateurServiceInterface
         }
         */
 
-        if (!($this->connexionUtilisateur->estConnecte() || $this->connexionUtilisateur->estAdministrateur())) {
-            throw new ServiceException("La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
-        }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new ServiceException("Email non valide");
@@ -100,6 +97,10 @@ class UtilisateurService implements UtilisateurServiceInterface
 
         if (!MotDePasse::verifier($mdpAncien, $utilisateur->getMdpHache())) {
             throw new ServiceException("Ancien mot de passe erroné.");
+        }
+
+        if (!($this->connexionUtilisateur->estConnecte() || $this->connexionUtilisateur->estAdministrateur())) {
+            throw new ServiceException("La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
         }
 
         $utilisateur->setNom($nom);

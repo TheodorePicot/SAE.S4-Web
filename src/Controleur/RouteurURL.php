@@ -183,9 +183,10 @@ class RouteurURL
         ]);
         $routes->add("ajouterFavoris", $route);
 
-        $route = new Route("/supprimerFavoris/{idTrajet}", [
-            "_controller" => "utilisateur_controleur::supprimerFavoris",
+        $route = new Route("/api/supprimerFavoris/{idTrajet}", [
+            "_controller" => "controleur_historique_api::supprimer",
         ]);
+        $route->setMethods(["DELETE"]);
         $routes->add("supprimerFavoris", $route);
 
 
@@ -231,7 +232,10 @@ class RouteurURL
 
         $publicationControleurService = $conteneur->register('utilisateur_controleur', ControleurUtilisateur::class);
         $publicationControleurService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur'), new Reference('historique_service')]);
-//
+
+        $publicationControleurService = $conteneur->register('controleur_historique_api', ControleurHistoriqueAPI::class);
+        $publicationControleurService->setArguments([new Reference('historique_service'), new Reference('connexion_utilisateur')]);
+
 
 
         // TODO renommer les nom de variable
@@ -293,6 +297,8 @@ class RouteurURL
         } catch (Exception $exception) {
             $reponse = ControleurGenerique::afficherErreur($exception->getMessage());
         }
+
+        $reponse = call_user_func_array($controleur, $arguments);
         $reponse->send();
     }
 }

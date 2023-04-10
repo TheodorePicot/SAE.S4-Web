@@ -5,10 +5,11 @@ namespace App\PlusCourtChemin\Service;
 use App\PlusCourtChemin\Modele\DataObject\Trajet;
 use App\PlusCourtChemin\Modele\Repository\HistoriqueRepositoryInterface;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
+use PDOException;
 
 class HistoriqueService
 {
-    public function __construct(private readonly HistoriqueRepositoryInterface $historiqueRepository, private readonly ConnexionUtilisateur $connexionUtilisateur)
+    public function __construct(private readonly HistoriqueRepositoryInterface $historiqueRepository)
     {
     }
 
@@ -44,7 +45,13 @@ class HistoriqueService
         $this->historiqueRepository->ajouterFavoris($idTrajet);
     }
 
-    public function supprimerFavoris(int $idTrajet) {
+    public function supprimerFavoris(int $idTrajet, ?string $idUtilisateurConnecte) {
+        $trajet = $this->historiqueRepository->recupererParClePrimaire($idTrajet);
+        if (is_null($idUtilisateurConnecte))
+            throw new ServiceException("Il faut être connecté pour supprimer un trajet", Response::HTTP_UNAUTHORIZED);
+
+        if ($idTrajet === null)
+            throw new ServiceException("Trajet inconnue.", Response::HTTP_NOT_FOUND);
         $this->historiqueRepository->supprimerFavoris($idTrajet);
     }
 }
