@@ -148,15 +148,13 @@ class RouteurURL
         ]);
         $routes->add("afficherListeCommune", $route);
 
-
-
         // Route d'autocomplétion des communes
         $route = new Route("/autocompletion/{lettre}", [
             "_controller" => "noeud_commune_controleur::autoCompletion",
         ]);
         $routes->add("autocompletion", $route);
 
-    // Route afficher trajet historique
+        // Route afficher trajet historique
         $route = new Route("/afficherTrajet/{idTrajet}", [
             "_controller" => "noeud_commune_controleur::afficherTrajet",
         ]);
@@ -194,7 +192,6 @@ class RouteurURL
         $conteneur = new ContainerBuilder();
 
         $conteneur->register('config_bdd', ConfigurationBDDPostgreSQL::class);
-
 
         $connexionBaseService = $conteneur->register('connexion_base', ConnexionBaseDeDonnees::class);
         $connexionBaseService->setArguments([new Reference('config_bdd')]);
@@ -242,21 +239,17 @@ class RouteurURL
 
         $publicationControleurAPIService = $conteneur->register('controleur_utilisateur_api',ControleurUtilisateurAPI::class);
         $publicationControleurAPIService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur_JWT')]);
-        //        var_dump($contexteRequete);
 
         $contexteRequete = (new RequestContext())->fromRequest($requete);
-
 
         $generateurUrl = new UrlGenerator($routes, $contexteRequete);
         $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
         Conteneur::ajouterService("generateurUrl", $generateurUrl);
         Conteneur::ajouterService("assistantUrl", $assistantUrl);
 
-        //            TWIG Config
-
+        //TWIG Config
         $fonctionAsset = $assistantUrl->getAbsoluteUrl(...);
         $fonctionRoute = $generateurUrl->generate(...);
-
         $twig->addFunction(new TwigFunction("assets", $fonctionAsset));
         $twig->addFunction(new TwigFunction("route", $fonctionRoute));
         $twig->addGlobal('idUtilisateurCo', $conteneur->get("connexion_utilisateur")->estConnecte());
@@ -267,30 +260,19 @@ class RouteurURL
 
         try {
             $contexteRequete = (new RequestContext())->fromRequest($requete);
-            // 3 méthodes qui lèvent des exceptions
             $generateurUrl = new UrlGenerator($routes, $contexteRequete);
             $assistantUrl = new UrlHelper(new RequestStack(), $contexteRequete);
             Conteneur::ajouterService("generateurUrl", $generateurUrl);
             Conteneur::ajouterService("assistantUrl", $assistantUrl);
-
-//        @throws NoConfigurationException  If no routing configuration could be found
-//        @throws ResourceNotFoundException If the resource could not be found
-//        @throws MethodNotAllowedException If the resource was found but the request method is not allowed
-
             $associateurUrl = new UrlMatcher($routes, $contexteRequete);
             $donneesRoute = $associateurUrl->match($requete->getPathInfo());
-
             $requete->attributes->add($donneesRoute);
-
             $resolveurDeControleur = new ContainerControllerResolver($conteneur);
             $controleur = $resolveurDeControleur->getController($requete);
-
-//        @throws \LogicException If a controller was found based on the request but it is not callable
-
             $resolveurDArguments = new ArgumentResolver();
             $arguments = $resolveurDArguments->getArguments($requete, $controleur);
-//        @throws \RuntimeException When no value could be provided for a required argument
             $reponse = call_user_func_array($controleur, $arguments);
+
         } catch (ResourceNotFoundException $exception) {
             $reponse = ControleurGenerique::afficherErreur($exception->getMessage(), 404);
         } catch (MethodNotAllowedException $exception) {
@@ -299,7 +281,6 @@ class RouteurURL
             $reponse = ControleurGenerique::afficherErreur($exception->getMessage());
         }
 
-//        $reponse = call_user_func_array($controleur, $a rguments);
         $reponse->send();
     }
 }
