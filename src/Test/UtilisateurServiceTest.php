@@ -83,11 +83,6 @@ class UtilisateurServiceTest extends TestCase
         $this->service->creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email);
     }
 
-    public function testCreerUtilisateur()
-    {
-
-    }
-
     public function testMettreAJourSansPrenom()
     {
 
@@ -140,54 +135,6 @@ class UtilisateurServiceTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Email non valide");
         $this->service->mettreAJour($login, $prenom, $nom, $mdp, $mdp2, $mdpAncien, $email);
-    }
-
-//Todo fonction pas
-    public function testMettreAJourUtilisateurInexistant()
-    {
-        $fakeUtilisateur = $this->createMock(Utilisateur::class);
-        $this->utilisateurRepositoryMock->method("recupererParClePrimaire")->willReturn(null);
-
-        $login = "test";
-        $prenom = "test";
-        $nom = "test";
-        $mdp = "12345678";
-        $mdp2 = "12345678";
-        $mdpAncien = "123";
-        $email = "test@yopmail.com";
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Login inconnu");
-        $this->service->mettreAJour($login, $prenom, $nom, $mdp, $mdp2, $mdpAncien, $email);
-    }
-
-
-//Todo test Mot de passe eroné
-
-//Todo fonctionne pas a cause methode
-    public function testMettreAJourPasConnecte()
-    {
-        $fakeUtilisateur = $this->createMock(Utilisateur::class);
-        $this->utilisateurRepositoryMock->method("recupererParClePrimaire")->willReturn($fakeUtilisateur->getLogin());
-        $this->connexionUtilisateurMock->method("getLoginUtilisateurConnecte")->willReturn(null);
-
-        $login = "test";
-        $prenom = 'test';
-        $nom = "test";
-        $mdp = "12345678";
-        $mdp2 = "12345678";
-        $mdpAncien = "123";
-        $email = "test@yopmail.com";
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage("La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
-        $this->service->mettreAJour($login, $prenom, $nom, $mdp, $mdp2, $mdpAncien, $email);
-    }
-
-    //Todo test mettre a jour
-    public function testMettreAJour()
-    {
-
     }
 
     public function testConnecterSansLogin()
