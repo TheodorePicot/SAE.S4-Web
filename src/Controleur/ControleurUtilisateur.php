@@ -40,7 +40,7 @@ class ControleurUtilisateur extends ControleurGenerique
         $utilisateur = $this->utilisateurService->recupererUtilisateurParClePrimaire($login);
         if ($utilisateur === null) {
             MessageFlash::ajouter("warning", "Login inconnu.");
-            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+            return ControleurUtilisateur::rediriger("plusCourtChemin");
         } else {
             return ControleurUtilisateur::afficherTwig('utilisateur/read.html.twig', [
                 "utilisateur" => $utilisateur
@@ -61,10 +61,10 @@ class ControleurUtilisateur extends ControleurGenerique
         $utilisateurs = $this->utilisateurService->recupererUtilisateur();
         if ($deleteSuccessful) {
             MessageFlash::ajouter("success", "L'utilisateur a bien été supprimé !");
-            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+            return ControleurUtilisateur::rediriger("plusCourtChemin");
         } else {
             MessageFlash::ajouter("warning", "Login inconnu.");
-            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+            return ControleurUtilisateur::rediriger("plusCourtChemin");
         }
 //        } else {
 //            MessageFlash::ajouter("danger", "Login manquant.");
@@ -172,11 +172,11 @@ class ControleurUtilisateur extends ControleurGenerique
         $utilisateur = $this->utilisateurService->recupererUtilisateurParClePrimaire($login);
         if ($utilisateur === null) {
             MessageFlash::ajouter("danger", "Login inconnu.");
-            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+            return ControleurUtilisateur::rediriger("plusCourtChemin");
         }
         if (!($this->connexionUtilisateur->estUtilisateur($login) || $this->connexionUtilisateur->estAdministrateur())) {
             MessageFlash::ajouter("danger", "La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
-            return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+            return ControleurUtilisateur::rediriger("plusCourtChemin");
         }
 
         $loginHTML = htmlspecialchars($login);
@@ -211,10 +211,10 @@ class ControleurUtilisateur extends ControleurGenerique
             $this->utilisateurService->mettreAJour($login, $nom, $prenom, $mdp, $mdp2, $mdpAncien, $email);
         } catch (ServiceException $e) {
             MessageFlash::ajouter("error", $e->getMessage());
-            return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
+            return ControleurUtilisateur::rediriger('plusCourtChemin');
         }
         MessageFlash::ajouter("success", "L'utilisateur a bien été modifié !");
-        return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+        return ControleurUtilisateur::rediriger("plusCourtChemin");
     }
 
 //    public static function afficherFormulaireConnexion(): Response
@@ -257,10 +257,10 @@ class ControleurUtilisateur extends ControleurGenerique
         } catch (ServiceException $e) {
 
             MessageFlash::ajouter("danger", $e->getMessage());
-            return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
+            return ControleurUtilisateur::rediriger('plusCourtChemin');
         }
         MessageFlash::ajouter("success", "Deconnexion effectuée.");
-        return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
+        return ControleurUtilisateur::rediriger('plusCourtChemin');
 
     }
 
@@ -272,9 +272,9 @@ class ControleurUtilisateur extends ControleurGenerique
             $this->utilisateurService->validerEmail($login, $nonce);
         } catch (ServiceException $e) {
             MessageFlash::ajouter("danger", $e->getMessage());
-            return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
+            return ControleurUtilisateur::rediriger('plusCourtChemin');
         }
         MessageFlash::ajouter("success", "Validation d'email réussie");
-        return ControleurUtilisateur::rediriger("afficherDetailUtilisateur", ["login" => $login]);
+        return ControleurUtilisateur::rediriger("plusCourtChemin", ["login" => $login]);
     }
 }
