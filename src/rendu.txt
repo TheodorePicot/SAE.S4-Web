@@ -1,5 +1,14 @@
 JIHAN HAJEM
 
+- product owner
+- front end + maquette
+- implémentation de toutes les vues twig
+- participation a la fonctionnalité historique + favoris
+- participation au traçage du chemin
+- implémentation de l'api google maps
+- sur le rapport de projet rédaction du résumé, Glossaire, introduction, Analyse ergonomie, Bibliographie Participation à méthode organisation et analyse du cycle de vie
+
+
 LEO MICHEL
 
 UGO MICHEL
