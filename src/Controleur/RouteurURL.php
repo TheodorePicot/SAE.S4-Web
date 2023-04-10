@@ -95,12 +95,6 @@ class RouteurURL
         $route->setMethods(["POST"]);
         $routes->add("creerDepuisFormulaire", $route);
 
-        // Route afficherListeUtilisateur
-        $route = new Route("/listeUtilisateur", [
-            "_controller" => "utilisateur_controleur::afficherListe",
-        ]);
-        $routes->add("afficherListeUtilisateur", $route);
-
         // Route aPropos
         $route = new Route("/aPropos", [
             "_controller" => "utilisateur_controleur::aPropos",
@@ -152,12 +146,6 @@ class RouteurURL
         ]);
         $routes->add("afficherListeCommune", $route);
 
-//        // Route afficherDetailCommune
-//        $route = new Route("/detailCommune/{gid}", [
-//            "_controller" => "noeud_commune_controleur::afficherDetail",
-//        ]);
-//        $route->setMethods(["GET"]);
-//        $routes->add("afficherDetailCommune", $route);
 
 
         // Route d'autocomplétion des communes

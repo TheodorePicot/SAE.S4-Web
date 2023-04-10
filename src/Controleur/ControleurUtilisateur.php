@@ -161,7 +161,7 @@ class ControleurUtilisateur extends ControleurGenerique
             return ControleurUtilisateur::rediriger('afficherFormulaireCreation');
         }
         MessageFlash::ajouter("success", "L'utilisateur a bien été créé !");
-        return ControleurUtilisateur::rediriger("afficherListeUtilisateur");
+        return ControleurUtilisateur::rediriger("plusCourtChemin");
     }
 
     public function afficherFormulaireMiseAJour($login): Response
@@ -247,7 +247,7 @@ class ControleurUtilisateur extends ControleurGenerique
             return ControleurUtilisateur::rediriger('afficherFormulaireConnexion');
         }
         MessageFlash::ajouter("success", "Connexion effectuée.");
-        return ControleurUtilisateur::rediriger("afficherDetailUtilisateur", ["login" => $login]);
+        return ControleurUtilisateur::rediriger("plusCourtChemin");
     }
 
     public function deconnecter(): Response
