@@ -5,11 +5,10 @@ namespace App\PlusCourtChemin\Service;
 use App\PlusCourtChemin\Modele\DataObject\Trajet;
 use App\PlusCourtChemin\Modele\Repository\HistoriqueRepositoryInterface;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
-use PDOException;
 
 class HistoriqueService
 {
-    public function __construct(private readonly HistoriqueRepositoryInterface $historiqueRepository)
+    public function __construct(private readonly HistoriqueRepositoryInterface $historiqueRepository, private readonly ConnexionUtilisateur $connexionUtilisateur)
     {
     }
 
@@ -21,6 +20,9 @@ class HistoriqueService
 
     public function getHistorique($login)
     {
+
+        if ($login !== intval($loginUtilisateurConnecte))
+            throw new ServiceException("Seul l'utilisateur connecter peut supprimer son compte");
         return $this->historiqueRepository->recupererPar(["login_utilisateur" => $login]);
     }
 

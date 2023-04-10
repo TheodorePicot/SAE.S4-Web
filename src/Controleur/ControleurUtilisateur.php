@@ -110,7 +110,7 @@ class ControleurUtilisateur extends ControleurGenerique
         $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
 
         $this->historiqueService->ajouterFavoris($idTrajet);
-        return ControleurUtilisateur::afficherTwig("utilisateur/vosTrajets.html.twig", [
+        return ControleurUtilisateur::rediriger("trajets", [
             "trajets" => $trajets
         ]);
     }
@@ -119,7 +119,7 @@ class ControleurUtilisateur extends ControleurGenerique
         $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
         $trajets = $this->historiqueService->getHistorique($idUtilisateurConnecte);
         $this->historiqueService->supprimerFavoris($idTrajet);
-        return ControleurUtilisateur::afficherTwig("utilisateur/vosTrajets.html.twig", [
+        return ControleurUtilisateur::rediriger("afficherFavoris", [
             "trajets" => $trajets
         ]);
     }

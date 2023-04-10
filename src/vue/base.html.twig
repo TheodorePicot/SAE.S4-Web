@@ -85,9 +85,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route("afficherListeCommune") }}">Communes</a>
-                </li>
                 {% if idUtilisateurCo %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route("afficherFavoris") }}">Favoris</a>
@@ -95,7 +92,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route("trajets") }}">Historique</a>
                     </li>
-
                 {% endif %}
                 <li class="nav-item">
                     <a class="nav-link"

@@ -43,7 +43,7 @@
                         </fieldset>
                         <div id="test">
                             {% if nomCommuneDepart is defined and nomCommuneArrivee is defined and distance is defined %}
-                                <p> Le plus court chemin entre {{ nomCommuneDepart }} et {{ nomCommuneArrivee }}
+                                <p> Le plus court chemin entre <a href="#">{{ nomCommuneDepart }}</a> et <a href="#">{{ nomCommuneArrivee }}</a>
                                     mesure {{ distance }} km.</p>
                             {% endif %}
                         </div>
