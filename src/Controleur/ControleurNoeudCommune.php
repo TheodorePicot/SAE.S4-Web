@@ -65,10 +65,9 @@ class ControleurNoeudCommune extends ControleurGenerique
             return ControleurNoeudCommune::rediriger("afficherListeCommune");
         }
 
-        return ControleurNoeudCommune::afficherVue('vueGenerale.php', [
+        return ControleurNoeudCommune::afficherVue('detail.html.twig', [
             "noeudCommune" => $noeudCommune,
-            "pagetitle" => "Détail de la noeudCommune",
-            "cheminVueBody" => "noeudCommune/detail.php"
+
         ]);
     }
 
@@ -94,6 +93,7 @@ class ControleurNoeudCommune extends ControleurGenerique
             $noeudRoutierArriveeGid = $this->noeudRoutierService->recupererNoeudRoutierPar([
                 "id_rte500" => $noeudCommuneArrivee->getId_nd_rte()
             ])[0]->getGid();
+
 
             $pcc = new PlusCourtCheminAStar($noeudRoutierDepartGid, $noeudRoutierArriveeGid, $this->noeudRoutierService);
             $distance = $pcc->getDistanceFinale();

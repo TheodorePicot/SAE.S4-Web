@@ -31,24 +31,32 @@
                                                placeholder="Point d'arrivé" autocomplete="off">
                                         <div class="autocompletion" id="autocompletionA"></div>
                                     </div>
-                                    <div id="weather"></div>
+
                                 </div>
                             </div>
                             {#                            <input type="hidden" name="XDEBUG_TRIGGER" value="1"> #}
                             <div class="row">
                                 <div class="d-flex justify-content-center my-4 col-12">
                                     <button type="submit" class="btn btn-light">Calculer</button>
-
                                 </div>
                             </div>
                         </fieldset>
                         <div id="test">
                             {% if nomCommuneDepart is defined and nomCommuneArrivee is defined and distance is defined %}
-                                <p> Le plus court chemin entre <a href="#">{{ nomCommuneDepart }}</a> et <a href="#">{{ nomCommuneArrivee }}</a>
+                                <p> Le plus court chemin entre {{ nomCommuneDepart }} et {{ nomCommuneArrivee }}
                                     mesure {{ distance }} km.</p>
                             {% endif %}
                         </div>
                     </form>
+
+                    <div class="my-5" id="weather">
+                        <div class="d-flex justify-content-center">
+                            <h4><strong>Météo de la ville d'arrivée</strong></h4>
+                        </div>
+                        <p class="my-5"><span data-textvar="weatherHTML.name"></span></p>
+                        <p>Temperature : <span data-textvar="weatherHTML.temp"></span>°C</p>
+                    </div>
+
                 </div>
 
 

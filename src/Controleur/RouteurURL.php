@@ -152,12 +152,12 @@ class RouteurURL
         ]);
         $routes->add("afficherListeCommune", $route);
 
-        // Route afficherDetailCommune
-        $route = new Route("/detailCommune/{gid}", [
-            "_controller" => "noeud_commune_controleur::afficherDetail",
-        ]);
-        $route->setMethods(["GET"]);
-        $routes->add("afficherDetailCommune", $route);
+//        // Route afficherDetailCommune
+//        $route = new Route("/detailCommune/{gid}", [
+//            "_controller" => "noeud_commune_controleur::afficherDetail",
+//        ]);
+//        $route->setMethods(["GET"]);
+//        $routes->add("afficherDetailCommune", $route);
 
 
         // Route d'autocomplétion des communes
