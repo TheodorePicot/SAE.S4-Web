@@ -2,7 +2,7 @@
 
 namespace App\PlusCourtChemin\Service;
 
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Modele\DataObject\Trajet;
 use App\PlusCourtChemin\Modele\Repository\HistoriqueRepositoryInterface;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HistoriqueService implements HistoriqueServiceInterface
 {
-    public function __construct(private readonly HistoriqueRepositoryInterface $historiqueRepository, private  readonly ConnexionUtilisateur $connexionUtilisateur)
+    public function __construct(private readonly HistoriqueRepositoryInterface $historiqueRepository, private  readonly ConnexionUtilisateurSession $connexionUtilisateur)
     {
     }
 

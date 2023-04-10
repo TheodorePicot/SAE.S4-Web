@@ -8,9 +8,9 @@ interface UtilisateurServiceInterface
 
     public function mettreAJour($login, $prenom, $nom, $mdp, $mdp2, $mdpAncien, $email);
 
-    public function connecter($login, $mdp);
+    public function verifierIdentifiantUtilisateur($login, $mdp);
 
-    public function deconnecter();
+//    public function deconnecter();
 
     public function validerEmail($login, $nonce);
 

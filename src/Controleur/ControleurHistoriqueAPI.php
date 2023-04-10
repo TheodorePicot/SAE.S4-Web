@@ -2,7 +2,7 @@
 
 namespace App\PlusCourtChemin\Controleur;
 
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
 use App\PlusCourtChemin\Service\HistoriqueServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +12,7 @@ class ControleurHistoriqueAPI extends ControleurGenerique
 {
     public function __construct (
         private readonly HistoriqueServiceInterface $historiqueService,
-        private readonly ConnexionUtilisateur $connexionUtilisateur
+        private readonly ConnexionUtilisateurSession $connexionUtilisateur
     ) {}
 
     public function supprimer($idTrajet): Response

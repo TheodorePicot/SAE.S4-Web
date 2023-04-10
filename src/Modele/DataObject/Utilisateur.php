@@ -3,8 +3,9 @@
 namespace App\PlusCourtChemin\Modele\DataObject;
 
 use App\PlusCourtChemin\Lib\MotDePasse;
+use JsonSerializable;
 
-class Utilisateur extends AbstractDataObject
+class Utilisateur extends AbstractDataObject implements JsonSerializable
 {
 
     private string $login;
@@ -141,5 +142,15 @@ class Utilisateur extends AbstractDataObject
             "nonce_tag" => $this->nonce,
             "email_a_valider_tag" => $this->emailAValider,
         );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            "login" => $this->getLogin(),
+            "nom" => $this->getNom(),
+            "prenom" => $this->getPrenom(),
+            "email" => $this->getEmail()
+        ];
     }
 }

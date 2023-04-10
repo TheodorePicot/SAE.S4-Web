@@ -2,7 +2,7 @@
 
 namespace App\PlusCourtChemin\Test;
 
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepositoryInterface;
@@ -25,7 +25,7 @@ class UtilisateurServiceTest extends TestCase
     {
         parent::setUp();
         $this->utilisateurRepositoryMock = $this->createMock(UtilisateurRepositoryInterface::class);
-        $this->connexionUtilisateurMock = $this->createMock(ConnexionUtilisateur::class);
+        $this->connexionUtilisateurMock = $this->createMock(ConnexionUtilisateurSession::class);
         $this->verificationEmailMock = $this->createMock(VerificationEmail::class);
         $this->service = new UtilisateurService($this->utilisateurRepositoryMock, $this->connexionUtilisateurMock, $this->verificationEmailMock);
     }
@@ -199,7 +199,7 @@ class UtilisateurServiceTest extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Login ou mot de passe manquant.");
-        $this->service->connecter($login, $mdp);
+        $this->service->verifierIdentifiantUtilisateur($login, $mdp);
     }
 
     public function testConecterutilisateurInexistant()
@@ -211,7 +211,7 @@ class UtilisateurServiceTest extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Login ou mot de passe manquant.");
-        $this->service->connecter($login, $mdp);
+        $this->service->verifierIdentifiantUtilisateur($login, $mdp);
     }
 }
 

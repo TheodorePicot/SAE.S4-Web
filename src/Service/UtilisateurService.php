@@ -2,18 +2,19 @@
 
 namespace App\PlusCourtChemin\Service;
 
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Lib\MotDePasse;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepositoryInterface;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
+use Symfony\Component\HttpFoundation\Response;
 
 class UtilisateurService implements UtilisateurServiceInterface
 {
 
-    public function __construct(private readonly UtilisateurRepositoryInterface $utilisateurRepository, private readonly ConnexionUtilisateur $connexionUtilisateur, private readonly VerificationEmail $verificationEmail)
+    public function __construct(private readonly UtilisateurRepositoryInterface $utilisateurRepository, private readonly ConnexionUtilisateurSession $connexionUtilisateur, private readonly VerificationEmail $verificationEmail)
     {
 
     }
@@ -116,7 +117,7 @@ class UtilisateurService implements UtilisateurServiceInterface
         $this->utilisateurRepository->mettreAJour($utilisateur);
     }
 
-    public function connecter($login, $mdp)
+    public function verifierIdentifiantUtilisateur($login, $mdp)
     {
         if (!(isset($login) && isset($mdp))) {
             throw new ServiceException("Login ou mot de passe manquant.");
@@ -136,16 +137,17 @@ class UtilisateurService implements UtilisateurServiceInterface
             throw new ServiceException("Adresse email non validée.");
         }
 
-        $this->connexionUtilisateur->connecter($utilisateur->getLogin());
+//        $this->connexionUtilisateur->connecter($utilisateur->getLogin());
+        return $utilisateur->getLogin();
     }
 
-    public function deconnecter()
-    {
-        if (!$this->connexionUtilisateur->estConnecte()) {
-            throw new ServiceException("Utilisateur non connecté.");
-        }
-        $this->connexionUtilisateur->deconnecter();
-    }
+//    public function deconnecter()
+//    {
+//        if (!$this->connexionUtilisateur->estConnecte()) {
+//            throw new ServiceException("Utilisateur non connecté.");
+//        }
+//        $this->connexionUtilisateur->deconnecter();
+//    }
 
     public function validerEmail($login, $nonce)
     {
@@ -168,7 +170,7 @@ class UtilisateurService implements UtilisateurServiceInterface
     public function recupererUtilisateurParClePrimaire($login) {
         $utilisateur = $this->utilisateurRepository->recupererParClePrimaire($login);
         if($utilisateur == null) {
-            throw new ServiceException("L’utilisateur n’existe pas!");
+            throw new ServiceException("L’utilisateur n’existe pas!", Response::HTTP_NOT_FOUND);
         }
         return $utilisateur;
     }

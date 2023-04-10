@@ -2,7 +2,7 @@
 
 namespace App\PlusCourtChemin\Controleur;
 
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
@@ -22,7 +22,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         private readonly NoeudCommuneServiceInterface $noeudCommuneService,
         private readonly NoeudRoutierServiceInterface $noeudRoutierService,
         private readonly HistoriqueService $historiqueService,
-        private readonly ConnexionUtilisateur $connexionUtilisateur,
+        private readonly ConnexionUtilisateurSession $connexionUtilisateur,
 //        private UtilisateurRepository $utilisateurRepository
     )
     {
