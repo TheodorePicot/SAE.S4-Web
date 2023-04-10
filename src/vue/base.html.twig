@@ -19,6 +19,7 @@
     <script type="text/javascript" src="{{ assets("assets/js/map.js") }}" defer></script>
     <script type="text/javascript" src="{{ assets("assets/js/autocompletion.js") }}" defer></script>
     <script type="text/javascript" src="{{ assets("assets/js/weather.js") }}" defer></script>
+    <script type="text/javascript" src="{{ assets("assets/js/apiRest.js") }}" defer></script>
 
     <script type="module" src="{{ assets("assets/js/ville.js") }}" defer></script>
 
@@ -32,7 +33,12 @@
 
 </head>
 <body>
-
+<script type="text/javascript">
+let siteBase = "http://localhost/SAE.S4-Web/web";
+let apiBase = siteBase+"/api/"
+let pagePersoBase = siteBase+"/utilisateurs/page/";
+let imgBase = "http://localhost/SAE.S4-Web/web/assets/img";
+</script>
 <header>
 
     <nav class="navbar navbar-expand-lg navbar-dark  mx-4 fs-5">

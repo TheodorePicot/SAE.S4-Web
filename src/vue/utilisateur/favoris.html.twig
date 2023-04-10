@@ -21,7 +21,10 @@
                             </h5>
                             <a href="{{ route("afficherTrajet", {'idTrajet' : trajet.idTrajet}) }}"
                                class="btn btn-primary">Voir le trajet</a>
-                            <a href="{{ route("supprimerFavoris", {'idTrajet' : trajet.idTrajet}) }}" class="btn btn-primary">Supprimer des favoris</a>
+{#                            <a href="{{ route("supprimerFavoris", {'idTrajet' : trajet.idTrajet}) }}" class="delete-trajet btn btn-primary">Supprimer des favoris</a>#}
+                            <button class="delete-trajet btn btn-primary" data-id-trajet="{{ trajet.idTrajet }}">
+                                Supprimer des favoris
+                            </button>
                         </div>
                     </div>
                 {% endfor %}

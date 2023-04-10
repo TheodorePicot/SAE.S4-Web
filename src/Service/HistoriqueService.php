@@ -50,9 +50,6 @@ class HistoriqueService implements HistoriqueServiceInterface
 
         if ($idTrajet === null)
             throw new ServiceException("Trajet inconnue.", Response::HTTP_NOT_FOUND);
-
-        if ($trajet->getLogin() !== intval($idUtilisateurConnecte))
-            throw new ServiceException("Seul l'auteur du trajet peut le supprimer", Response::HTTP_FORBIDDEN);
         $this->historiqueRepository->supprimerFavoris($idTrajet);
     }
 }
