@@ -183,8 +183,8 @@ class RouteurURL
         ]);
         $routes->add("ajouterFavoris", $route);
 
-        $route = new Route("/supprimerFavoris/{idTrajet}", [
-            "_controller" => "controleur_historique_api::supprimerFavoris",
+        $route = new Route("/api/supprimerFavoris/{idTrajet}", [
+            "_controller" => "controleur_historique_api::supprimer",
         ]);
         $route->setMethods(["DELETE"]);
         $routes->add("supprimerFavoris", $route);
