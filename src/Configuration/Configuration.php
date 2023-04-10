@@ -4,7 +4,6 @@ namespace App\PlusCourtChemin\Configuration;
 
 class Configuration
 {
-
     // la variable debug est un boolean
     static private bool $debug = false;
 

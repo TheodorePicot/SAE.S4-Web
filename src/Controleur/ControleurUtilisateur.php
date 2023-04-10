@@ -17,9 +17,7 @@ class ControleurUtilisateur extends ControleurGenerique
                                 private readonly ConnexionUtilisateurSession $connexionUtilisateur,
                                 private readonly HistoriqueServiceInterface $historiqueService,
                                 private readonly ConnexionUtilisateurSession $connexionUtilisateurJWT)
-    {
-
-    }
+    {}
 
     public static function afficherErreur($errorMessage = "", $controleur = ""): Response
     {
@@ -30,7 +28,6 @@ class ControleurUtilisateur extends ControleurGenerique
     public function afficherListe(): Response
     {
         $utilisateurs = $this->utilisateurService->recupererUtilisateur();     //appel au modèle pour gerer la BD
-
         return ControleurUtilisateur::afficherTwig('utilisateur/list.html.twig', [
             "utilisateurs" => $utilisateurs,
         ]);
@@ -38,8 +35,6 @@ class ControleurUtilisateur extends ControleurGenerique
 
     public function afficherDetail($login): Response
     {
-//        if (isset($_REQUEST['login'])) {
-//            $login = $_REQUEST['login'];
         $utilisateur = $this->utilisateurService->recupererUtilisateurParClePrimaire($login);
         if ($utilisateur === null) {
             MessageFlash::ajouter("warning", "Login inconnu.");
@@ -49,19 +44,12 @@ class ControleurUtilisateur extends ControleurGenerique
                 "utilisateur" => $utilisateur
             ]);
         }
-//        } else {
-//            MessageFlash::ajouter("danger", "Login manquant.");
-//            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
-//        }
     }
 
     public function supprimer($login)
     {
-//        if (isset($_REQUEST['login'])) {
-//            $login = $_REQUEST['login'];*
         $idUtilisateurConnecte = $this->connexionUtilisateur->getLoginUtilisateurConnecte();
         $deleteSuccessful = $this->utilisateurService->supprimerUtilisateur($login, $idUtilisateurConnecte);
-        $utilisateurs = $this->utilisateurService->recupererUtilisateur();
         if ($deleteSuccessful) {
             MessageFlash::ajouter("success", "L'utilisateur a bien été supprimé !");
             return ControleurUtilisateur::rediriger("plusCourtChemin");
@@ -69,10 +57,6 @@ class ControleurUtilisateur extends ControleurGenerique
             MessageFlash::ajouter("warning", "Login inconnu.");
             return ControleurUtilisateur::rediriger("plusCourtChemin");
         }
-//        } else {
-//            MessageFlash::ajouter("danger", "Login manquant.");
-//            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
-//        }
     }
 
 
@@ -169,8 +153,6 @@ class ControleurUtilisateur extends ControleurGenerique
 
     public function afficherFormulaireMiseAJour($login): Response
     {
-//        if (isset($_REQUEST['login'])) {
-//            $login = $_REQUEST['login'];
         /** @var Utilisateur $utilisateur */
         $utilisateur = $this->utilisateurService->recupererUtilisateurParClePrimaire($login);
         if ($utilisateur === null) {
@@ -194,10 +176,6 @@ class ControleurUtilisateur extends ControleurGenerique
             "estAdmin" => $utilisateur->getEstAdmin(),
             "method" => Configuration::getDebug() ? "get" : "post",
         ]);
-//        } else {
-//            MessageFlash::ajouter("danger", "Login manquant.");
-//            ControleurUtilisateur::rediriger("utilisateur", "afficherListe");
-//        }
     }
 
     public function mettreAJour(): Response

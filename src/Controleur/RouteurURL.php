@@ -148,8 +148,6 @@ class RouteurURL
         ]);
         $routes->add("afficherListeCommune", $route);
 
-
-
         // Route d'autocomplétion des communes
         $route = new Route("/autocompletion/{lettre}", [
             "_controller" => "noeud_commune_controleur::autoCompletion",
@@ -174,9 +172,9 @@ class RouteurURL
         $routes->add("ajouterFavoris", $route);
 
         $route = new Route("/api/supprimerFavoris/{idTrajet}", [
-            "_controller" => "controleur_historique_api::supprimer",
+            "_controller" => "utilisateur_controleur::supprimerFavoris",
         ]);
-        $route->setMethods(["DELETE"]);
+//        $route->setMethods(["DELETE"]);
         $routes->add("supprimerFavoris", $route);
 
         $route = new Route("/api/utilisateurs/{login}", [
@@ -238,7 +236,7 @@ class RouteurURL
         $publicationControleurService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur'), new Reference('historique_service'), new Reference('connexion_utilisateur')]);
 
         $publicationControleurService = $conteneur->register('controleur_historique_api', ControleurHistoriqueAPI::class);
-        $publicationControleurService->setArguments([new Reference('historique_service'), new Reference('connexion_utilisateur')]);
+        $publicationControleurService->setArguments([new Reference('historique_service')]);
 
         $publicationControleurAPIService = $conteneur->register('controleur_utilisateur_api',ControleurUtilisateurAPI::class);
         $publicationControleurAPIService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur_JWT')]);

@@ -6,13 +6,10 @@ use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
-use App\PlusCourtChemin\Modele\Repository\HistoriqueRepository;
-use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
 use App\PlusCourtChemin\Service\HistoriqueService;
 use App\PlusCourtChemin\Service\NoeudCommuneServiceInterface;
 use App\PlusCourtChemin\Service\NoeudRoutierServiceInterface;
 use PDOException;
-use PHPUnit\Util\Json;
 use Symfony\Component\HttpFoundation\Response;
 
 class ControleurNoeudCommune extends ControleurGenerique
@@ -21,10 +18,8 @@ class ControleurNoeudCommune extends ControleurGenerique
     public function __construct(
         private readonly NoeudCommuneServiceInterface $noeudCommuneService,
         private readonly NoeudRoutierServiceInterface $noeudRoutierService,
-        private readonly HistoriqueService $historiqueService,
-        private readonly ConnexionUtilisateurSession $connexionUtilisateur,
-//        private UtilisateurRepository $utilisateurRepository
-    )
+        private readonly HistoriqueService            $historiqueService,
+        private readonly ConnexionUtilisateurSession  $connexionUtilisateur)
     {
     }
 
@@ -41,12 +36,12 @@ class ControleurNoeudCommune extends ControleurGenerique
 //            $nomCommuneRecherche = $_POST["nomCommuneDepart"];
 //
 //            $noeudsCommunes = $this->noeudCommuneService->recupererNoeudCommune();     //appel au modèle pour gerer la BD
-            /** @var NoeudCommune $noeudCommuneDepart */
+        /** @var NoeudCommune $noeudCommuneDepart */
 //            $noeudCommuneRecherche = $this->noeudCommuneService->recupererNoeudCommunePar(["nom_comm" => $nomCommuneRecherche])[0];
-            return ControleurNoeudCommune::afficherTwig('noeudCommune/list.html.twig', [
+        return ControleurNoeudCommune::afficherTwig('noeudCommune/list.html.twig', [
 //                "noeudsCommunes" => $noeudsCommunes,
 
-            ]);
+        ]);
 //        }
     }
 
@@ -116,10 +111,11 @@ class ControleurNoeudCommune extends ControleurGenerique
         return ControleurNoeudCommune::afficherTwig('noeudCommune/plusCourtChemin.html.twig', $parametres);
     }
 
-    public function afficherTrajet(int $idTrajet) {
+    public function afficherTrajet(int $idTrajet)
+    {
         $trajet = $this->historiqueService->recupererParClePrimaire($idTrajet);
         $parametres["coordonneesChemin"] = $trajet->getCoordonneesDuChemin();
-        $parametres["coordonneesDepart"] =  $trajet->getCoords_depart();
+        $parametres["coordonneesDepart"] = $trajet->getCoords_depart();
         $parametres["coordonneesArrivee"] = $trajet->getCoords_arrivee();
         $parametres["nomCommuneDepart"] = $trajet->getComm_depart();
         $parametres["nomCommuneArrivee"] = $trajet->getComm_arrivee();
