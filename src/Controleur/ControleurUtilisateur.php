@@ -3,7 +3,7 @@
 namespace App\PlusCourtChemin\Controleur;
 
 use App\PlusCourtChemin\Configuration\Configuration;
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Service\Exception\ServiceException;
@@ -13,7 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ControleurUtilisateur extends ControleurGenerique
 {
-    public function __construct(private readonly UtilisateurServiceInterface $utilisateurService, private readonly ConnexionUtilisateur $connexionUtilisateur, private HistoriqueServiceInterface $historiqueService)
+    public function __construct(private readonly UtilisateurServiceInterface $utilisateurService,
+                                private readonly ConnexionUtilisateurSession $connexionUtilisateur,
+                                private readonly HistoriqueServiceInterface $historiqueService,
+                                private readonly ConnexionUtilisateurSession $connexionUtilisateurJWT)
     {
 
     }
@@ -240,28 +243,42 @@ class ControleurUtilisateur extends ControleurGenerique
         $login = $_POST['login'] ?? null;
         $password = $_POST['mdp'] ?? null;
         try {
-            $this->utilisateurService->connecter($login, $password);
+            $login = $this->utilisateurService->verifierIdentifiantUtilisateur($login, $password);
         } catch (ServiceException $e) {
             MessageFlash::ajouter("danger", $e->getMessage());
             var_dump($e->getMessage());
             return ControleurUtilisateur::rediriger('afficherFormulaireConnexion');
         }
+        $this->connexionUtilisateur->connecter($login);
+        $this->connexionUtilisateurJWT->connecter($login);
         MessageFlash::ajouter("success", "Connexion effectuée.");
         return ControleurUtilisateur::rediriger("plusCourtChemin");
     }
 
+//    public function deconnecter(): Response
+//    {
+//        try {
+//            $this->utilisateurService->deconnecter();
+//        } catch (ServiceException $e) {
+//
+//            MessageFlash::ajouter("danger", $e->getMessage());
+//            return ControleurUtilisateur::rediriger('plusCourtChemin');
+//        }
+//        MessageFlash::ajouter("success", "Deconnexion effectuée.");
+//        return ControleurUtilisateur::rediriger('plusCourtChemin');
+//
+//    }
+
     public function deconnecter(): Response
     {
-        try {
-            $this->utilisateurService->deconnecter();
-        } catch (ServiceException $e) {
-
-            MessageFlash::ajouter("danger", $e->getMessage());
+        if (!$this->connexionUtilisateur->estConnecte()) {
+            MessageFlash::ajouter("error", "Utilisateur non connecté.");
             return ControleurUtilisateur::rediriger('plusCourtChemin');
         }
-        MessageFlash::ajouter("success", "Deconnexion effectuée.");
+        $this->connexionUtilisateur->deconnecter();
+        $this->connexionUtilisateurJWT->deconnecter();
+        MessageFlash::ajouter("success", "L'utilisateur a bien été déconnecté.");
         return ControleurUtilisateur::rediriger('plusCourtChemin');
-
     }
 
     public function validerEmail(): Response

@@ -1,13 +1,13 @@
 <?php
 
-namespace TheFeed\Lib;
+namespace App\PlusCourtChemin\Lib;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 class JsonWebToken
 {
-    private static string $jsonSecret = "votre_secret_ici";
+    private static string $jsonSecret = "RYh14hV6x+g4wBSrdS7kTE";
 
     public static function encoder(array $contenu) : string {
         return JWT::encode($contenu, self::$jsonSecret, 'HS256');

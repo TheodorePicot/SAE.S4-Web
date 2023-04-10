@@ -3,7 +3,8 @@
 namespace App\PlusCourtChemin\Controleur;
 
 use App\PlusCourtChemin\Configuration\ConfigurationBDDPostgreSQL;
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurJWT;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Lib\Conteneur;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\VerificationEmail;
@@ -52,6 +53,7 @@ class RouteurURL
         Conteneur::ajouterService("twig", $twig);
 
         $requete = Request::createFromGlobals();
+
         $routes = new RouteCollection();
 
         // Route plusCourtChemin
@@ -177,9 +179,22 @@ class RouteurURL
         $route->setMethods(["DELETE"]);
         $routes->add("supprimerFavoris", $route);
 
+        $route = new Route("/api/utilisateurs/{login}", [
+            "_controller" => "controleur_utilisateur_api::afficherDetail",
+        ]);
+        $route->setMethods(["GET"]);
+        $routes->add("afficherDetailUtilisateurAPI", $route);
+
+        $route = new Route("/api/auth", [
+            "_controller" => "controleur_utilisateur_api::connecter",
+        ]);
+        $route->setMethods(["POST"]);
+        $routes->add("connecterAPI", $route);
+
         $conteneur = new ContainerBuilder();
 
         $conteneur->register('config_bdd', ConfigurationBDDPostgreSQL::class);
+
 
         $connexionBaseService = $conteneur->register('connexion_base', ConnexionBaseDeDonnees::class);
         $connexionBaseService->setArguments([new Reference('config_bdd')]);
@@ -196,8 +211,10 @@ class RouteurURL
         $historiqueRepository = $conteneur->register('historique_repository', HistoriqueRepository::class);
         $historiqueRepository->setArguments([new Reference('connexion_base')]);
 
-        $connexionUtilisateur = $conteneur->register('connexion_utilisateur', ConnexionUtilisateur::class);
+        $connexionUtilisateur = $conteneur->register('connexion_utilisateur', ConnexionUtilisateurSession::class);
         $connexionUtilisateur->setArguments([new Reference('utilisateur_repository')]);
+
+        $connexionUtilisateurJWT = $conteneur->register('connexion_utilisateur_JWT',ConnexionUtilisateurJWT::class);
 
         $verificationEmail = $conteneur->register('verification_email', VerificationEmail::class);
         $verificationEmail->setArguments([new Reference('utilisateur_repository')]);
@@ -218,11 +235,13 @@ class RouteurURL
         $publicationControleurService->setArguments([new Reference('noeud_commune_service'), new Reference('noeud_routier_service'), new Reference('historique_service'), new Reference('connexion_utilisateur')]);
 
         $publicationControleurService = $conteneur->register('utilisateur_controleur', ControleurUtilisateur::class);
-        $publicationControleurService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur'), new Reference('historique_service')]);
+        $publicationControleurService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur'), new Reference('historique_service'), new Reference('connexion_utilisateur')]);
 
         $publicationControleurService = $conteneur->register('controleur_historique_api', ControleurHistoriqueAPI::class);
         $publicationControleurService->setArguments([new Reference('historique_service'), new Reference('connexion_utilisateur')]);
 
+        $publicationControleurAPIService = $conteneur->register('controleur_utilisateur_api',ControleurUtilisateurAPI::class);
+        $publicationControleurAPIService->setArguments([new Reference('utilisateur_service'), new Reference('connexion_utilisateur_JWT')]);
         //        var_dump($contexteRequete);
 
         $contexteRequete = (new RequestContext())->fromRequest($requete);

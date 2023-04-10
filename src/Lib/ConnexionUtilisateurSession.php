@@ -8,7 +8,7 @@ use App\PlusCourtChemin\Modele\Repository\UtilisateurRepository;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepositoryInterface;
 use App\PlusCourtChemin\Service\UtilisateurServiceInterface;
 
-class ConnexionUtilisateur
+class ConnexionUtilisateurSession implements ConnexionUtilisateurInterface
 {
     private static string $cleConnexion = "_utilisateurConnecte";
 

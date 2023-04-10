@@ -2,7 +2,7 @@
 
 namespace App\PlusCourtChemin\Controleur;
 
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Lib\MessageFlash;
 use App\PlusCourtChemin\Lib\PlusCourtCheminAStar;
 use App\PlusCourtChemin\Modele\DataObject\NoeudCommune;
@@ -22,7 +22,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         private readonly NoeudCommuneServiceInterface $noeudCommuneService,
         private readonly NoeudRoutierServiceInterface $noeudRoutierService,
         private readonly HistoriqueService $historiqueService,
-        private readonly ConnexionUtilisateur $connexionUtilisateur,
+        private readonly ConnexionUtilisateurSession $connexionUtilisateur,
 //        private UtilisateurRepository $utilisateurRepository
     )
     {
@@ -124,6 +124,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         $parametres["nomCommuneDepart"] = $trajet->getComm_depart();
         $parametres["nomCommuneArrivee"] = $trajet->getComm_arrivee();
         $parametres["distance"] = $trajet->getDistance();
+        $parametres["afficher"] = 'yes';
         return ControleurNoeudCommune::afficherTwig('noeudCommune/plusCourtChemin.html.twig', $parametres);
 
     }

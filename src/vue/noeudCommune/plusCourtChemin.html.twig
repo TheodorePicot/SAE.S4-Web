@@ -10,6 +10,7 @@
 
             <div class="row my-3" style="height: 90vh">
                 <div class="col-lg-3 mx-lg-2 col-md-12 col-sm-12">
+                    {% if not afficher is defined %}
                     <form action="{{ route("plusCourtChemin") }}" method="post" id="form">
                         <fieldset>
                             <div class="my-5 d-flex justify-content-center">
@@ -41,14 +42,15 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <div id="test">
-                            {% if nomCommuneDepart is defined and nomCommuneArrivee is defined and distance is defined %}
-                                <p> Le plus court chemin entre {{ nomCommuneDepart }} et {{ nomCommuneArrivee }}
-                                    mesure {{ distance }} km.</p>
-                            {% endif %}
-                        </div>
                     </form>
+                    {% endif %}
 
+                    <div id="test">
+                        {% if nomCommuneDepart is defined and nomCommuneArrivee is defined and distance is defined %}
+                            <p> Le plus court chemin entre {{ nomCommuneDepart }} et {{ nomCommuneArrivee }}
+                                mesure {{ distance }} km.</p>
+                        {% endif %}
+                    </div>
                     <div class="my-5" id="weather">
                         <div class="d-flex justify-content-center">
                             <h4 data-textvar="weatherHTML.titre" ><strong>Météo de la ville d'arrivée</strong></h4>
@@ -59,8 +61,6 @@
                     </div>
 
                 </div>
-
-
                 <div class="col-lg-8 col-md-12 col-sm-12">
                     <div id="map">
                     </div>

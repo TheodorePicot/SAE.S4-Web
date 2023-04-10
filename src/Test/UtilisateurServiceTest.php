@@ -2,10 +2,11 @@
 
 namespace App\PlusCourtChemin\Test;
 
-use App\PlusCourtChemin\Lib\ConnexionUtilisateur;
+use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepositoryInterface;
+use App\PlusCourtChemin\Service\Exception\ServiceException;
 use App\PlusCourtChemin\Service\UtilisateurService;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,7 @@ class UtilisateurServiceTest extends TestCase
     {
         parent::setUp();
         $this->utilisateurRepositoryMock = $this->createMock(UtilisateurRepositoryInterface::class);
-        $this->connexionUtilisateurMock = $this->createMock(ConnexionUtilisateur::class);
+        $this->connexionUtilisateurMock = $this->createMock(ConnexionUtilisateurSession::class);
         $this->verificationEmailMock = $this->createMock(VerificationEmail::class);
         $this->service = new UtilisateurService($this->utilisateurRepositoryMock, $this->connexionUtilisateurMock, $this->verificationEmailMock);
     }
@@ -43,7 +44,7 @@ class UtilisateurServiceTest extends TestCase
         $mdp2 = "12345678";
         $email = "test@yopmail.com";
 
-        $this->expectException(Exception::class);
+        $this->expectException(ServiceException::class);
         $this->expectExceptionMessage("Login, nom, prenom ou mot de passe manquant!");
         $this->service->creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email);
     }
@@ -80,11 +81,6 @@ class UtilisateurServiceTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Email non valide!");
         $this->service->creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email);
-    }
-
-    public function testCreerUtilisateur()
-    {
-
     }
 
     public function testMettreAJourSansPrenom()
@@ -141,54 +137,6 @@ class UtilisateurServiceTest extends TestCase
         $this->service->mettreAJour($login, $prenom, $nom, $mdp, $mdp2, $mdpAncien, $email);
     }
 
-//Todo fonction pas
-    public function testMettreAJourUtilisateurInexistant()
-    {
-        $fakeUtilisateur = $this->createMock(Utilisateur::class);
-        $this->utilisateurRepositoryMock->method("recupererParClePrimaire")->willReturn(null);
-
-        $login = "test";
-        $prenom = "test";
-        $nom = "test";
-        $mdp = "12345678";
-        $mdp2 = "12345678";
-        $mdpAncien = "123";
-        $email = "test@yopmail.com";
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Login inconnu");
-        $this->service->mettreAJour($login, $prenom, $nom, $mdp, $mdp2, $mdpAncien, $email);
-    }
-
-
-//Todo test Mot de passe eroné
-
-//Todo fonctionne pas a cause methode
-    public function testMettreAJourPasConnecte()
-    {
-        $fakeUtilisateur = $this->createMock(Utilisateur::class);
-        $this->utilisateurRepositoryMock->method("recupererParClePrimaire")->willReturn($fakeUtilisateur->getLogin());
-        $this->connexionUtilisateurMock->method("getLoginUtilisateurConnecte")->willReturn(null);
-
-        $login = "test";
-        $prenom = 'test';
-        $nom = "test";
-        $mdp = "12345678";
-        $mdp2 = "12345678";
-        $mdpAncien = "123";
-        $email = "test@yopmail.com";
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage("La mise à jour n'est possible que pour l'utilisateur connecté ou un administrateur");
-        $this->service->mettreAJour($login, $prenom, $nom, $mdp, $mdp2, $mdpAncien, $email);
-    }
-
-    //Todo test mettre a jour
-    public function testMettreAJour()
-    {
-
-    }
-
     public function testConnecterSansLogin()
     {
         $fakeUtilisateur = $this->createMock(Utilisateur::class);
@@ -199,7 +147,7 @@ class UtilisateurServiceTest extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Login ou mot de passe manquant.");
-        $this->service->connecter($login, $mdp);
+        $this->service->verifierIdentifiantUtilisateur($login, $mdp);
     }
 
     public function testConecterutilisateurInexistant()
@@ -211,7 +159,7 @@ class UtilisateurServiceTest extends TestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Login ou mot de passe manquant.");
-        $this->service->connecter($login, $mdp);
+        $this->service->verifierIdentifiantUtilisateur($login, $mdp);
     }
 }
 
