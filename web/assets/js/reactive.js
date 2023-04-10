@@ -25,8 +25,6 @@ function trigger(target, key) {
             elem();
         }
     }
-
-
 }
 
 function reactive(passiveObject, name) {
@@ -68,6 +66,7 @@ function startReactiveDom() {
             rel.textContent = objectByName.get(obj)[fun](arg)
         });
     }
+
     for (let rel of document.querySelectorAll("[data-textvar]")) {
         const [obj, prop] = rel.dataset.textvar.split('.');
         applyAndRegister(() => {
@@ -81,11 +80,6 @@ function startReactiveDom() {
             rel.style = objectByName.get(obj)[prop]
         });
     }
-
-
-
-
 }
 
 export {applyAndRegister, reactive, startReactiveDom};
-
