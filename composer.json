@@ -11,7 +11,8 @@
     "ext-pdo": "*",
     "twig/twig": "^3.5",
     "symfony/dependency-injection": "^6.2",
-    "phpfastcache/phpfastcache": "^9.1"
+    "phpfastcache/phpfastcache": "^9.1",
+    "firebase/php-jwt": "^6.4"
   },
   "require-dev": {
     "phpunit/phpunit": "9.6.5"
