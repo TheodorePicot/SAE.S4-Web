@@ -80,6 +80,13 @@ function startReactiveDom() {
             rel.style = objectByName.get(obj)[prop]
         });
     }
+
+    for (let rel of document.querySelectorAll("[data-srcvar]")) {
+        const [obj, prop] = rel.dataset.srcvar.split('.');
+        applyAndRegister(() => {
+            rel.src = objectByName.get(obj)[prop]
+        });
+    }
 }
 
 export {applyAndRegister, reactive, startReactiveDom};

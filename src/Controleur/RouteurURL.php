@@ -183,18 +183,11 @@ class RouteurURL
         ]);
         $routes->add("ajouterFavoris", $route);
 
-        $route = new Route("/supprimerFavoris/{idTrajet}", [
-            "_controller" => "utilisateur_controleur::supprimerFavoris",
+        $route = new Route("/api/supprimerFavoris/{idTrajet}", [
+            "_controller" => "controleur_historique_api::supprimer",
         ]);
-//        $route->setMethods(["DELETE"]);
+        $route->setMethods(["DELETE"]);
         $routes->add("supprimerFavoris", $route);
-
-//        $route = new Route("/api/supprimerFavoris/{idTrajet}", [
-//            "_controller" => "controleur_historique_api::supprimer",
-//        ]);
-//        $route->setMethods(["DELETE"]);
-//        $routes->add("supprimerFavoris", $route);
-
 
         $conteneur = new ContainerBuilder();
 
@@ -241,11 +234,6 @@ class RouteurURL
 
         $publicationControleurService = $conteneur->register('controleur_historique_api', ControleurHistoriqueAPI::class);
         $publicationControleurService->setArguments([new Reference('historique_service'), new Reference('connexion_utilisateur')]);
-
-
-
-        // TODO renommer les nom de variable
-
 
         //        var_dump($contexteRequete);
 
