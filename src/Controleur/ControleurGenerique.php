@@ -28,7 +28,7 @@ class ControleurGenerique
 
     public static function afficherErreur($errorMessage = "", $statusCode = 400): Response
     {
-        $reponse = ControleurGenerique::afficherTwig('base.html.twig', [
+        $reponse = ControleurGenerique::afficherTwig('erreur.html.twig', [
 
             "errorMessage" => $errorMessage
         ]);

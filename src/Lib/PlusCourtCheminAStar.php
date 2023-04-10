@@ -108,7 +108,7 @@ class PlusCourtCheminAStar
             $noeudRoutierGidCourant = $this->predecesseurs[$noeudRoutierGidCourant];
         }
 
-//        $chemin[] = $this->noeudRoutierArriveeGid;
+        $chemin[] = $this->noeudRoutierDepartGid;
         return array_reverse($chemin);
     }
 
