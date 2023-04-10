@@ -124,6 +124,7 @@ class ControleurNoeudCommune extends ControleurGenerique
         $parametres["nomCommuneDepart"] = $trajet->getComm_depart();
         $parametres["nomCommuneArrivee"] = $trajet->getComm_arrivee();
         $parametres["distance"] = $trajet->getDistance();
+        $parametres["afficher"] = 'yes';
         return ControleurNoeudCommune::afficherTwig('noeudCommune/plusCourtChemin.html.twig', $parametres);
 
     }

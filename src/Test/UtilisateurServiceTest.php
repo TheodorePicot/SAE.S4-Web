@@ -6,6 +6,7 @@ use App\PlusCourtChemin\Lib\ConnexionUtilisateurSession;
 use App\PlusCourtChemin\Lib\VerificationEmail;
 use App\PlusCourtChemin\Modele\DataObject\Utilisateur;
 use App\PlusCourtChemin\Modele\Repository\UtilisateurRepositoryInterface;
+use App\PlusCourtChemin\Service\Exception\ServiceException;
 use App\PlusCourtChemin\Service\UtilisateurService;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -43,7 +44,7 @@ class UtilisateurServiceTest extends TestCase
         $mdp2 = "12345678";
         $email = "test@yopmail.com";
 
-        $this->expectException(Exception::class);
+        $this->expectException(ServiceException::class);
         $this->expectExceptionMessage("Login, nom, prenom ou mot de passe manquant!");
         $this->service->creerUtilisateur($login, $prenom, $nom, $mdp, $mdp2, $email);
     }

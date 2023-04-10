@@ -262,10 +262,10 @@ class ControleurUtilisateur extends ControleurGenerique
 //        } catch (ServiceException $e) {
 //
 //            MessageFlash::ajouter("danger", $e->getMessage());
-//            return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
+//            return ControleurUtilisateur::rediriger('plusCourtChemin');
 //        }
 //        MessageFlash::ajouter("success", "Deconnexion effectuée.");
-//        return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
+//        return ControleurUtilisateur::rediriger('plusCourtChemin');
 //
 //    }
 
@@ -273,12 +273,12 @@ class ControleurUtilisateur extends ControleurGenerique
     {
         if (!$this->connexionUtilisateur->estConnecte()) {
             MessageFlash::ajouter("error", "Utilisateur non connecté.");
-            return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
+            return ControleurUtilisateur::rediriger('plusCourtChemin');
         }
         $this->connexionUtilisateur->deconnecter();
         $this->connexionUtilisateurJWT->deconnecter();
         MessageFlash::ajouter("success", "L'utilisateur a bien été déconnecté.");
-        return ControleurUtilisateur::rediriger('afficherListeUtilisateur');
+        return ControleurUtilisateur::rediriger('plusCourtChemin');
     }
 
     public function validerEmail(): Response

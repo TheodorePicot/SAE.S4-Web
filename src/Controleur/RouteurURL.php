@@ -53,6 +53,7 @@ class RouteurURL
         Conteneur::ajouterService("twig", $twig);
 
         $requete = Request::createFromGlobals();
+
         $routes = new RouteCollection();
 
         // Route plusCourtChemin
