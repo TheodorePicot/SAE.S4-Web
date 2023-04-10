@@ -1,5 +1,4 @@
-JIHAN HAJEM
-
+JIHAN HAJEM :
 - product owner
 - front end + maquette
 - implémentation de toutes les vues twig
@@ -8,13 +7,29 @@ JIHAN HAJEM
 - implémentation de l'api google maps
 - sur le rapport de projet rédaction du résumé, Glossaire, introduction, Analyse ergonomie, Bibliographie Participation à méthode organisation et analyse du cycle de vie
 
+LEO MICHEL :
+- developer
+- participation à l'implémentation de l'algorithme A*
+- recherche préliminaire d'un algorithme plus efficace que Dijkstra
+- participation à l'implémentation du TD Routage par URL, Composer
+- participation à l'implémentation du TD Réponses HTTP
+- participation à l'implémentation du TD SAE, Tests unitaires, Architecture, Injection de dépendances
+- participation à l'implémentation du TD API REST, authentification par JWT
+- participation à l'implémentation de l'API Météo
+- sur le rapport de projet rédaction de plusieurs introductions de parties, une partie de l'optimisation (partie sur l'optimisation de la structure du projet), une partie de la méthodologie du projet, une grande partie des impacts environnementaux.
 
-LEO MICHEL
+UGO MICHEL :
+- developer
+- participation à l'implémentation de l'algorithme A*
+- recherche préliminaire d'un algorithme plus efficace que Dijkstra
+- participation à l'implémentation du TD Routage par URL, Composer
+- participation à l'implémentation du TD Réponses HTTP
+- participation à l'implémentation du TD SAE, Tests unitaires, Architecture, Injection de dépendances
+- participation à l'implémentation du TD API REST, authentification par JWT
+- participation à l'implémentation de l'API Météo
+- sur le rapport de projet rédaction de plusieurs parties : une partie de l'optimisation (partie sur l'optimisation de la structure du projet), une partie de la méthodologie du projet, la dernière partie des impacts environnementaux.
 
-UGO MICHEL
-
-THEODORE PICOT
-
+THEODORE PICOT :
 - scrum master
 - créateur du trello et gestionnaire
 - implémentation de l'autocomplétion
